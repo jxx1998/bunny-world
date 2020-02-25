@@ -1,13 +1,13 @@
 # Bunny World - CS 108 Final Project
 
-# Project Authors:
+## Project Authors: ##
 Constantine Athanitis
 Katherine Du
 Kevin Hu
 Blake Villanueva
 Harry Jiang
 
-# Notice
+## Notice ##
 We will work directly over the `master` branch
 Please remember to do `git pull` before `git push origin master`!
 

@@ -7,8 +7,6 @@ public class Shape {
 
     String name;
     RectF coordinates;
-    boolean inInventory;
-    String pageName; // String is null if item is in Possessions Area
     String imageName; // Name of the image this Shape can draw
     String text; // Some text that this Shape can draw
     int textSize; // The size of the text in case Shape needs to draw the text
@@ -19,13 +17,10 @@ public class Shape {
 
     // Do not call this Shape constructor directly; use ShapeBuilder to construct a new Shape
     // See ShapeBuilder documentation for creating a new Shape
-    public Shape(String name, RectF coordinates, boolean inInventory, String pageName,
-                 String imageName, String text, int textSize, boolean hidden, boolean movable,
-                 String[] scripts, boolean selected) {
+    public Shape(String name, RectF coordinates, String imageName, String text, int textSize,
+                 boolean hidden, boolean movable, String[] scripts, boolean selected) {
         this.name = name;
         this.coordinates = coordinates;
-        this.inInventory = inInventory;
-        this.pageName = pageName;
         this.imageName = imageName;
         this.text = text;
         this.textSize = textSize;
@@ -44,8 +39,6 @@ public class Shape {
     public float getWidth() { return coordinates.width(); }
     public float getHeight() { return coordinates.height(); }
     public String getName() { return this.name; }
-    public boolean isInInventory() { return inInventory; }
-    public String getPageName() { return pageName; }
     public String getImageName() { return imageName; }
     public String getText() { return text; }
     public int getTextSize() { return textSize; }
@@ -70,18 +63,6 @@ public class Shape {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    // Please remember to set Coordinates after calling this
-    public void moveToInventory(boolean inInventory) {
-        this.inInventory = true;
-        this.pageName = null;
-    }
-
-    // Please remember to set Coordinates after calling this
-    public void moveToPage(String pageName) {
-        this.pageName = pageName;
-        this.inInventory = false;
     }
 
     public void setImageName(String imageName) {

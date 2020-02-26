@@ -8,7 +8,6 @@ import android.graphics.RectF;
  * Example usage: Shape shape = ShapeBuilder()
  *                              .name("my_shape")
  *                              .coordinates(left, top, right, bottom)
- *                              .pageName("page_1")
  *                              .imageName("bunny")
  *                              .text("Hello bunny!", 20)
  *                              .hidden(true)
@@ -18,8 +17,7 @@ import android.graphics.RectF;
  *                              .buildShape();
  *
  * Required fields that must be specified: .name() and .coordinates()
- * If .name() or .coordinates() not specified, buildShape() returns null
- * If no pageName is specified, by default the Shape is in the Inventory area.
+ * If .name() or .coordinates() not specified, buildShape() will return null
  * By default, the Shape is not hidden, and is movable.
  * There are two ways to specify coordinates: either pass in a RectF, or (left, top, right, bottom) in floats.
  */
@@ -28,8 +26,6 @@ public class ShapeBuilder {
 
     String name;
     RectF coordinates;
-    boolean inInventory = true;
-    String pageName; // String is null if item is in Possessions Area
     String imageName; // Name of the image this Shape can draw
     String text; // Some text that this Shape can draw
     int textSize; // The size of the text in case Shape needs to draw the text
@@ -46,7 +42,7 @@ public class ShapeBuilder {
         if (name == null || coordinates == null) {
             return null;
         } else {
-            return new Shape(name, coordinates, inInventory, pageName, imageName, text, textSize, hidden, movable, scripts, selected);
+            return new Shape(name, coordinates, imageName, text, textSize, hidden, movable, scripts, selected);
         }
     }
 
@@ -64,12 +60,6 @@ public class ShapeBuilder {
     public ShapeBuilder coordinates(float left, float top, float right, float bottom) {
         this.coordinates = new RectF(left, top, right, bottom);
         return coordinates(this.coordinates);
-    }
-
-    public ShapeBuilder pageName(String pageName) {
-        this.inInventory = false;
-        this.pageName = pageName;
-        return this;
     }
 
     public ShapeBuilder imageName(String imageName) {

@@ -1,4 +1,4 @@
-# Bunny World - CS 108 Final Project
+# Bunny World
 
 ## Notice ##
 We will work directly over the `master` branch

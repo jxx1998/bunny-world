@@ -13,7 +13,7 @@ import android.graphics.RectF;
  *                              .hidden(true)
  *                              .movable(true)
  *                              .scripts(my_scripts)
- *                              .selected(true)
+ *                              .highlighted(true)
  *                              .buildShape();
  *
  * Required fields that must be specified: .name() and .coordinates()
@@ -32,7 +32,7 @@ public class ShapeBuilder {
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
     boolean movable = true; // Whether this shape can be dragged around during Play time
     String[] scripts;
-    boolean selected = false;
+    boolean highlighted = false;
 
     public ShapeBuilder() {
         scripts = new String[0];
@@ -42,7 +42,7 @@ public class ShapeBuilder {
         if (name == null || coordinates == null) {
             return null;
         } else {
-            return new Shape(name, coordinates, imageName, text, textSize, hidden, movable, scripts, selected);
+            return new Shape(name, coordinates, imageName, text, textSize, hidden, movable, scripts, highlighted);
         }
     }
 
@@ -88,8 +88,8 @@ public class ShapeBuilder {
         return this;
     }
 
-    public ShapeBuilder selected(boolean selected) {
-        this.selected = selected;
+    public ShapeBuilder highlighted(boolean highlighted) {
+        this.highlighted = highlighted;
         return this;
     }
 

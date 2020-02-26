@@ -13,12 +13,12 @@ public class Shape {
     boolean hidden; // Whether this shape should be drawn out/clickable in Play time
     boolean movable; // Whether this shape can be dragged around during Play time
     String[] scripts;
-    boolean selected;
+    boolean highlighted;
 
     // Do not call this Shape constructor directly; use ShapeBuilder to construct a new Shape
     // See ShapeBuilder documentation for creating a new Shape
     public Shape(String name, RectF coordinates, String imageName, String text, int textSize,
-                 boolean hidden, boolean movable, String[] scripts, boolean selected) {
+                 boolean hidden, boolean movable, String[] scripts, boolean highlighted) {
         this.name = name;
         this.coordinates = coordinates;
         this.imageName = imageName;
@@ -27,7 +27,7 @@ public class Shape {
         this.hidden = hidden;
         this.movable = movable;
         this.scripts = scripts;
-        this.selected = selected;
+        this.highlighted = highlighted;
     }
 
     // Getters
@@ -45,7 +45,7 @@ public class Shape {
     public boolean isHidden() { return hidden; }
     public boolean isMovable() { return movable; }
     public String[] getScripts() { return scripts; }
-    public boolean isSelected() { return selected; }
+    public boolean isHighlighted() { return highlighted; }
 
     // Below are some Setters
 
@@ -81,8 +81,8 @@ public class Shape {
         this.scripts = scripts;
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
+    public void setHighlighted(boolean highlighted) {
+        this.highlighted = highlighted;
     }
 
     // Other methods

@@ -1,49 +1,31 @@
 package edu.stanford.cs108.bunnyworld;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
-import android.view.View;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.sql.Blob;
+import java.util.Scanner;
 
-public class MainActivity extends AppCompatActivity {
+import static android.content.Context.MODE_PRIVATE;
+//import javax.sql.rowset.serial.SerialBlob;
 
-    SQLiteDatabase db;
+public class GameDatabase {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    private SQLiteDatabase db;
 
-       // MyExample ex = new MyExample();
-        GameDatabase game_database = new GameDatabase();
-        db = openOrCreateDatabase("GameDB", MODE_PRIVATE, null);
-        initDatabase();
+    public void initDatabase() {
 
-        try {
-            testSave();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void onChooseEditor(View view) {
-        System.out.println("In the onChooseEditor method");
-        Intent intent = new Intent(this, EditorActivity.class);
-        System.out.println("After the intent creation");
-        startActivity(intent);
-    }
-
-    private void initDatabase() {
         String clearStr = "DROP TABLE IF EXISTS games;";
-        db.execSQL(clearStr);
+        //db.execSQL(clearStr);
 
         String setupStr = "CREATE TABLE games ("
                 + "game_num INTEGER, "
@@ -52,9 +34,8 @@ public class MainActivity extends AppCompatActivity {
                 + ");";
 
         System.err.println(setupStr);
-        db.execSQL(setupStr);
+        //db.execSQL(setupStr);
     }
-
 
     public byte[] gameToBytes(Game game) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -89,11 +70,46 @@ public class MainActivity extends AppCompatActivity {
 
         System.err.println(dataStr);
         db.execSQL(dataStr);
+
+
+
+
+
+        // This method is not working because it cannot resolve SerialBlob
+        /*
+        //Blob testBlob = org.hibernate.Hibernate.createBlob(bytes);
+        try {
+            FileOutputStream fileOutStream = new FileOutputStream(new File("game.txt"));
+            ObjectOutputStream objectOutStream = new ObjectOutputStream(fileOutStream);
+
+            // Write object to file
+            objectOutStream.writeObject(game);
+
+            objectOutStream.close();
+            fileOutStream.close();
+
+            Scanner game_scanner = new Scanner(new BufferedReader(new FileReader("game.txt")));
+
+            Blob game_blob = null;
+            while (game_scanner.hasNext()) {
+                byte[] game_byte_array = game_scanner.nextLine().getBytes();
+                game_blob = new SerialBlob(game_byte_array);
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (IOException e) {
+            System.out.println("Error initializing stream");
+        }
+
+        */
     }
 
-    public void testSave() throws IOException {
-        Game testGame = new Game();
-        saveGame(1, testGame);
+    /*
+    public Game getGame(int gameNum) {
+
     }
+
+     */
 
 }

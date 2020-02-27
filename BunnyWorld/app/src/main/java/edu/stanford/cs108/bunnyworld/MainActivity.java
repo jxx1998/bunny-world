@@ -14,11 +14,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MyExample ex = new MyExample();
+       // MyExample ex = new MyExample();
     }
 
-    public void onEditor(View view) {
+    public void onChooseEditor(View view) {
+        System.out.println("In the onChooseEditor method");
         Intent intent = new Intent(this, EditorActivity.class);
+        System.out.println("After the intent creation");
         startActivity(intent);
     }
+
 }

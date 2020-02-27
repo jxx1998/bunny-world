@@ -49,6 +49,7 @@ public class Page {
 
     // Given a (x, y) touch coordinate, returns the top-most Shape that contains (x, y) in the Page
     // Returns null if no Shape in the Page contains (x, y)
+    // Note: This method returns hidden/not movable Shapes as well
     public Shape shapeTouched(float x, float y) {
         for (int i = shapes.size() - 1; i >= 0; i--) {
             if (shapes.get(i).contains(x, y)) {

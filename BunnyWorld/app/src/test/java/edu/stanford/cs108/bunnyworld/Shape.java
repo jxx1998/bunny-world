@@ -89,7 +89,6 @@ public class Shape implements Serializable {
 
     // Other methods
     public void draw(Canvas canvas) {
-        
     }
 
     // Returns whether a given (x, y) is located within the Shape

@@ -1,10 +1,17 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;
 
 public class Page implements Serializable {
 
@@ -12,6 +19,7 @@ public class Page implements Serializable {
     List<Shape> shapes;
     String backGroundMusic;
     String backGroundImage;
+    transient BitmapDrawable imageDrawable;
 
     public Page(String name, List<Shape> shapes) {
         this.name = name;
@@ -39,6 +47,18 @@ public class Page implements Serializable {
 
     public void setBackGroundImage(String backGroundImage) {
         this.backGroundImage = backGroundImage;
+        loadImage();
+    }
+
+    private void loadImage() {
+        Context context = getGlobalContext();
+        Resources resources = context.getResources();
+        try {
+            final int resourceId = resources.getIdentifier(backGroundImage, "drawable", context.getPackageName());
+            imageDrawable = (BitmapDrawable) resources.getDrawable(resourceId);
+        } catch (Resources.NotFoundException e) {
+            imageDrawable = null;
+        }
     }
 
     public void addShape(Shape shape) {
@@ -99,5 +119,10 @@ public class Page implements Serializable {
             }
         }
         return overlaps;
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        loadImage();
     }
 }

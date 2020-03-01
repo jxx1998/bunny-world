@@ -9,7 +9,7 @@ import android.graphics.RectF;
  *                              .name("my_shape")
  *                              .coordinates(left, top, right, bottom)
  *                              .imageName("bunny")
- *                              .text("Hello bunny!", 20)
+ *                              .text("Hello bunny!", 10.0f)
  *                              .hidden(true)
  *                              .movable(true)
  *                              .scripts(my_scripts)
@@ -28,13 +28,15 @@ public class ShapeBuilder {
     RectF coordinates;
     String imageName; // Name of the image this Shape can draw
     String text; // Some text that this Shape can draw
-    int textSize; // The size of the text in case Shape needs to draw the text
+    float textSize = 10.0f; // The size of the text in case Shape needs to draw the text
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
     boolean movable = true; // Whether this shape can be dragged around during Play time
     String[] scripts;
     boolean highlighted = false;
 
     public ShapeBuilder() {
+        text = "";
+        imageName = "";
         scripts = new String[0];
     }
 
@@ -67,7 +69,7 @@ public class ShapeBuilder {
         return this;
     }
 
-    public ShapeBuilder text(String text, int textSize) {
+    public ShapeBuilder text(String text, float textSize) {
         this.text = text;
         this.textSize = textSize;
         return this;

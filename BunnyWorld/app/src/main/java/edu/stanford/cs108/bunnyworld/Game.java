@@ -8,15 +8,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game implements Serializable {
-    ArrayList<Page> pages;
+    List<Page> pages;
 
     public Game() {
         pages = new ArrayList<Page>();
     }
 
-    public Game(ArrayList<Page> pageList) {
+    public Game(List<Page> pageList) {
         pages = pageList;
     }
 
@@ -24,7 +25,17 @@ public class Game implements Serializable {
         pages.add(page);
     }
 
-    public void removePage(Page page) { pages.remove(page); }
+    public void setPages(List<Page> pages) {
+        this.pages = pages;
+    }
+
+    public List<Page> getPages() {
+        return this.pages;
+    }
+
+    public void removePage(Page page) {
+        pages.remove(page);
+    }
 
     public byte[] serialize() {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();

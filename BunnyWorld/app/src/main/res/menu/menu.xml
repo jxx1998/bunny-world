@@ -1,4 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item android:title="Create Script">
+        <menu>
+            <item android:title="on click">
+                <menu>
+                    <item android:title="goto" />
+                    <item android:title="play" />
+                    <item android:title="hide" />
+                    <item android:title="show" />
+                </menu>
+            </item>
+            <item android:title="on enter">
+                <menu>
+                    <item android:title="goto" />
+                    <item android:title="play" />
+                    <item android:title="hide" />
+                    <item android:title="show" />
+                </menu>
+            </item>
+            <item android:title="on drop">
+                <menu>
+                    <item android:title="goto" />
+                    <item android:title="play" />
+                    <item android:title="hide" />
+                    <item android:title="show" />                </menu>
+            </item>
+        </menu>
+    </item>
+    <item
+        android:title="Show Script"
+        android:onClick="showScript"/>
 </menu>

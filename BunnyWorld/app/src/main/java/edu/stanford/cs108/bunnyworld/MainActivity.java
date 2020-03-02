@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
         testPage.addShape(testShape);
         Game testGame = new Game();
         testGame.addPage(testPage);
-        byte[] game_bytes = testGame.serialize();
+        //byte[] game_bytes = testGame.serialize();
 
-        saveGame("test_game", game_bytes);
+        saveGame("test_game", testGame);
 
         Game loaded_game = loadGame("test_game");
         Log.i("hi", loaded_game.pages.get(0).name);
@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         db.execSQL(setupStr);
     }
 
+
+    /*
     private void saveGame(String game_name, byte[] game_bytes) {
         String command = "INSERT INTO games (name, data) VALUES (?, ?)";
         SQLiteStatement insertStatement = db.compileStatement(command);
@@ -79,6 +81,18 @@ public class MainActivity extends AppCompatActivity {
         insertStatement.bindBlob(2, game_bytes);
         insertStatement.executeInsert();
     }
+     */
+
+    private void saveGame(String game_name, Game game) {
+        byte[] game_bytes = game.serialize();
+        String command = "INSERT INTO games (name, data) VALUES (?, ?)";
+        SQLiteStatement insertStatement = db.compileStatement(command);
+        insertStatement.clearBindings();
+        insertStatement.bindString(1, game_name);
+        insertStatement.bindBlob(2, game_bytes);
+        insertStatement.executeInsert();
+    }
+
 
     private Game loadGame(String game_name) {
         String command = "SELECT * FROM games WHERE name='" + game_name + "'";

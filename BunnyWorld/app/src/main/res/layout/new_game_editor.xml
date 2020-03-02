@@ -10,7 +10,8 @@
     <edu.stanford.cs108.bunnyworld.CustomView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2.5" />
+        android:layout_weight="2.5"
+        android:id="@+id/myCustomView"/>
 
 
     <LinearLayout
@@ -39,6 +40,7 @@
                 android:layout_row="0"
                 android:layout_column="1"
                 android:layout_gravity="fill_horizontal"
+                android:onClick="changePageExample"
                 android:text="Change Page" />
 
             <Button

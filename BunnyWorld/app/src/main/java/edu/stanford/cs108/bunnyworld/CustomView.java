@@ -10,8 +10,14 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class CustomView extends View {
     protected static Page currPage;
+    protected static Game currGame;
+    protected static ArrayList<Page> gamePages;
+    protected static int currPagePos;
     protected static float x1, x2, y1, y2, left, right, top, bottom;
 
     public CustomView(Context context, @Nullable AttributeSet attrs) {
@@ -24,20 +30,57 @@ public class CustomView extends View {
     }
 
     private void init(){
+        //We create a game object and add an initial page (just to test out, this initial page will have three shapes in them)
+
+        //currGame = new Game();
+
         //Creating a new page and adding shapes to it.
-        currPage = new Page("initialExamplePage");
-        Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
-        Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
-        Shape shape3 = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("death").buildShape();
-        currPage.addShape(shape1);
-        currPage.addShape(shape2);
-        currPage.addShape(shape3);
+
+        gamePages = new ArrayList<Page>();
+        Page firstPage = new Page("Page 1");
+        //Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
+        //Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
+        Shape shapeForFirst = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("death").buildShape();
+        //currPage.addShape(shape1);
+        //currPage.addShape(shape2);
+        firstPage.addShape(shapeForFirst);
+
+
+        Page secondPage = new Page("Page 2");
+        //Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
+        //Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
+        Shape shapeForSecond = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("fire").buildShape();
+        //currPage.addShape(shape1);
+        //currPage.addShape(shape2);
+        secondPage.addShape(shapeForSecond);
+
+
+        Page thirdPage = new Page("Page 3");
+        //Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
+        //Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
+        Shape shapeForThird = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("carrot").buildShape();
+        //currPage.addShape(shape1);
+        //currPage.addShape(shape2);
+        thirdPage.addShape(shapeForThird);
+
+        gamePages.add(firstPage);
+        gamePages.add(secondPage);
+        gamePages.add(thirdPage);
+        currPagePos = 0;
+        currPage = gamePages.get(currPagePos);
+
 
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        Paint textPaint = new Paint();
+        //canvas.drawPaint(textPaint);
+        textPaint.setColor(Color.BLACK);
+        textPaint.setTextSize(50f);
+        String pageName = currPage.name;
+        canvas.drawText(pageName,50f,50f, textPaint);
         System.out.println("left, top, right, bottom:" + left + ", " + top + ", " + right + ", " + bottom);
         if (left > 0){
             Shape newShape = new ShapeBuilder().name("shape1").coordinates(left,top,right,bottom).imageName("carrot2").buildShape();

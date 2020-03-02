@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         testPage.addShape(testShape);
         Game testGame = new Game();
         testGame.addPage(testPage);
-        //byte[] game_bytes = testGame.serialize();
 
         saveGame("test_game", testGame);
 
@@ -83,7 +82,14 @@ public class MainActivity extends AppCompatActivity {
     }
      */
 
+    private void deleteGame(String game_name) {
+        String command = "DELETE FROM games WHERE name='" + game_name + "'";
+        db.execSQL(command);
+    }
+
     private void saveGame(String game_name, Game game) {
+        deleteGame(game_name);
+
         byte[] game_bytes = game.serialize();
         String command = "INSERT INTO games (name, data) VALUES (?, ?)";
         SQLiteStatement insertStatement = db.compileStatement(command);
@@ -93,10 +99,28 @@ public class MainActivity extends AppCompatActivity {
         insertStatement.executeInsert();
     }
 
+    private void printDatabaseGames() {
+        Cursor cursor = db.rawQuery("SELECT * FROM games",null);
+        String output = "";
+
+        while (cursor.moveToNext()) {
+            Log.i("hi", cursor.getString(0));
+            output += cursor.getString(0) + "\n";
+        }
+
+        Log.i("hi", "The table contains " + output);
+    }
+
 
     private Game loadGame(String game_name) {
         String command = "SELECT * FROM games WHERE name='" + game_name + "'";
         Cursor cursor = db.rawQuery(command, null);
+
+        if (cursor.getCount() == 0) {
+            Log.i("hi", "the cursor count is also 0");
+        }
+
+
         Game this_game = null;
         if(cursor.moveToFirst()) {
             byte[] game_bytes = cursor.getBlob(1);

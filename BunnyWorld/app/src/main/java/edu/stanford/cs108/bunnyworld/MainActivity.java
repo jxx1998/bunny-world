@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setupDatabase();
 
         Shape testShape = new ShapeBuilder().coordinates(10.0f, 10.0f, 10.0f, 10.0f).name("testDude").buildShape();
+        testShape.playSound("evillaugh");
         Page testPage  = new Page("pageDude");
         testPage.addShape(testShape);
         Game testGame = new Game();

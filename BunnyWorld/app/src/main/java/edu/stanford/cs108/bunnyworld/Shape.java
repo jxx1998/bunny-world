@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
 
 import java.util.*;
 import java.io.IOException;
@@ -205,6 +206,26 @@ public class Shape implements Serializable {
     // Returns whether a given (x, y) is located within the Shape
     public boolean contains(float x, float y) {
         return coordinates.getRectF().contains(x, y);
+    }
+
+    /**
+     * This is a place-holder method for sound playback - should be moved to Script class later
+     * If file not found, this method does nothing
+     *
+     * @param soundFile: String, soundtrack filename without the .mp3 extension
+     */
+    public void playSound(String soundFile) {
+        Context context = getGlobalContext();
+        Resources resources = context.getResources();
+        final int resourceId = resources.getIdentifier(soundFile, "raw", context.getPackageName());
+        final MediaPlayer mp = MediaPlayer.create(context, resourceId);
+        if (mp == null) { return; }
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
+        mp.start();
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {

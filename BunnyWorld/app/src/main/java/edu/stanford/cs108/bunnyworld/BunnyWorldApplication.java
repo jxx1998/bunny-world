@@ -2,7 +2,6 @@ package edu.stanford.cs108.bunnyworld;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.res.Resources;
 
 public class BunnyWorldApplication extends Application {
 

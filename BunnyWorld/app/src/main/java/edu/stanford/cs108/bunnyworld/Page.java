@@ -22,13 +22,15 @@ public class Page implements Serializable {
     transient BitmapDrawable imageDrawable;
 
     public Page(String name, List<Shape> shapes) {
-        this.name = name;
+        this(name);
         this.shapes = shapes;
     }
 
     public Page(String name) {
         this.name = name;
         this.shapes = new ArrayList<Shape>();
+        this.backGroundImage = "";
+        this.backGroundMusic = "";
     }
 
     public void draw(Canvas canvas) {

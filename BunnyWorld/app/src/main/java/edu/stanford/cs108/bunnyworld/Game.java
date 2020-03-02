@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Game implements Serializable {
-    String name;
     ArrayList<Page> pages;
 
     public Game() {

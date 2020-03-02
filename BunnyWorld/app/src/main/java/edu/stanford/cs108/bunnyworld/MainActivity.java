@@ -14,6 +14,7 @@ import android.view.View;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,11 +25,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // MyExample ex = new MyExample();
         db = openOrCreateDatabase("GamesDB", MODE_PRIVATE, null);
         Cursor tablesCursor = db.rawQuery("SELECT * FROM sqlite_master WHERE type='table' AND name='games';", null);
         if (tablesCursor.getCount() == 0){ setupDatabase(); }
 
+        testDatabase(); // Testing only - could be deleted later
+    }
+
+    /**
+     * This function is for testing serialization/database. Could be deleted later.
+     */
+    private void testDatabase() {
+        setupDatabase();
 
         Shape testShape = new ShapeBuilder().coordinates(10.0f, 10.0f, 10.0f, 10.0f).name("testDude").buildShape();
         Page testPage  = new Page("pageDude");

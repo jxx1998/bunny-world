@@ -24,12 +24,17 @@ public class Shape implements Serializable {
     float textSize; // The size of the text in case Shape needs to draw the text
     boolean hidden; // Whether this shape should be drawn out/clickable in Play time
     boolean movable; // Whether this shape can be dragged around during Play time
-    String[] scripts;
+    Scripts scripts;
     boolean highlighted;
     transient Paint textPaint, defaultPaint;
     transient BitmapDrawable imageDrawable;
 
-    // class defining scripts object
+    /**
+     * Scripts class
+     * Each shape contains a Scripts object
+     * Scripts contains a list of Clause objects (either on click/enter/drop)
+     * Each Clause object contains a list of actions performed when triggered
+     */
     public class Scripts {
 
         List<Clause> clauses;
@@ -38,6 +43,20 @@ public class Shape implements Serializable {
             this.clauses = clauses;
         }
 
+        // Can overload this function that does the same thing given a string
+        public void addClause(Clause newClause) {
+            clauses.add(newClause);
+        }
+
+        // TODO
+        public void editScripts() {
+            return;
+        }
+
+        /**
+         * Clause inner class
+         * trigger: on click/enter/drop
+         */
         public class Clause {
             String trigger;
             List<Action> actions;
@@ -47,7 +66,20 @@ public class Shape implements Serializable {
                 this.actions = actions;
             }
 
-            // Actions inner class
+            // getters and setters
+            public String getTrigger() { return this.trigger; }
+            public void setTrigger(String trigger) { this.trigger = trigger; }
+
+            // Run all actions in clause
+            public void runClause() {
+                for (Action a : actions) {
+                    a.runAction();
+                }
+            }
+
+            /**
+             * Actions inner class
+             */
             public class Action {
                 String keyword;
                 String name;
@@ -57,7 +89,13 @@ public class Shape implements Serializable {
                     this.name = name;
                 }
 
-                public void execute() {
+                // getters and setters
+                public String getKeyword() { return keyword; }
+                public String getName() { return name; }
+                public void setKeyword(String keyword) { this.keyword = keyword; }
+                public void setName(String name) { this.name = name; }
+
+                public void runAction() {
                     if (keyword == "goto") {
                         // TODO
                     } else if (keyword == "play") {
@@ -70,20 +108,13 @@ public class Shape implements Serializable {
                     }
                 }
             }
-
-            public void run () {
-                for (Action a : actions) {
-                    a.execute();
-                }
-            }
-
         }
     }
 
     // Do not call this Shape constructor directly; use ShapeBuilder to construct a new Shape
     // See ShapeBuilder documentation for creating a new Shape
     public Shape(String name, SerializableRectF coordinates, String imageName, String text, float textSize,
-                 boolean hidden, boolean movable, String[] scripts, boolean highlighted) {
+                 boolean hidden, boolean movable, Scripts scripts, boolean highlighted) {
         this.name = name;
         this.coordinates = coordinates;
         this.imageName = imageName;
@@ -125,7 +156,7 @@ public class Shape implements Serializable {
     public float getTextSize() { return textSize; }
     public boolean isHidden() { return hidden; }
     public boolean isMovable() { return movable; }
-    public String[] getScripts() { return scripts; }
+    public Scripts getScripts() { return scripts; }
     public boolean isHighlighted() { return highlighted; }
 
     // Below are some Setters
@@ -156,7 +187,7 @@ public class Shape implements Serializable {
     public void setName(String name) { this.name = name; }
     public void setHidden(boolean hidden) { this.hidden = hidden; }
     public void setMovable(boolean movable) { this.movable = movable; }
-    public void setScripts(String[] scripts) { this.scripts = scripts; }
+    public void setScripts(Scripts scripts) { this.scripts = scripts; }
     public void setHighlighted(boolean highlighted) { this.highlighted = highlighted; }
 
     // Other methods

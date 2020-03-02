@@ -11,12 +11,8 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 public class CustomView extends View {
-    Paint redOutlinePaint;
-    Paint blueFillPaint;
-    int viewWidth;
-    int viewHeight;
-    Page currPage;
-    float x1, x2, y1, y2, left, right, top, bottom;
+    protected static Page currPage;
+    protected static float x1, x2, y1, y2, left, right, top, bottom;
 
     public CustomView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -28,13 +24,6 @@ public class CustomView extends View {
     }
 
     private void init(){
-        redOutlinePaint = new Paint();
-        redOutlinePaint.setColor(Color.RED);
-        redOutlinePaint.setStyle(Paint.Style.STROKE);
-        redOutlinePaint.setStrokeWidth(5.0f);
-        blueFillPaint = new Paint();
-        blueFillPaint.setColor(Color.BLUE);
-
         //Creating a new page and adding shapes to it.
         currPage = new Page("initialExamplePage");
         Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
@@ -49,29 +38,21 @@ public class CustomView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-//        canvas.drawLine(0.0f,0.0f,viewWidth,viewHeight,redOutlinePaint);
-//        canvas.drawRect(50.0f,50.0f,150.0f,150.0f,blueFillPaint);
         System.out.println("left, top, right, bottom:" + left + ", " + top + ", " + right + ", " + bottom);
-        Shape newShape = new ShapeBuilder().name("shape1").coordinates(left,top,right,bottom).imageName("carrot2").buildShape();
-        currPage.addShape(newShape);
+        if (left > 0){
+            Shape newShape = new ShapeBuilder().name("shape1").coordinates(left,top,right,bottom).imageName("carrot2").buildShape();
+            currPage.addShape(newShape);
+        }
         currPage.draw(canvas);
 
 
 
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        viewWidth = w;
-        viewHeight = h;
-    }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
-            //When you first click, that's the initial x,y coord pair
             case MotionEvent.ACTION_DOWN:
                 x1 = event.getX();
                 y1 = event.getY();
@@ -80,9 +61,6 @@ public class CustomView extends View {
             case MotionEvent.ACTION_UP:
                 x2 = event.getX();
                 y2 = event.getY();
-
-                //At this point, we've released the click and have the two points
-                //of the rectangle
 
                 if (x2 > x1) {
                     right = x2;
@@ -99,6 +77,9 @@ public class CustomView extends View {
                     bottom = y1;
                     top = y2;
                 }
+
+                invalidate();
+                break;
 
         }
 

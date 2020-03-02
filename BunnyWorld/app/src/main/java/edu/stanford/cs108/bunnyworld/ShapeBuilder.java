@@ -31,13 +31,12 @@ public class ShapeBuilder {
     float textSize = 10.0f; // The size of the text in case Shape needs to draw the text
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
     boolean movable = true; // Whether this shape can be dragged around during Play time
-    String[] scripts;
+    Shape.Scripts scripts;
     boolean highlighted = false;
 
     public ShapeBuilder() {
         text = "";
         imageName = "";
-        scripts = new String[0];
     }
 
     public Shape buildShape() {
@@ -85,7 +84,7 @@ public class ShapeBuilder {
         return this;
     }
 
-    public ShapeBuilder scripts(String[] scripts) {
+    public ShapeBuilder scripts(Shape.Scripts scripts) {
         this.scripts = scripts;
         return this;
     }

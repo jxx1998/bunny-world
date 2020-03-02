@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 
+import java.util.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -27,6 +28,57 @@ public class Shape implements Serializable {
     boolean highlighted;
     transient Paint textPaint, defaultPaint;
     transient BitmapDrawable imageDrawable;
+
+    // class defining scripts object
+    public class Scripts {
+
+        List<Clause> clauses;
+
+        public Scripts(Shape shape, ArrayList<Clause> clauses) {
+            this.clauses = clauses;
+        }
+
+        public class Clause {
+            String trigger;
+            List<Action> actions;
+
+            public Clause(String trigger, ArrayList<Action> actions) {
+                this.trigger = trigger;
+                this.actions = actions;
+            }
+
+            // Actions inner class
+            public class Action {
+                String keyword;
+                String name;
+
+                public Action (String keyword, String name) {
+                    this.keyword = keyword;
+                    this.name = name;
+                }
+
+                public void execute() {
+                    if (keyword == "goto") {
+                        // TODO
+                    } else if (keyword == "play") {
+                        // Something like this
+                        // Shape.this.playSound(name);
+                    } else if (keyword == "hide") {
+                        Shape.this.setHidden(true);
+                    } else if (keyword == "show") {
+                        Shape.this.setHidden(false);
+                    }
+                }
+            }
+
+            public void run () {
+                for (Action a : actions) {
+                    a.execute();
+                }
+            }
+
+        }
+    }
 
     // Do not call this Shape constructor directly; use ShapeBuilder to construct a new Shape
     // See ShapeBuilder documentation for creating a new Shape

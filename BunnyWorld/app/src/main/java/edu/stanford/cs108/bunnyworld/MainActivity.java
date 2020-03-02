@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
         saveGame("test_game", game_bytes);
 
         Game loaded_game = loadGame("test_game");
-        Log.i("hi", loaded_game.pages.get(0).name);
-        Log.i("hi", loaded_game.pages.get(0).shapes.get(0).name);
-        Log.i("hi", Float.toString(loaded_game.pages.get(0).shapes.get(0).coordinates.getRectF().top));
+//        Log.i("hi", loaded_game.pages.get(0).name);
+//        Log.i("hi", loaded_game.pages.get(0).shapes.get(0).name);
+//        Log.i("hi", Float.toString(loaded_game.pages.get(0).shapes.get(0).coordinates.getRectF().top));
 
     }
 

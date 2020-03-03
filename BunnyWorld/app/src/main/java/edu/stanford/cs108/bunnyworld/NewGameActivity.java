@@ -1,5 +1,6 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -214,29 +215,6 @@ public class NewGameActivity extends AppCompatActivity {
 
         builder.show();
 
-
-//        int numPages = CustomView.gamePages.size();
-//        int currentPagePosition = CustomView.currPagePos;
-//
-//        System.out.println("num pages size" + numPages);
-//        System.out.println("current page position: " + currentPagePosition);
-//
-//        if (currentPagePosition == numPages - 1){
-//            currentPagePosition = -1;
-//        }
-//
-//        System.out.println("current page position after if statement that should cause the loop + 1: " + currentPagePosition);
-//        int toChangePagePos = currentPagePosition + 1;
-//        System.out.println("toChangePage position: " + toChangePagePos);
-//
-//        Page toChangeToPage = CustomView.gamePages.get(toChangePagePos);
-//        CustomView.currPage = toChangeToPage;
-//        CustomView.currPagePos = toChangePagePos;
-//        CustomView.left = -10f;
-//
-//        CustomView myView = findViewById(R.id.myCustomView);
-//        myView.invalidate();
-
     }
 
 
@@ -272,6 +250,28 @@ public class NewGameActivity extends AppCompatActivity {
             CustomView myView = findViewById(R.id.myCustomView);
             myView.invalidate();
         }
+
+    }
+
+    public void getProps(View view){
+        System.out.println("I CLICKED THE GET PROPS BUTTON");
+
+        final Dialog dialog= new Dialog(this);
+        dialog.setContentView(R.layout.properties_dialog_layout);
+        dialog.setTitle("Selected Shape's Properties");
+        if (CustomView.selectedShape != null) {
+            EditText leftText = (EditText) dialog.findViewById(R.id.left);
+            EditText rightText = (EditText) dialog.findViewById(R.id.right);
+            EditText topText = (EditText) dialog.findViewById(R.id.top);
+            EditText botText = (EditText) dialog.findViewById(R.id.bottom);
+
+            leftText.setText(Float.toString(CustomView.selectedLeft));
+            rightText.setText(Float.toString(CustomView.selectedRight));
+            topText.setText(Float.toString(CustomView.selectedTop));
+            botText.setText(Float.toString(CustomView.selectedBot));
+        }
+
+        dialog.show();
 
     }
 

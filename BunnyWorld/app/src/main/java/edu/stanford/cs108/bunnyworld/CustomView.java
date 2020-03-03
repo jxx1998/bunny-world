@@ -18,9 +18,11 @@ public class CustomView extends View {
     protected static Game currGame;
     protected static ArrayList<Page> gamePages;
     protected static int currPagePos, currShapePos;
-    protected static float x1, x2, y1, y2, left, right, top, bottom;
+    protected static float x1, x2, y1, y2, left, right, top, bottom,xSelect, ySelect;
+    protected static float selectedLeft,selectedRight,selectedTop,selectedBot;
     protected static String currDrawShapeName;
     protected static ArrayList<String> shapeNames;
+    protected static Shape selectedShape;
 
     public CustomView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -36,39 +38,47 @@ public class CustomView extends View {
 
         //currGame = new Game();
 
-        //Creating a new page and adding shapes to it.
+        //Creating a new page
 
         gamePages = new ArrayList<Page>();
         shapeNames = new ArrayList<String>();
+
+        //Getting rid of all the initialization example pages---------------------------
+
+
+//        Page firstPage = new Page("Page 1");
+//        //Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
+//        //Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
+//        Shape shapeForFirst = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("death").buildShape();
+//        //currPage.addShape(shape1);
+//        //currPage.addShape(shape2);
+//        firstPage.addShape(shapeForFirst);
+//
+//
+//        Page secondPage = new Page("Page 2");
+//        //Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
+//        //Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
+//        Shape shapeForSecond = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("fire").buildShape();
+//        //currPage.addShape(shape1);
+//        //currPage.addShape(shape2);
+//        secondPage.addShape(shapeForSecond);
+//
+//
+//        Page thirdPage = new Page("Page 3");
+//        //Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
+//        //Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
+//        Shape shapeForThird = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("carrot").buildShape();
+//        //currPage.addShape(shape1);
+//        //currPage.addShape(shape2);
+//        thirdPage.addShape(shapeForThird);
+//
+//        gamePages.add(firstPage);
+//        gamePages.add(secondPage);
+//        gamePages.add(thirdPage);
+//        currPagePos = 0;
+//        currPage = gamePages.get(currPagePos);
         Page firstPage = new Page("Page 1");
-        //Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
-        //Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
-        Shape shapeForFirst = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("death").buildShape();
-        //currPage.addShape(shape1);
-        //currPage.addShape(shape2);
-        firstPage.addShape(shapeForFirst);
-
-
-        Page secondPage = new Page("Page 2");
-        //Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
-        //Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
-        Shape shapeForSecond = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("fire").buildShape();
-        //currPage.addShape(shape1);
-        //currPage.addShape(shape2);
-        secondPage.addShape(shapeForSecond);
-
-
-        Page thirdPage = new Page("Page 3");
-        //Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
-        //Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
-        Shape shapeForThird = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("carrot").buildShape();
-        //currPage.addShape(shape1);
-        //currPage.addShape(shape2);
-        thirdPage.addShape(shapeForThird);
-
         gamePages.add(firstPage);
-        gamePages.add(secondPage);
-        gamePages.add(thirdPage);
         currPagePos = 0;
         currPage = gamePages.get(currPagePos);
 
@@ -79,7 +89,7 @@ public class CustomView extends View {
         shapeNames.add("fire");
         shapeNames.add("mystic");
 
-        currShapePos = 1;
+        currShapePos = 0;
         currDrawShapeName = shapeNames.get(currShapePos);
 
     }
@@ -94,12 +104,31 @@ public class CustomView extends View {
         String pageName = currPage.name;
         canvas.drawText(pageName,50f,50f, textPaint);
         System.out.println("left, top, right, bottom:" + left + ", " + top + ", " + right + ", " + bottom);
+        //This test case is to make sure that most recent added shape isn't added when creating a new page
         if (left > 0){
-            Shape newShape = new ShapeBuilder().name("shape1").coordinates(left,top,right,bottom).imageName(currDrawShapeName).buildShape();
+            Shape newShape = new ShapeBuilder().name("AddedShape").coordinates(left,top,right,bottom).imageName(currDrawShapeName).buildShape();
             currPage.addShape(newShape);
         }
+
+
+        //Draws all of the shapes on the page
         currPage.draw(canvas);
 
+        //Redraws the selected shape
+        selectedShape = currPage.shapeTouched(xSelect,ySelect,true, true);
+        if (selectedShape != null) {
+            selectedLeft = selectedShape.getLeft();
+            selectedRight = selectedShape.getRight();
+            selectedTop = selectedShape.getTop();
+            selectedBot = selectedShape.getBottom();
+            //System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
+
+            Paint myPaintDrawOutline = new Paint();
+            myPaintDrawOutline.setColor(Color.BLUE);
+            myPaintDrawOutline.setStrokeWidth(15.0f);
+            myPaintDrawOutline.setStyle(Paint.Style.STROKE);
+            canvas.drawRect(selectedLeft,selectedTop,selectedRight,selectedBot,myPaintDrawOutline);
+        }
 
 
     }
@@ -109,6 +138,8 @@ public class CustomView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                xSelect = event.getX();
+                ySelect = event.getY();
                 x1 = event.getX();
                 y1 = event.getY();
                 break;

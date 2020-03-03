@@ -17,8 +17,10 @@ public class CustomView extends View {
     protected static Page currPage;
     protected static Game currGame;
     protected static ArrayList<Page> gamePages;
-    protected static int currPagePos;
+    protected static int currPagePos, currShapePos;
     protected static float x1, x2, y1, y2, left, right, top, bottom;
+    protected static String currDrawShapeName;
+    protected static ArrayList<String> shapeNames;
 
     public CustomView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -37,6 +39,7 @@ public class CustomView extends View {
         //Creating a new page and adding shapes to it.
 
         gamePages = new ArrayList<Page>();
+        shapeNames = new ArrayList<String>();
         Page firstPage = new Page("Page 1");
         //Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
         //Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
@@ -69,6 +72,15 @@ public class CustomView extends View {
         currPagePos = 0;
         currPage = gamePages.get(currPagePos);
 
+        shapeNames.add("carrot");
+        shapeNames.add("carrot2");
+        shapeNames.add("death");
+        shapeNames.add("duck");
+        shapeNames.add("fire");
+        shapeNames.add("mystic");
+
+        currShapePos = 1;
+        currDrawShapeName = shapeNames.get(currShapePos);
 
     }
 
@@ -83,7 +95,7 @@ public class CustomView extends View {
         canvas.drawText(pageName,50f,50f, textPaint);
         System.out.println("left, top, right, bottom:" + left + ", " + top + ", " + right + ", " + bottom);
         if (left > 0){
-            Shape newShape = new ShapeBuilder().name("shape1").coordinates(left,top,right,bottom).imageName("carrot2").buildShape();
+            Shape newShape = new ShapeBuilder().name("shape1").coordinates(left,top,right,bottom).imageName(currDrawShapeName).buildShape();
             currPage.addShape(newShape);
         }
         currPage.draw(canvas);

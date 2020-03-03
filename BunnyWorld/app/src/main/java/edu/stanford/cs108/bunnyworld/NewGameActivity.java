@@ -17,8 +17,8 @@ import java.util.ArrayList;
 
 public class NewGameActivity extends AppCompatActivity {
 
-    private String selection;
-    private int selectionID;
+    private String selection, shapeSelection;
+    private int selectionID, shapeSelectionID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,57 @@ public class NewGameActivity extends AppCompatActivity {
 
     public void showScript(MenuItem item) {
         //Display script
+    }
+
+    public void changeDrawShape(View view){
+        System.out.println("I CLICKED THE CHANGE SHAPE BUTTON");
+
+        final ArrayList<String> shapes = CustomView.shapeNames;
+        int numPages = shapes.size();
+        final String[] arrayShapeNames = new String[numPages];
+
+        for (int i = 0; i < numPages; i++){
+            arrayShapeNames[i] = shapes.get(i);
+        }
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Pick The Shape");
+
+        int currPos = CustomView.currShapePos;
+
+
+
+        builder.setSingleChoiceItems(arrayShapeNames, currPos, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                shapeSelection = arrayShapeNames[i];
+                shapeSelectionID = i;
+            }
+        });
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                CustomView.currShapePos = shapeSelectionID;
+                CustomView.currDrawShapeName = shapes.get(shapeSelectionID);
+                //So that latest added shape isnt added
+                CustomView.left = -10f;
+                CustomView myView = findViewById(R.id.myCustomView);
+                myView.invalidate();
+
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        builder.show();
+
     }
 
     public void createPage(View view){

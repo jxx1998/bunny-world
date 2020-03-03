@@ -12,7 +12,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class NewGameActivity extends AppCompatActivity {
+
+    private String selection;
+    private int selectionID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +57,8 @@ public class NewGameActivity extends AppCompatActivity {
                 int currentPos = CustomView.gamePages.indexOf(newPage);
                 CustomView.currPagePos = currentPos;
                 CustomView.currPage = CustomView.gamePages.get(currentPos);
-
+                //So that latest added shape isnt added
+                CustomView.left = -10f;
 
                 CustomView myView = findViewById(R.id.myCustomView);
                 myView.invalidate();
@@ -105,30 +112,77 @@ public class NewGameActivity extends AppCompatActivity {
     public void changePage(View view){
         System.out.println("I CLICKED THE CHANGE PAGE BUTTON");
 
-        
-
-
-        int numPages = CustomView.gamePages.size();
-        int currentPagePosition = CustomView.currPagePos;
-
-        System.out.println("num pages size" + numPages);
-        System.out.println("current page position: " + currentPagePosition);
-
-        if (currentPagePosition == numPages - 1){
-            currentPagePosition = -1;
+        ArrayList<Page> pages = CustomView.gamePages;
+        int numPages = pages.size();
+        final String[] arrayNames = new String[numPages];
+        final ArrayList<String> pageNames = new ArrayList<String>();
+        for (Page page : pages){
+            pageNames.add(page.name);
         }
 
-        System.out.println("current page position after if statement that should cause the loop + 1: " + currentPagePosition);
-        int toChangePagePos = currentPagePosition + 1;
-        System.out.println("toChangePage position: " + toChangePagePos);
+        for (int i = 0; i < numPages; i++){
+            arrayNames[i] = pageNames.get(i);
+        }
 
-        Page toChangeToPage = CustomView.gamePages.get(toChangePagePos);
-        CustomView.currPage = toChangeToPage;
-        CustomView.currPagePos = toChangePagePos;
-        CustomView.left = -10f;
 
-        CustomView myView = findViewById(R.id.myCustomView);
-        myView.invalidate();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Pick The Page");
+
+        //to begin with, the selected page will be the current page we're on
+        int currPos = CustomView.currPagePos;
+        selection = arrayNames[currPos];
+        selectionID = currPos;
+
+        builder.setSingleChoiceItems(arrayNames, currPos, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                selection = arrayNames[i];
+                selectionID = i;
+            }
+        });
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Selected page: " + selection,
+                        Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        builder.show();
+
+
+//        int numPages = CustomView.gamePages.size();
+//        int currentPagePosition = CustomView.currPagePos;
+//
+//        System.out.println("num pages size" + numPages);
+//        System.out.println("current page position: " + currentPagePosition);
+//
+//        if (currentPagePosition == numPages - 1){
+//            currentPagePosition = -1;
+//        }
+//
+//        System.out.println("current page position after if statement that should cause the loop + 1: " + currentPagePosition);
+//        int toChangePagePos = currentPagePosition + 1;
+//        System.out.println("toChangePage position: " + toChangePagePos);
+//
+//        Page toChangeToPage = CustomView.gamePages.get(toChangePagePos);
+//        CustomView.currPage = toChangeToPage;
+//        CustomView.currPagePos = toChangePagePos;
+//        CustomView.left = -10f;
+//
+//        CustomView myView = findViewById(R.id.myCustomView);
+//        myView.invalidate();
 
     }
 

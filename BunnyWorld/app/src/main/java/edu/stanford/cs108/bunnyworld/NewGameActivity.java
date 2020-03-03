@@ -112,7 +112,7 @@ public class NewGameActivity extends AppCompatActivity {
     public void changePage(View view){
         System.out.println("I CLICKED THE CHANGE PAGE BUTTON");
 
-        ArrayList<Page> pages = CustomView.gamePages;
+        final ArrayList<Page> pages = CustomView.gamePages;
         int numPages = pages.size();
         final String[] arrayNames = new String[numPages];
         final ArrayList<String> pageNames = new ArrayList<String>();
@@ -129,7 +129,7 @@ public class NewGameActivity extends AppCompatActivity {
         builder.setTitle("Pick The Page");
 
         //to begin with, the selected page will be the current page we're on
-        int currPos = CustomView.currPagePos;
+        final int currPos = CustomView.currPagePos;
         selection = arrayNames[currPos];
         selectionID = currPos;
 
@@ -144,11 +144,13 @@ public class NewGameActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                CustomView.currPagePos = selectionID;
+                CustomView.currPage = pages.get(selectionID);
+                //So that latest added shape isnt added
+                CustomView.left = -10f;
+                CustomView myView = findViewById(R.id.myCustomView);
+                myView.invalidate();
 
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Selected page: " + selection,
-                        Toast.LENGTH_LONG);
-                toast.show();
             }
         });
 

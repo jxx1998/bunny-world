@@ -1,12 +1,15 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class NewGameActivity extends AppCompatActivity {
@@ -29,15 +32,81 @@ public class NewGameActivity extends AppCompatActivity {
         //Display script
     }
 
+    public void createPage(View view){
+        System.out.println("I CLICKED THE CREATE PAGE BUTTON");
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        //maybe change this to .setMessage
+        alert.setTitle("Name New Page");
+
+        final EditText input = new EditText(this);
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String inputStr = input.getText().toString();
+                Page newPage = new Page(inputStr);
+
+                CustomView.gamePages.add(newPage);
+                int currentPos = CustomView.gamePages.indexOf(newPage);
+                CustomView.currPagePos = currentPos;
+                CustomView.currPage = CustomView.gamePages.get(currentPos);
+
+
+                CustomView myView = findViewById(R.id.myCustomView);
+                myView.invalidate();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
+
+    }
+
+
+    public void renamePage(View view){
+
+        System.out.println("I CLICKED THE RENAME PAGE BUTTON");
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        //maybe change this to .setMessage
+        alert.setTitle("Rename Current Page");
+
+        final EditText input = new EditText(this);
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String inputStr = input.getText().toString();
+                Page currPage = CustomView.currPage;
+                currPage.setName(inputStr);
+
+                CustomView myView = findViewById(R.id.myCustomView);
+                myView.invalidate();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
+
+
+    }
+
     public void changePage(View view){
         System.out.println("I CLICKED THE CHANGE PAGE BUTTON");
-//        Page otherPage = new Page("changingPageExample");
-//        Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("fire").buildShape();
-//        Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("fire").buildShape();
-//        Shape shape3 = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("fire").buildShape();
-//        otherPage.addShape(shape1);
-//        otherPage.addShape(shape2);
-//        otherPage.addShape(shape3);
+
+        
+
 
         int numPages = CustomView.gamePages.size();
         int currentPagePosition = CustomView.currPagePos;

@@ -3,19 +3,13 @@ package edu.stanford.cs108.bunnyworld;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 

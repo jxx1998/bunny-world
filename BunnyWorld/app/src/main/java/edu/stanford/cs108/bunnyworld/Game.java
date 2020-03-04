@@ -1,5 +1,10 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,39 +16,82 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game implements Serializable {
-    List<Page> pages;
 
-    public Game() {
+    private static Game instance = new Game();
+
+    private List<Page> pages;
+
+    private Game() {
         pages = new ArrayList<Page>();
     }
 
-    public Game(List<Page> pageList) {
-        pages = pageList;
+    /**
+     * Load a Game of given game_name from the Database, and set the Singleton instance.
+     * If game_name doesn't exist, this function doesn't do anything.
+     * @param gameName String, name of the game
+     * @return the Game Singleton instance that is the loaded game
+     */
+    public static void load(String gameName) {
+        SQLiteDatabase db = Database.getInstance();
+
+        String command = "SELECT * FROM games WHERE name='" + gameName + "'";
+        Cursor cursor = db.rawQuery(command, null);
+
+        if(cursor.moveToFirst()) {
+            byte[] game_bytes = cursor.getBlob(1);
+            deserialize(game_bytes);
+        }
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
     }
 
-    public void addPage(Page page) {
-        pages.add(page);
+    /**
+     * Saves the current Game into the Database with name "game_name".
+     * @param gameName String, name of the game
+     */
+    public static void save(String gameName) {
+        deleteGame(gameName);
+        SQLiteDatabase db = Database.getInstance();
+        byte[] game_bytes = serialize();
+        Log.d("game", Boolean.toString(game_bytes == null));
+        String command = "INSERT INTO games (name, data) VALUES (?, ?)";
+        SQLiteStatement insertStatement = db.compileStatement(command);
+        insertStatement.clearBindings();
+        insertStatement.bindString(1, gameName);
+        insertStatement.bindBlob(2, game_bytes);
+        insertStatement.executeInsert();
     }
 
-    public void setPages(List<Page> pages) {
-        this.pages = pages;
+    public static void addPage(Page page) {
+        instance.pages.add(page);
     }
 
-    public List<Page> getPages() {
-        return this.pages;
+    public static void setPages(List<Page> pages) {
+        instance.pages = pages;
     }
 
-    public void removePage(Page page) {
-        pages.remove(page);
+    public static List<Page> getPages() {
+        return instance.pages;
     }
 
-    public byte[] serialize() {
+    public static void removePage(Page page) {
+        instance.pages.remove(page);
+    }
+
+    // Below are private helper methods
+    private static void deleteGame(String gameName) {
+        SQLiteDatabase db = Database.getInstance();
+        String command = "DELETE FROM games WHERE name='" + gameName + "'";
+        db.execSQL(command);
+    }
+
+    private static byte[] serialize() {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream out = null;
         byte[] gameBytes = null;
         try {
-            out = new ObjectOutputStream(bos);
-            out.writeObject(this);
+            ObjectOutputStream out = new ObjectOutputStream(bos);
+            out.writeObject(instance);
             out.flush();
             gameBytes = bos.toByteArray();
         } catch (Exception ignored) {
@@ -55,13 +103,12 @@ public class Game implements Serializable {
         return gameBytes;
     }
 
-    public static Game deserialize(byte[] gameBytes) {
+    private static void deserialize(byte[] gameBytes) {
         ByteArrayInputStream bis = new ByteArrayInputStream(gameBytes);
         ObjectInput in = null;
-        Game game = null;
         try {
             in = new ObjectInputStream(bis);
-            game = (Game) in.readObject();
+            instance = (Game) in.readObject();
         } catch (Exception ignored) {
         } finally {
             try {
@@ -70,6 +117,5 @@ public class Game implements Serializable {
                 }
             } catch (Exception ignored) {}
         }
-        return game;
     }
 }

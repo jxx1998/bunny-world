@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;
@@ -14,7 +15,7 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
  * Scripts contains a list of Clause objects (either on click/enter/drop)
  * Each Clause object contains a list of actions performed when triggered
  */
-public class Scripts {
+public class Scripts implements Serializable {
 
     List<Clause> clauses;
 

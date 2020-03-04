@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +24,18 @@ public class CustomView extends View {
     protected static String currDrawShapeName;
     protected static ArrayList<String> shapeNames;
     protected static Shape selectedShape;
+    protected static boolean createNewShape;
+
+    //FOR DRAGGABLE SHAPE
+    final float SQUARE_SIZE = 100.0f;
+    final float START_X = 200.0f;
+    final float START_Y = 200.0f;
+    protected float selectedX, selectedY;
+    Paint myPaint;
+    protected boolean isAShapeSelected;
+
+
+
 
     public CustomView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -43,40 +56,6 @@ public class CustomView extends View {
         gamePages = new ArrayList<Page>();
         shapeNames = new ArrayList<String>();
 
-        //Getting rid of all the initialization example pages---------------------------
-
-
-//        Page firstPage = new Page("Page 1");
-//        //Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
-//        //Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
-//        Shape shapeForFirst = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("death").buildShape();
-//        //currPage.addShape(shape1);
-//        //currPage.addShape(shape2);
-//        firstPage.addShape(shapeForFirst);
-//
-//
-//        Page secondPage = new Page("Page 2");
-//        //Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
-//        //Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
-//        Shape shapeForSecond = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("fire").buildShape();
-//        //currPage.addShape(shape1);
-//        //currPage.addShape(shape2);
-//        secondPage.addShape(shapeForSecond);
-//
-//
-//        Page thirdPage = new Page("Page 3");
-//        //Shape shape1 = new ShapeBuilder().name("shape1").coordinates(80f,250f,400f,450f).imageName("duck").buildShape();
-//        //Shape shape2 = new ShapeBuilder().name("shape2").coordinates(1000f,250f,1300f,350f).imageName("carrot").buildShape();
-//        Shape shapeForThird = new ShapeBuilder().name("shape3").coordinates(500f,50f,1000f,550f).imageName("carrot").buildShape();
-//        //currPage.addShape(shape1);
-//        //currPage.addShape(shape2);
-//        thirdPage.addShape(shapeForThird);
-//
-//        gamePages.add(firstPage);
-//        gamePages.add(secondPage);
-//        gamePages.add(thirdPage);
-//        currPagePos = 0;
-//        currPage = gamePages.get(currPagePos);
         Page firstPage = new Page("Page 1");
         gamePages.add(firstPage);
         currPagePos = 0;
@@ -92,31 +71,58 @@ public class CustomView extends View {
         currShapePos = 0;
         currDrawShapeName = shapeNames.get(currShapePos);
 
+        //Extra for drag testing
+        myPaint = new Paint();
+        myPaint.setColor(Color.rgb(140,21,21));
+        createNewShape = false;
+        isAShapeSelected = false;
+
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        //For Displaying Page Name
         Paint textPaint = new Paint();
-        //canvas.drawPaint(textPaint);
         textPaint.setColor(Color.BLACK);
         textPaint.setTextSize(50f);
         String pageName = currPage.name;
         canvas.drawText(pageName,50f,50f, textPaint);
-        System.out.println("left, top, right, bottom:" + left + ", " + top + ", " + right + ", " + bottom);
-        //This test case is to make sure that most recent added shape isn't added when creating a new page
-        if (left > 0){
-            Shape newShape = new ShapeBuilder().name("AddedShape").coordinates(left,top,right,bottom).imageName(currDrawShapeName).buildShape();
+
+        if(createNewShape){
+            float startleft= START_X - SQUARE_SIZE;
+            float starttop = START_Y - SQUARE_SIZE;
+            float startright = START_X + SQUARE_SIZE;
+            float startbottom = START_Y + SQUARE_SIZE;
+
+            Shape newShape = new ShapeBuilder().name("NewAddedShape").coordinates(startleft,starttop,startright,startbottom).imageName(currDrawShapeName).buildShape();
+            //This is what I used for the click, create, and move feature
+            //Shape newShape = new ShapeBuilder().name("AddedShape").coordinates(left,top,right,bottom).imageName(currDrawShapeName).buildShape();
             currPage.addShape(newShape);
+            createNewShape = false;
         }
+        
 
 
         //Draws all of the shapes on the page
         currPage.draw(canvas);
 
         //Redraws the selected shape
-        selectedShape = currPage.shapeTouched(xSelect,ySelect,true, true);
+        //selectedShape = currPage.shapeTouched(xSelect,ySelect,true, true);
+        selectedShape = currPage.shapeTouched(selectedX,selectedY,true, true);
         if (selectedShape != null) {
+            isAShapeSelected = true;
+
+            float newleft= selectedX - SQUARE_SIZE;
+            float newtop = selectedY - SQUARE_SIZE;
+            float newright = selectedX + SQUARE_SIZE;
+            float newbottom = selectedY + SQUARE_SIZE;
+
+            selectedShape.setCoordinates(newleft,newtop,newright,newbottom);
+            currPage.draw(canvas);
+
+
             selectedLeft = selectedShape.getLeft();
             selectedRight = selectedShape.getRight();
             selectedTop = selectedShape.getTop();
@@ -128,6 +134,8 @@ public class CustomView extends View {
             myPaintDrawOutline.setStrokeWidth(15.0f);
             myPaintDrawOutline.setStyle(Paint.Style.STROKE);
             canvas.drawRect(selectedLeft,selectedTop,selectedRight,selectedBot,myPaintDrawOutline);
+            invalidate();
+
         }
 
 
@@ -137,38 +145,26 @@ public class CustomView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
+
+            case MotionEvent.ACTION_MOVE:
+                //From Handout Code....might have to manipulate
+                //Prob wont work with dragging feature
+                if (isAShapeSelected) {
+                    selectedX = event.getX();
+                    selectedY = event.getY();
+                    invalidate();
+                }
+
             case MotionEvent.ACTION_DOWN:
-                xSelect = event.getX();
-                ySelect = event.getY();
-                x1 = event.getX();
-                y1 = event.getY();
-                break;
-
-            case MotionEvent.ACTION_UP:
-                x2 = event.getX();
-                y2 = event.getY();
-
-                if (x2 > x1) {
-                    right = x2;
-                    left = x1;
-                } else {
-                    right = x1;
-                    left = x2;
-                }
-
-                if (y2 > y1) {
-                    bottom = y2;
-                    top = y1;
-                } else {
-                    bottom = y1;
-                    top = y2;
-                }
-
+//                xSelect = event.getX();
+//                ySelect = event.getY();
+//                x1 = event.getX();
+//                y1 = event.getY();
+                selectedX = event.getX();
+                selectedY = event.getY();
                 invalidate();
-                break;
 
         }
-
         return true;
     }
 }

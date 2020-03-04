@@ -253,6 +253,14 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
+    public void addShape(View view){
+        System.out.println("I CLICKED THE ADD SHAPE BUTTON");
+        CustomView.createNewShape = true;
+        CustomView myView = findViewById(R.id.myCustomView);
+        myView.invalidate();
+
+    }
+
     public void getProps(View view){
         System.out.println("I CLICKED THE GET PROPS BUTTON");
 

@@ -72,17 +72,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /*
-    private void saveGame(String game_name, byte[] game_bytes) {
-        String command = "INSERT INTO games (name, data) VALUES (?, ?)";
-        SQLiteStatement insertStatement = db.compileStatement(command);
-        insertStatement.clearBindings();
-        insertStatement.bindString(1, game_name);
-        insertStatement.bindBlob(2, game_bytes);
-        insertStatement.executeInsert();
-    }
-     */
-
     private void deleteGame(String game_name) {
         String command = "DELETE FROM games WHERE name='" + game_name + "'";
         db.execSQL(command);

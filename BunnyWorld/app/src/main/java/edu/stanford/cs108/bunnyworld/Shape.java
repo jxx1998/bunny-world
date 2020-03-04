@@ -9,7 +9,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 
-import java.util.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -22,17 +21,31 @@ public class Shape implements Serializable {
     SerializableRectF coordinates;
     String imageName; // Name of the image this Shape can draw
     String text; // Some text that this Shape can draw
-    float textSize; // The size of the text in case Shape needs to draw the text
-    boolean hidden; // Whether this shape should be drawn out/clickable in Play time
-    boolean movable; // Whether this shape can be dragged around during Play time
+    float textSize = 10.0f; // The size of the text in case Shape needs to draw the text
+    boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
+    boolean movable = true; // Whether this shape can be dragged around during Play time
     Scripts scripts;
-    boolean highlighted;
+    boolean highlighted = false;
     transient Paint textPaint, defaultPaint;
     transient BitmapDrawable imageDrawable;
 
+    /**
+     * Default constructor for Shape - you can directly call this one.
+     * This constructor will populate the rest of Shape's attributes using default values.
+     */
+    public Shape(String name, RectF coordinates) {
+        this.name = name;
+        this.coordinates = new SerializableRectF(coordinates);
+        this.imageName = "";
+        this.text = "";
+        this.scripts = new Scripts();
+        init();
+    }
 
-    // Do not call this Shape constructor directly; use ShapeBuilder to construct a new Shape
-    // See ShapeBuilder documentation for creating a new Shape
+    /**
+     * Constructor intended to be called by ShapeBuilder only
+     * Calling this Shape constructor is not recommended; use ShapeBuilder to customize & construct the new Shape
+     */
     public Shape(String name, SerializableRectF coordinates, String imageName, String text, float textSize,
                  boolean hidden, boolean movable, Scripts scripts, boolean highlighted) {
         this.name = name;
@@ -44,6 +57,10 @@ public class Shape implements Serializable {
         this.movable = movable;
         this.scripts = scripts;
         this.highlighted = highlighted;
+        init();
+    }
+
+    private void init() {
         textPaint = new Paint();
         textPaint.setTextSize(this.textSize);
         defaultPaint = new Paint();
@@ -127,32 +144,8 @@ public class Shape implements Serializable {
         return coordinates.getRectF().contains(x, y);
     }
 
-    /**
-     * This is a place-holder method for sound playback - should be moved to Script class later
-     * If file not found, this method does nothing
-     *
-     * @param soundFile: String, soundtrack filename without the .mp3 extension
-     */
-    public void playSound(String soundFile) {
-        Context context = getGlobalContext();
-        Resources resources = context.getResources();
-        final int resourceId = resources.getIdentifier(soundFile, "raw", context.getPackageName());
-        final MediaPlayer mp = MediaPlayer.create(context, resourceId);
-        if (mp == null) { return; }
-        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            public void onCompletion(MediaPlayer mp) {
-                mp.release();
-            }
-        });
-        mp.start();
-    }
-
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        textPaint = new Paint();
-        textPaint.setTextSize(this.textSize);
-        defaultPaint = new Paint();
-        defaultPaint.setColor(Color.LTGRAY);
-        loadImage();
+        init();
     }
 }

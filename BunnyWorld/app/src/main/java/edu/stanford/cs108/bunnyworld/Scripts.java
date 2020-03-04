@@ -1,6 +1,12 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.media.MediaPlayer;
+
 import java.util.*;
+
+import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;
 
 /**
  * Scripts class
@@ -17,6 +23,7 @@ public class Scripts {
     private final Set<String> actionKeywords = new HashSet<String>
             (Arrays.asList("goto", "play", "hide", "show"));
 
+    public Scripts() { this.clauses = new ArrayList<Clause>(); }
     public Scripts(ArrayList<Clause> clauses) {
         this.clauses = clauses;
     }
@@ -92,15 +99,32 @@ public class Scripts {
             public void setKeyword(String keyword) { this.keyword = keyword; }
             public void setName(String name) { this.name = name; }
 
+            /**
+             * Plays a sound with filename stored in this.name
+             * If file not found, this method does nothing
+             */
+            public void playSound() {
+                Context context = getGlobalContext();
+                Resources resources = context.getResources();
+                final int resourceId = resources.getIdentifier(name, "raw", context.getPackageName());
+                final MediaPlayer mp = MediaPlayer.create(context, resourceId);
+                if (mp == null) { return; }
+                mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    public void onCompletion(MediaPlayer mp) {
+                        mp.release();
+                    }
+                });
+                mp.start();
+            }
+
             public void runAction() {
-                if (keyword == "goto") {
+                if (keyword.equals("goto")) {
                     // TODO
-                } else if (keyword == "play") {
-                    // Something like this
-                    // Shape.this.playSound(name);
-                } else if (keyword == "hide") {
+                } else if (keyword.equals("play")) {
+                    playSound();
+                } else if (keyword.equals("hide")) {
                     // Shape.this.setHidden(true);
-                } else if (keyword == "show") {
+                } else if (keyword.equals("show")) {
                     // Shape.this.setHidden(false);
                 }
             }

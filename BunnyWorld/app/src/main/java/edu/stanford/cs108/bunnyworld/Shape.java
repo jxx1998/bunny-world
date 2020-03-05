@@ -18,13 +18,14 @@ public class Shape implements Serializable {
 
     String name;
     transient RectF coordinates;
-    String imageName; // Name of the image this Shape can draw
-    String text; // Some text that this Shape can draw
+    String imageName = ""; // Name of the image this Shape can draw
+    String text = ""; // Some text that this Shape can draw
     float textSize = 10.0f; // The size of the text in case Shape needs to draw the text
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
     boolean movable = true; // Whether this shape can be dragged around during Play time
-    Scripts scripts;
-    boolean highlighted = false;
+    Scripts scripts = new Scripts();
+    int highlightColor = Color.TRANSPARENT;
+
     transient Paint textPaint, defaultPaint, highlightPaint;
     transient BitmapDrawable imageDrawable;
 
@@ -35,9 +36,6 @@ public class Shape implements Serializable {
     public Shape(String name, RectF coordinates) {
         this.name = name;
         this.coordinates = new RectF(coordinates);
-        this.imageName = "";
-        this.text = "";
-        this.scripts = new Scripts();
         init();
     }
 
@@ -46,7 +44,7 @@ public class Shape implements Serializable {
      * Calling this Shape constructor is not recommended; use ShapeBuilder to customize & construct the new Shape
      */
     public Shape(String name, RectF coordinates, String imageName, String text, float textSize,
-                 boolean hidden, boolean movable, Scripts scripts, boolean highlighted) {
+                 boolean hidden, boolean movable, Scripts scripts, int highlightColor) {
         this.name = name;
         this.coordinates = coordinates;
         this.imageName = imageName;
@@ -55,7 +53,7 @@ public class Shape implements Serializable {
         this.hidden = hidden;
         this.movable = movable;
         this.scripts = scripts;
-        this.highlighted = highlighted;
+        this.highlightColor = highlightColor;
         init();
     }
 
@@ -65,7 +63,7 @@ public class Shape implements Serializable {
         defaultPaint = new Paint();
         defaultPaint.setColor(Color.LTGRAY);
         highlightPaint = new Paint();
-        highlightPaint.setColor(Color.GREEN);
+        highlightPaint.setColor(highlightColor);
         highlightPaint.setStyle(Paint.Style.STROKE);
         highlightPaint.setStrokeWidth(15.0f);
         loadImage();
@@ -97,7 +95,7 @@ public class Shape implements Serializable {
     public boolean isHidden() { return hidden; }
     public boolean isMovable() { return movable; }
     public Scripts getScripts() { return scripts; }
-    public boolean isHighlighted() { return highlighted; }
+    public int getHighlightColor() { return highlightColor; }
 
     // Below are some Setters
 
@@ -133,11 +131,15 @@ public class Shape implements Serializable {
         loadImage();
     }
 
+    public void setHighlightColor(int highlightColor) {
+        this.highlightColor = highlightColor;
+        highlightPaint.setColor(this.highlightColor);
+    }
+
     public void setName(String name) { this.name = name; }
     public void setHidden(boolean hidden) { this.hidden = hidden; }
     public void setMovable(boolean movable) { this.movable = movable; }
     public void setScripts(Scripts scripts) { this.scripts = scripts; }
-    public void setHighlighted(boolean highlighted) { this.highlighted = highlighted; }
 
     // Other methods
     public void draw(Canvas canvas) {
@@ -149,9 +151,7 @@ public class Shape implements Serializable {
         } else {
             canvas.drawRect(this.getRectF(), defaultPaint);
         }
-        if (highlighted) {
-            canvas.drawRect(coordinates, highlightPaint);
-        }
+        canvas.drawRect(coordinates, highlightPaint);
     }
 
     // Returns whether a given (x, y) is located within the Shape

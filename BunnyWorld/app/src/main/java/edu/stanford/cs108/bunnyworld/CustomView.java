@@ -102,7 +102,7 @@ public class CustomView extends View {
             currPage.addShape(newShape);
             createNewShape = false;
         }
-        
+
 
 
         //Draws all of the shapes on the page

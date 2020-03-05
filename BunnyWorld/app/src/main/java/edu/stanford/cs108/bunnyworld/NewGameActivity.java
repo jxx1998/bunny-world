@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -266,17 +267,24 @@ public class NewGameActivity extends AppCompatActivity {
 
         final Dialog dialog= new Dialog(this);
         dialog.setContentView(R.layout.properties_dialog_layout);
-        dialog.setTitle("Selected Shape's Properties");
         if (CustomView.selectedShape != null) {
+            EditText shapeNameText = (EditText) dialog.findViewById(R.id.shapeName);
+            TextView imageNameText = (TextView) dialog.findViewById(R.id.imageName);
             EditText leftText = (EditText) dialog.findViewById(R.id.left);
             EditText rightText = (EditText) dialog.findViewById(R.id.right);
             EditText topText = (EditText) dialog.findViewById(R.id.top);
             EditText botText = (EditText) dialog.findViewById(R.id.bottom);
 
+            shapeNameText.setText(CustomView.selectedShape.name);
+            imageNameText.setText(CustomView.selectedShape.imageName);
+            imageNameText.setKeyListener(null);
             leftText.setText(Float.toString(CustomView.selectedLeft));
             rightText.setText(Float.toString(CustomView.selectedRight));
             topText.setText(Float.toString(CustomView.selectedTop));
             botText.setText(Float.toString(CustomView.selectedBot));
+
+
+
         }
 
         dialog.show();

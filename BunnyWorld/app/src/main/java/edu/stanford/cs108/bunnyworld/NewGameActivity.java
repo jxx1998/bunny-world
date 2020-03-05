@@ -17,6 +17,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/*
+   We have to update the Game singleton in every method within this class.
+   List of methods in sync with singleton: deletePage, renamePage
+ */
+
 public class NewGameActivity extends AppCompatActivity {
 
     private String selection, shapeSelection;
@@ -116,6 +121,10 @@ public class NewGameActivity extends AppCompatActivity {
 
                 CustomView myView = findViewById(R.id.myCustomView);
                 myView.invalidate();
+
+                Game.addPage(newPage);
+                // Need to change this so you save under the current game name
+                Game.save("test_game_name");
             }
         });
 
@@ -126,6 +135,8 @@ public class NewGameActivity extends AppCompatActivity {
         });
 
         alert.show();
+
+
 
     }
 
@@ -144,6 +155,10 @@ public class NewGameActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String inputStr = input.getText().toString();
                 Page currPage = CustomView.currPage;
+
+                String currPageName = currPage.name;
+                Game.renamePage(currPageName, inputStr);
+
                 currPage.setName(inputStr);
 
                 CustomView myView = findViewById(R.id.myCustomView);
@@ -235,6 +250,7 @@ public class NewGameActivity extends AppCompatActivity {
         } else{
 
 
+            Game.removePage(CustomView.gamePages.get(currentPagePosition));
 
             CustomView.gamePages.remove(currentPagePosition);
             int numPagesNew = CustomView.gamePages.size();
@@ -259,6 +275,8 @@ public class NewGameActivity extends AppCompatActivity {
         CustomView.createNewShape = true;
         CustomView myView = findViewById(R.id.myCustomView);
         myView.invalidate();
+
+        int pageIndex = CustomView.currPagePos;
 
     }
 
@@ -320,10 +338,6 @@ public class NewGameActivity extends AppCompatActivity {
 
         }
 
-    }
-
-    public void saveGame(View view) {
-        
     }
 
 }

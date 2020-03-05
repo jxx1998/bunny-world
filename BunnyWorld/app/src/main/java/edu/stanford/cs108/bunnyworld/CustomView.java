@@ -4,15 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+
 
 public class CustomView extends View {
     protected static Page currPage;
@@ -33,6 +32,8 @@ public class CustomView extends View {
     protected float selectedX, selectedY;
     Paint myPaint;
     protected boolean isAShapeSelected;
+    protected float minusX, minusY, plusX, plusY;
+    protected boolean changingDimensions;
 
 
 
@@ -40,10 +41,6 @@ public class CustomView extends View {
     public CustomView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
-    }
-
-    public void outerInvalidate(){
-        invalidate();
     }
 
     public void setCurrPage(Page currPage) {
@@ -80,6 +77,7 @@ public class CustomView extends View {
         myPaint.setColor(Color.rgb(140,21,21));
         createNewShape = false;
         isAShapeSelected = false;
+        changingDimensions = false;
 
     }
 
@@ -115,18 +113,17 @@ public class CustomView extends View {
         //Redraws the selected shape
         //selectedShape = currPage.shapeTouched(xSelect,ySelect,true, true);
         selectedShape = currPage.shapeTouched(selectedX,selectedY,true, true);
-        if (selectedShape != null) {
+        if (selectedShape != null && !changingDimensions) {
             isAShapeSelected = true;
 
-            float newleft= selectedX - SQUARE_SIZE;
-            float newtop = selectedY - SQUARE_SIZE;
-            float newright = selectedX + SQUARE_SIZE;
-            float newbottom = selectedY + SQUARE_SIZE;
-
-            selectedShape.setCoordinates(newleft,newtop,newright,newbottom);
+//            float newleft= selectedX - SQUARE_SIZE;
+//            float newtop = selectedY - SQUARE_SIZE;
+//            float newright = selectedX + SQUARE_SIZE;
+//            float newbottom = selectedY + SQUARE_SIZE;
+//
+//            selectedShape.setCoordinates(newleft,newtop,newright,newbottom);
+            selectedShape.createCoordinates(selectedX,selectedY,selectedShape.getWidth(),selectedShape.getHeight());
             currPage.draw(canvas);
-
-
             selectedLeft = selectedShape.getLeft();
             selectedRight = selectedShape.getRight();
             selectedTop = selectedShape.getTop();

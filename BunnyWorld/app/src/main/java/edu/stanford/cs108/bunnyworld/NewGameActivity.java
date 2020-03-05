@@ -35,12 +35,12 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu (Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu (Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu, menu);
+//        return true;
+//    }
 
     public void showScript(MenuItem item) {
         //Display script
@@ -289,19 +289,14 @@ public class NewGameActivity extends AppCompatActivity {
         if (CustomView.selectedShape != null) {
             EditText shapeNameText = (EditText) dialog.findViewById(R.id.shapeName);
             TextView imageNameText = (TextView) dialog.findViewById(R.id.imageName);
-            EditText leftText = (EditText) dialog.findViewById(R.id.left);
-            EditText rightText = (EditText) dialog.findViewById(R.id.right);
-            EditText topText = (EditText) dialog.findViewById(R.id.top);
-            EditText botText = (EditText) dialog.findViewById(R.id.bottom);
+            EditText widthText = (EditText) dialog.findViewById(R.id.width);
+            EditText heightText = (EditText) dialog.findViewById(R.id.height);
 
             shapeNameText.setText(CustomView.selectedShape.name);
             imageNameText.setText(CustomView.selectedShape.imageName);
             imageNameText.setKeyListener(null);
-            leftText.setText(Float.toString(CustomView.selectedLeft));
-            rightText.setText(Float.toString(CustomView.selectedRight));
-            topText.setText(Float.toString(CustomView.selectedTop));
-            botText.setText(Float.toString(CustomView.selectedBot));
-
+            widthText.setText(Float.toString(CustomView.selectedShape.getWidth()));
+            heightText.setText(Float.toString(CustomView.selectedShape.getHeight()));
 
         }
 
@@ -313,26 +308,27 @@ public class NewGameActivity extends AppCompatActivity {
         System.out.println("I CLICKED ON THE UPDATE PROPS BUTTON");
 
         if (CustomView.selectedShape != null) {
+
             EditText shapeNameText = (EditText) dialog.findViewById(R.id.shapeName);
-            EditText leftText = (EditText) dialog.findViewById(R.id.left);
-            EditText rightText = (EditText) dialog.findViewById(R.id.right);
-            EditText topText = (EditText) dialog.findViewById(R.id.top);
-            EditText botText = (EditText) dialog.findViewById(R.id.bottom);
+            EditText widthText = (EditText) dialog.findViewById(R.id.width);
+            EditText heightText = (EditText) dialog.findViewById(R.id.height);
 
             String newName = shapeNameText.getText().toString();
-            float newLeft = Float.parseFloat(leftText.getText().toString());
-            float newRight = Float.parseFloat(rightText.getText().toString());
-            float newTop = Float.parseFloat(topText.getText().toString());
-            float newBot = Float.parseFloat(botText.getText().toString());
-
+            float newWidth = Float.parseFloat(widthText.getText().toString());
+            float newHeight = Float.parseFloat(heightText.getText().toString());
             CustomView.selectedShape.setName(newName);
-            //I THINK I ALSO HAVE TO UPDATE THE SHAPE IN THE PAGE
-            CustomView.selectedShape.setCoordinates(newLeft,newTop,newRight,newBot);
-            CustomView.selectedLeft = newLeft;
-            CustomView.selectedRight = newRight;
-            CustomView.selectedTop = newTop;
-            CustomView.selectedBot = newBot;
+            CustomView.selectedShape.createCoordinates(CustomView.selectedShape.coordinates.getRectF().centerX(), CustomView.selectedShape.coordinates.getRectF().centerY(),newWidth,newHeight);
+            CustomView myView = findViewById(R.id.myCustomView);
+            myView.invalidate();
 
+//            CustomView.selectedShape.setName(newName);
+//            //I THINK I ALSO HAVE TO UPDATE THE SHAPE IN THE PAGE
+//            CustomView.selectedShape.setCoordinates(newLeft,newTop,newRight,newBot);
+//            CustomView.selectedLeft = newLeft;
+//            CustomView.selectedRight = newRight;
+//            CustomView.selectedTop = newTop;
+//            CustomView.selectedBot = newBot;
+//
 //            CustomView myView = findViewById(R.id.myCustomView);
 //            myView.invalidate();
 

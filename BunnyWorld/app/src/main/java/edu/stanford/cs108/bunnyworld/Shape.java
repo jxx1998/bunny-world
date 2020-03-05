@@ -114,6 +114,18 @@ public class Shape implements Serializable {
         setCoordinates(coordinates);
     }
 
+    public void createCoordinates(float x, float y, float width, float height){
+        float newleft = x - (width/2);
+        float newright = x + (width/2);
+        float newtop = y - (height/2);
+        float newbot = y + (height/2);
+
+        RectF coordinates = new RectF(newleft,newtop,newright,newbot);
+        setCoordinates(coordinates);
+    }
+
+
+
     public void setText(String text, float textSize) {
         this.text = text;
         this.textSize = textSize;

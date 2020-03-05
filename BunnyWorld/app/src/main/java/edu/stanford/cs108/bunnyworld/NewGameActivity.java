@@ -129,7 +129,6 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
-
     public void renamePage(View view){
 
         System.out.println("I CLICKED THE RENAME PAGE BUTTON");
@@ -323,6 +322,7 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
+<<<<<<< HEAD
     public void createScript(View view){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -346,6 +346,10 @@ public class NewGameActivity extends AppCompatActivity {
 
         alert.show();
 
+=======
+    public void saveGame(View view) {
+
+>>>>>>> 7e02e6b76d6731e87ed431858b8338d52f1bafa8
     }
 
 }

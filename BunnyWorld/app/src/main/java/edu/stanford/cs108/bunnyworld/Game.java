@@ -51,7 +51,7 @@ public class Game implements Serializable {
      * @param gameName String, name of the game
      */
     public static void save(String gameName) {
-        deleteGame(gameName);
+        // deleteGame(gameName);
         SQLiteDatabase db = Database.getInstance();
         byte[] game_bytes = serialize();
         Log.d("game", Boolean.toString(game_bytes == null));

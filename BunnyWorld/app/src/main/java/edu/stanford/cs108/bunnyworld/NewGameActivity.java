@@ -21,6 +21,7 @@ public class NewGameActivity extends AppCompatActivity {
 
     private String selection, shapeSelection;
     private int selectionID, shapeSelectionID;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,7 +266,8 @@ public class NewGameActivity extends AppCompatActivity {
     public void getProps(View view){
         System.out.println("I CLICKED THE GET PROPS BUTTON");
 
-        final Dialog dialog= new Dialog(this);
+        //final Dialog dialog= new Dialog(this);
+        dialog = new Dialog(this);
         dialog.setContentView(R.layout.properties_dialog_layout);
         if (CustomView.selectedShape != null) {
             EditText shapeNameText = (EditText) dialog.findViewById(R.id.shapeName);
@@ -284,10 +286,40 @@ public class NewGameActivity extends AppCompatActivity {
             botText.setText(Float.toString(CustomView.selectedBot));
 
 
-
         }
 
         dialog.show();
+
+    }
+
+    public void updateProps(View view){
+        System.out.println("I CLICKED ON THE UPDATE PROPS BUTTON");
+
+        if (CustomView.selectedShape != null) {
+            EditText shapeNameText = (EditText) dialog.findViewById(R.id.shapeName);
+            EditText leftText = (EditText) dialog.findViewById(R.id.left);
+            EditText rightText = (EditText) dialog.findViewById(R.id.right);
+            EditText topText = (EditText) dialog.findViewById(R.id.top);
+            EditText botText = (EditText) dialog.findViewById(R.id.bottom);
+
+            String newName = shapeNameText.getText().toString();
+            float newLeft = Float.parseFloat(leftText.getText().toString());
+            float newRight = Float.parseFloat(rightText.getText().toString());
+            float newTop = Float.parseFloat(topText.getText().toString());
+            float newBot = Float.parseFloat(botText.getText().toString());
+
+            CustomView.selectedShape.setName(newName);
+            //I THINK I ALSO HAVE TO UPDATE THE SHAPE IN THE PAGE
+            CustomView.selectedShape.setCoordinates(newLeft,newTop,newRight,newBot);
+            CustomView.selectedLeft = newLeft;
+            CustomView.selectedRight = newRight;
+            CustomView.selectedTop = newTop;
+            CustomView.selectedBot = newBot;
+
+//            CustomView myView = findViewById(R.id.myCustomView);
+//            myView.invalidate();
+
+        }
 
     }
 

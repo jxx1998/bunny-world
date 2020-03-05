@@ -322,7 +322,7 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
-    public void createScript(View view){
+    public void createScript(View view) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         //maybe change this to .setMessage
@@ -333,7 +333,7 @@ public class NewGameActivity extends AppCompatActivity {
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-               CustomView.selectedShape.scripts.addScripts(input.getText().toString());
+                CustomView.selectedShape.scripts.addScripts(input.getText().toString());
             }
         });
 

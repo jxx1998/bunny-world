@@ -143,6 +143,7 @@ public class Shape implements Serializable {
 
     // Other methods
     public void draw(Canvas canvas) {
+        canvas.drawRect(coordinates, highlightPaint);
         if (hidden) { return; }
         if (!text.equals("")) {
             canvas.drawText(text, this.getLeft(), this.getTop(), textPaint);
@@ -151,7 +152,6 @@ public class Shape implements Serializable {
         } else {
             canvas.drawRect(this.getRectF(), defaultPaint);
         }
-        canvas.drawRect(coordinates, highlightPaint);
     }
 
     // Returns whether a given (x, y) is located within the Shape

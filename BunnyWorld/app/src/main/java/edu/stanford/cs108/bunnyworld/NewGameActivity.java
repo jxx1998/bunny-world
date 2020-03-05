@@ -129,7 +129,6 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
-
     public void renamePage(View view){
 
         System.out.println("I CLICKED THE RENAME PAGE BUTTON");
@@ -321,6 +320,10 @@ public class NewGameActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    public void saveGame(View view) {
+        
     }
 
 }

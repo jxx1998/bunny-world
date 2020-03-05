@@ -113,7 +113,8 @@
         android:textOn="On"
         android:textOff="Off"
         android:showText="true"
-        android:checked="true"/>
+        android:id="@+id/moveable"
+        />
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -123,7 +124,8 @@
         android:textOn="On"
         android:textOff="Off"
         android:showText="true"
-        android:checked="true"/>
+        android:id="@+id/visible"
+        />
 
     <Button
         android:layout_height="wrap_content"

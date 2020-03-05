@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -291,12 +292,16 @@ public class NewGameActivity extends AppCompatActivity {
             TextView imageNameText = (TextView) dialog.findViewById(R.id.imageName);
             EditText widthText = (EditText) dialog.findViewById(R.id.width);
             EditText heightText = (EditText) dialog.findViewById(R.id.height);
+            Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
+            Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
             shapeNameText.setText(CustomView.selectedShape.name);
             imageNameText.setText(CustomView.selectedShape.imageName);
             imageNameText.setKeyListener(null);
             widthText.setText(Float.toString(CustomView.selectedShape.getWidth()));
             heightText.setText(Float.toString(CustomView.selectedShape.getHeight()));
+            isMoveable.setChecked(CustomView.selectedShape.isMovable());
+            isVisible.setChecked(!CustomView.selectedShape.isHidden());
 
         }
 
@@ -312,25 +317,24 @@ public class NewGameActivity extends AppCompatActivity {
             EditText shapeNameText = (EditText) dialog.findViewById(R.id.shapeName);
             EditText widthText = (EditText) dialog.findViewById(R.id.width);
             EditText heightText = (EditText) dialog.findViewById(R.id.height);
+            Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
+            Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
             String newName = shapeNameText.getText().toString();
             float newWidth = Float.parseFloat(widthText.getText().toString());
             float newHeight = Float.parseFloat(heightText.getText().toString());
+            boolean moveable = isMoveable.isChecked();
+            boolean visible = isVisible.isChecked();
+            boolean hidden = !visible;
+
+
             CustomView.selectedShape.setName(newName);
             CustomView.selectedShape.setCenterCoordinates(CustomView.selectedShape.coordinates.centerX(), CustomView.selectedShape.coordinates.centerY(),newWidth,newHeight);
+            CustomView.selectedShape.setMovable(moveable);
+            CustomView.selectedShape.setHidden(hidden);
             CustomView myView = findViewById(R.id.myCustomView);
             myView.invalidate();
 
-//            CustomView.selectedShape.setName(newName);
-//            //I THINK I ALSO HAVE TO UPDATE THE SHAPE IN THE PAGE
-//            CustomView.selectedShape.setCoordinates(newLeft,newTop,newRight,newBot);
-//            CustomView.selectedLeft = newLeft;
-//            CustomView.selectedRight = newRight;
-//            CustomView.selectedTop = newTop;
-//            CustomView.selectedBot = newBot;
-//
-//            CustomView myView = findViewById(R.id.myCustomView);
-//            myView.invalidate();
 
         }
 

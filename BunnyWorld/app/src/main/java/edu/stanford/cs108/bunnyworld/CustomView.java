@@ -122,7 +122,7 @@ public class CustomView extends View {
 //            float newbottom = selectedY + SQUARE_SIZE;
 //
 //            selectedShape.setCoordinates(newleft,newtop,newright,newbottom);
-            selectedShape.createCoordinates(selectedX,selectedY,selectedShape.getWidth(),selectedShape.getHeight());
+            selectedShape.setCenterCoordinates(selectedX,selectedY,selectedShape.getWidth(),selectedShape.getHeight());
             currPage.draw(canvas);
             selectedLeft = selectedShape.getLeft();
             selectedRight = selectedShape.getRight();

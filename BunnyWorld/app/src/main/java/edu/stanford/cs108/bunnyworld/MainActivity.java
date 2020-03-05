@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This function is for testing the database. Will be deleted eventually.
      */
+
+    // This function can eventually be used to return a list of game names instead for a dropdown menu for game selection.
     private void printDatabaseGames() {
         SQLiteDatabase db = Database.getInstance();
         Cursor cursor = db.rawQuery("SELECT * FROM games",null);

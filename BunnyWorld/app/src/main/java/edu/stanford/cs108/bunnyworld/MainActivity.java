@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("hi", Game.getPages().get(0).name);
         Log.i("hi", Game.getPages().get(0).shapes.get(0).name);
-        Log.i("hi", Float.toString(Game.getPages().get(0).shapes.get(0).coordinates.getRectF().top));
+        Log.i("hi", Float.toString(Game.getPages().get(0).shapes.get(0).coordinates.top));
     }
 
     public void onChooseEditor(View view) {

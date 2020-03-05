@@ -44,8 +44,8 @@ public class ShapeBuilder {
         if (name == null || coordinates == null) {
             return null;
         } else {
-            SerializableRectF serializableRectF = new SerializableRectF(coordinates);
-            return new Shape(name, serializableRectF, imageName, text, textSize, hidden, movable, scripts, highlighted);
+            RectF rectF = new RectF(coordinates);
+            return new Shape(name, rectF, imageName, text, textSize, hidden, movable, scripts, highlighted);
         }
     }
 

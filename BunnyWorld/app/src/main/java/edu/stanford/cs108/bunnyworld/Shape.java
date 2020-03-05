@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.MediaPlayer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,7 +17,7 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
 public class Shape implements Serializable {
 
     String name;
-    SerializableRectF coordinates;
+    transient RectF coordinates;
     String imageName; // Name of the image this Shape can draw
     String text; // Some text that this Shape can draw
     float textSize = 10.0f; // The size of the text in case Shape needs to draw the text
@@ -35,7 +34,7 @@ public class Shape implements Serializable {
      */
     public Shape(String name, RectF coordinates) {
         this.name = name;
-        this.coordinates = new SerializableRectF(coordinates);
+        this.coordinates = new RectF(coordinates);
         this.imageName = "";
         this.text = "";
         this.scripts = new Scripts();
@@ -46,7 +45,7 @@ public class Shape implements Serializable {
      * Constructor intended to be called by ShapeBuilder only
      * Calling this Shape constructor is not recommended; use ShapeBuilder to customize & construct the new Shape
      */
-    public Shape(String name, SerializableRectF coordinates, String imageName, String text, float textSize,
+    public Shape(String name, RectF coordinates, String imageName, String text, float textSize,
                  boolean hidden, boolean movable, Scripts scripts, boolean highlighted) {
         this.name = name;
         this.coordinates = coordinates;
@@ -84,13 +83,13 @@ public class Shape implements Serializable {
     }
 
     // Getters
-    public RectF getRectF() { return coordinates.getRectF(); }
-    public float getLeft() { return coordinates.getRectF().left; }
-    public float getRight() { return coordinates.getRectF().right; }
-    public float getBottom() { return coordinates.getRectF().bottom; }
-    public float getTop() { return coordinates.getRectF().top; }
-    public float getWidth() { return coordinates.getRectF().width(); }
-    public float getHeight() { return coordinates.getRectF().height(); }
+    public RectF getRectF() { return coordinates; }
+    public float getLeft() { return coordinates.left; }
+    public float getRight() { return coordinates.right; }
+    public float getBottom() { return coordinates.bottom; }
+    public float getTop() { return coordinates.top; }
+    public float getWidth() { return coordinates.width(); }
+    public float getHeight() { return coordinates.height(); }
     public String getName() { return this.name; }
     public String getImageName() { return imageName; }
     public String getText() { return text; }
@@ -105,7 +104,7 @@ public class Shape implements Serializable {
     // Set Coordinates directly with a RectF
     public void setCoordinates(RectF coordinates) {
         coordinates.sort();
-        this.coordinates.setRectF(coordinates);
+        this.coordinates.set(coordinates);
     }
 
     // Set Coordinates with (left, top, right, bottom)
@@ -120,11 +119,9 @@ public class Shape implements Serializable {
         float newtop = y - (height/2);
         float newbot = y + (height/2);
 
-        RectF coordinates = new RectF(newleft,newtop,newright,newbot);
+        RectF coordinates = new RectF(newleft, newtop, newright, newbot);
         setCoordinates(coordinates);
     }
-
-
 
     public void setText(String text, float textSize) {
         this.text = text;
@@ -154,17 +151,34 @@ public class Shape implements Serializable {
             canvas.drawRect(this.getRectF(), defaultPaint);
         }
         if (highlighted) {
-            canvas.drawRect(coordinates.getRectF(), highlightPaint);
+            canvas.drawRect(coordinates, highlightPaint);
         }
     }
 
     // Returns whether a given (x, y) is located within the Shape
     public boolean contains(float x, float y) {
-        return coordinates.getRectF().contains(x, y);
+        return coordinates.contains(x, y);
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+
+        float left = in.readFloat();
+        float top = in.readFloat();
+        float right = in.readFloat();
+        float bottom = in.readFloat();
+        this.coordinates = new RectF(left, top, right, bottom);
+
         init();
     }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+
+        out.writeFloat(this.coordinates.left);
+        out.writeFloat(this.coordinates.top);
+        out.writeFloat(this.coordinates.right);
+        out.writeFloat(this.coordinates.bottom);
+    }
+
 }

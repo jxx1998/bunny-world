@@ -116,7 +116,7 @@ public class Page implements Serializable {
             if (returnUnmovable == false && candidate.isMovable() == false) {
                 continue;
             }
-            if (candidate.coordinates.getRectF().intersect(shape.coordinates.getRectF())) {
+            if (candidate.coordinates.intersect(shape.coordinates)) {
                 overlaps.add(candidate);
             }
         }

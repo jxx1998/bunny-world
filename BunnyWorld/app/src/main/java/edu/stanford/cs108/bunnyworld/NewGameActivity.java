@@ -317,7 +317,7 @@ public class NewGameActivity extends AppCompatActivity {
             float newWidth = Float.parseFloat(widthText.getText().toString());
             float newHeight = Float.parseFloat(heightText.getText().toString());
             CustomView.selectedShape.setName(newName);
-            CustomView.selectedShape.createCoordinates(CustomView.selectedShape.coordinates.getRectF().centerX(), CustomView.selectedShape.coordinates.getRectF().centerY(),newWidth,newHeight);
+            CustomView.selectedShape.createCoordinates(CustomView.selectedShape.coordinates.centerX(), CustomView.selectedShape.coordinates.centerY(),newWidth,newHeight);
             CustomView myView = findViewById(R.id.myCustomView);
             myView.invalidate();
 

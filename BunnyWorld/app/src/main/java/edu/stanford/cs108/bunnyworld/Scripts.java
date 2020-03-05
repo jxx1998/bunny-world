@@ -51,7 +51,7 @@ public class Scripts implements Serializable {
 
             ArrayList<Action> actions = new ArrayList<Action>();
             if (trigger == "on click") {
-                actions = onClickClauses;
+                actions = onClickClauses; // Shouldn't this be onClickClauses = actions?
             } else if (trigger == "on enter") {
                 actions = onEnterClauses;
             } else if (trigger == "on drop") {

@@ -42,6 +42,10 @@ public class CustomView extends View {
         init();
     }
 
+    public void outerInvalidate(){
+        invalidate();
+    }
+
     public void setCurrPage(Page currPage) {
         this.currPage = currPage;
     }

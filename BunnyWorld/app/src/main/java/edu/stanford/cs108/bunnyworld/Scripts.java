@@ -23,22 +23,59 @@ public class Scripts implements Serializable {
             (Arrays.asList("goto", "play", "hide", "show"));
 
     String scriptStr;
-    List<String> onClickClauses;
-    List<String> onEnterClauses;
-    List<String> onDropClauses;
+    ArrayList<Action> onClickClauses; //these Strings actually contain two words each, e.g. goto page 3
+    ArrayList<Action> onEnterClauses;
+    HashMap<String, ArrayList<Action>> onDropClauses;
 
     public Scripts() {
         scriptStr = "";
-        onClickClauses = new ArrayList<String>();
-        onEnterClauses = new ArrayList<String>();
-        onDropClauses = new ArrayList<String>();
+        onClickClauses = new ArrayList<Action>();
+        onEnterClauses = new ArrayList<Action>();
+        onDropClauses = new HashMap<String, ArrayList<Action>>();
     }
 
-    public void addScripts(String str) { scriptStr = str; }
+    public void setScripts(String str) {
+        scriptStr = str;
+        StringTokenizer st = new StringTokenizer(scriptStr, "\n");
+        while (st.hasMoreTokens()) {
+            String clause = st.nextToken();
+            StringTokenizer stClause = new StringTokenizer(clause.substring(0, clause.length() - 1), " ");
+            if (stClause.countTokens() < 2) {
+                throw new RuntimeException("Invalid TextEdit clause string");
+            }
+            String trigger = st.nextToken();
+            trigger += " " + st.nextToken();
+            if (!triggerKeywords.contains(trigger)) {
+                throw new RuntimeException("Invalid TextEdit clause string");
+            }
 
+            ArrayList<Action> actions = new ArrayList<Action>();
+            if (trigger == "on click") {
+                actions = onClickClauses;
+            } else if (trigger == "on enter") {
+                actions = onEnterClauses;
+            } else if (trigger == "on drop") {
+                if (!stClause.hasMoreTokens()) {
+                    throw new RuntimeException("Invalid on drop clause");
+                }
+                String shapeName = stClause.nextToken();
+                onDropClauses.put(shapeName, new ArrayList<Action>());
+                actions = onDropClauses.get(shapeName);
+            }
 
+            while (stClause.hasMoreTokens()) {
+                String keyword = stClause.nextToken();
+                if (!stClause.hasMoreTokens()) {
+                    throw new RuntimeException("Invalid TextEdit clause string");
+                }
+                String name = stClause.nextToken();
+                Action a = new Action(keyword, name);
+                actions.add(a);
+            }
 
+        }
 
+    }
 
     // getters and setters
 

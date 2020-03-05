@@ -333,7 +333,7 @@ public class NewGameActivity extends AppCompatActivity {
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                CustomView.selectedShape.scripts.addScripts(input.getText().toString());
+                CustomView.selectedShape.scripts.setScripts(input.getText().toString());
             }
         });
 

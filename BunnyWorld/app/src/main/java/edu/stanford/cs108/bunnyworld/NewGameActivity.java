@@ -290,16 +290,21 @@ public class NewGameActivity extends AppCompatActivity {
         if (CustomView.selectedShape != null) {
             EditText shapeNameText = (EditText) dialog.findViewById(R.id.shapeName);
             TextView imageNameText = (TextView) dialog.findViewById(R.id.imageName);
-            EditText widthText = (EditText) dialog.findViewById(R.id.width);
-            EditText heightText = (EditText) dialog.findViewById(R.id.height);
+            EditText leftText = (EditText) dialog.findViewById(R.id.left);
+            EditText rightText = (EditText) dialog.findViewById(R.id.right);
+            EditText topText = (EditText) dialog.findViewById(R.id.top);
+            EditText botText = (EditText) dialog.findViewById(R.id.bottom);
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
             shapeNameText.setText(CustomView.selectedShape.name);
             imageNameText.setText(CustomView.selectedShape.imageName);
             imageNameText.setKeyListener(null);
-            widthText.setText(Float.toString(CustomView.selectedShape.getWidth()));
-            heightText.setText(Float.toString(CustomView.selectedShape.getHeight()));
+            leftText.setText(Float.toString(CustomView.selectedShape.getLeft()));
+            rightText.setText(Float.toString(CustomView.selectedShape.getRight()));
+            topText.setText(Float.toString(CustomView.selectedShape.getTop()));
+            botText.setText(Float.toString(CustomView.selectedShape.getBottom()));
+
             isMoveable.setChecked(CustomView.selectedShape.isMovable());
             isVisible.setChecked(!CustomView.selectedShape.isHidden());
 
@@ -314,26 +319,52 @@ public class NewGameActivity extends AppCompatActivity {
 
         if (CustomView.selectedShape != null) {
 
+            String left = Float.toString(CustomView.selectedShape.getLeft());
+            String right = Float.toString(CustomView.selectedShape.getRight());
+            String top = Float.toString(CustomView.selectedShape.getTop());
+            String bot = Float.toString(CustomView.selectedShape.getBottom());
+
+            System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
+
             EditText shapeNameText = (EditText) dialog.findViewById(R.id.shapeName);
-            EditText widthText = (EditText) dialog.findViewById(R.id.width);
-            EditText heightText = (EditText) dialog.findViewById(R.id.height);
+            EditText leftText = (EditText) dialog.findViewById(R.id.left);
+            EditText rightText = (EditText) dialog.findViewById(R.id.right);
+            EditText topText = (EditText) dialog.findViewById(R.id.top);
+            EditText botText = (EditText) dialog.findViewById(R.id.bottom);
+
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
             String newName = shapeNameText.getText().toString();
-            float newWidth = Float.parseFloat(widthText.getText().toString());
-            float newHeight = Float.parseFloat(heightText.getText().toString());
+            float newLeft = Float.parseFloat(leftText.getText().toString());
+            float newRight = Float.parseFloat(rightText.getText().toString());
+            float newTop = Float.parseFloat(topText.getText().toString());
+            float newBot = Float.parseFloat(botText.getText().toString());
             boolean moveable = isMoveable.isChecked();
             boolean visible = isVisible.isChecked();
             boolean hidden = !visible;
 
 
             CustomView.selectedShape.setName(newName);
-            CustomView.selectedShape.setCenterCoordinates(CustomView.selectedShape.coordinates.centerX(), CustomView.selectedShape.coordinates.centerY(),newWidth,newHeight);
+            CustomView.selectedShape.setCoordinates(newLeft,newTop,newRight,newBot);
+            //CustomView.selectedShape.setCenterCoordinates(CustomView.selectedShape.coordinates.centerX(), CustomView.selectedShape.coordinates.centerY(),newWidth,newHeight);
+
             CustomView.selectedShape.setMovable(moveable);
             CustomView.selectedShape.setHidden(hidden);
+            //This is so that the immediate drawing of the shape can be changed without a reference to the selected x and y point
+            CustomView.changingDimensions = true;
             CustomView myView = findViewById(R.id.myCustomView);
             myView.invalidate();
+
+            left = Float.toString(CustomView.selectedShape.getLeft());
+            right = Float.toString(CustomView.selectedShape.getRight());
+            top = Float.toString(CustomView.selectedShape.getTop());
+            bot = Float.toString(CustomView.selectedShape.getBottom());
+
+            System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
+
+
+
 
 
         }

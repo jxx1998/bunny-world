@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:columnCount="2"
-    android:rowCount="5"
+    android:rowCount="6"
     android:layout_gravity="fill_horizontal">
 
     <TextView
@@ -70,11 +70,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Width"/>
+            android:text="Left"/>
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/width"
+            android:id="@+id/left"
             android:inputType="numberDecimal"
             android:hint="Select a Shape"
             />
@@ -91,23 +91,61 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Height"/>
+            android:text="Right"/>
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/height"
+            android:id="@+id/right"
+            android:inputType="numberDecimal"
+            android:hint="Select a Shape"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="3"
+        android:layout_column="0"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/top"
             android:inputType="numberDecimal"
             android:hint="Select a Shape"
             />
 
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="3"
+        android:layout_column="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bottom"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottom"
+            android:inputType="numberDecimal"
+            android:hint="Select a Shape"
+            />
+    </LinearLayout>
 
 
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_row="3"
+        android:layout_row="4"
         android:layout_column="0"
         android:text="Moveable"
         android:textOn="On"
@@ -118,7 +156,7 @@
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_row="3"
+        android:layout_row="4"
         android:layout_column="1"
         android:text="Visible"
         android:textOn="On"
@@ -130,7 +168,7 @@
     <Button
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_row="4"
+        android:layout_row="5"
         android:layout_column="1"
         android:text="Update Properties"
         android:onClick="updateProps"/>

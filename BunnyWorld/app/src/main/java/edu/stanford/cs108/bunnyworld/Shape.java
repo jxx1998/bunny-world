@@ -26,7 +26,7 @@ public class Shape implements Serializable {
     boolean movable = true; // Whether this shape can be dragged around during Play time
     Scripts scripts;
     boolean highlighted = false;
-    transient Paint textPaint, defaultPaint;
+    transient Paint textPaint, defaultPaint, highlightPaint;
     transient BitmapDrawable imageDrawable;
 
     /**
@@ -65,6 +65,10 @@ public class Shape implements Serializable {
         textPaint.setTextSize(this.textSize);
         defaultPaint = new Paint();
         defaultPaint.setColor(Color.LTGRAY);
+        highlightPaint = new Paint();
+        highlightPaint.setColor(Color.GREEN);
+        highlightPaint.setStyle(Paint.Style.STROKE);
+        highlightPaint.setStrokeWidth(15.0f);
         loadImage();
     }
 
@@ -136,6 +140,9 @@ public class Shape implements Serializable {
             canvas.drawBitmap(imageDrawable.getBitmap(), null, this.getRectF(), null);
         } else {
             canvas.drawRect(this.getRectF(), defaultPaint);
+        }
+        if (highlighted) {
+            canvas.drawRect(coordinates.getRectF(), highlightPaint);
         }
     }
 

@@ -11,7 +11,7 @@ public class Database {
     private static SQLiteDatabase instance;
 
     /**
-     * Call by MainActivity when the application starts up.
+     * Called by MainActivity when the application starts up.
      * @param context
      */
     public static void createInstance(Context context) {

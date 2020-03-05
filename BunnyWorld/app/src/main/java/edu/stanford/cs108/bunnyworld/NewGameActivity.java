@@ -344,6 +344,7 @@ public class NewGameActivity extends AppCompatActivity {
         });
 
         alert.show();
+    }
 
     public void saveGame(View view) {
 

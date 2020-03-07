@@ -93,6 +93,17 @@ public class Game implements Serializable {
         }
     }
 
+    public static Shape getShape(String name) {
+        for (Page page: instance.pages) {
+            for (Shape shape: page.shapes) {
+                if (shape.name == name) {
+                    return shape;
+                }
+            }
+        }
+        return null;
+    }
+
     // Below are private helper methods
     private static void deleteGame(String gameName) {
         SQLiteDatabase db = Database.getInstance();

@@ -47,7 +47,6 @@ public class NewGameActivity extends AppCompatActivity {
         //Display script
     }
 
-    
     public void changeDrawShape(View view){
         System.out.println("I CLICKED THE CHANGE SHAPE BUTTON");
 

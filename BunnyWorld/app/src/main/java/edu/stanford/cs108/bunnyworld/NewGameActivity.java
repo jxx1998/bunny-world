@@ -374,6 +374,36 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
+    public void deleteShape(View view){
+        System.out.println("I CLICKED THE DELETE SHAPE BUTTON");
+
+        int currentPagePosition = CustomView.currPagePos;
+        boolean isThereASelectedShape = CustomView.isAShapeSelected;
+
+        System.out.println("current page position: " + currentPagePosition);
+        System.out.println("shape selected :" + isThereASelectedShape);
+
+        int numPages = CustomView.gamePages.size();
+        if (!isThereASelectedShape){
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "No Shape is Selected",
+                    Toast.LENGTH_SHORT);
+            toast.show();
+        } else{
+
+            Shape selectedShape = CustomView.selectedShape;
+            Page currPage = CustomView.currPage;
+            currPage.removeShape(selectedShape);
+
+            CustomView myView = findViewById(R.id.myCustomView);
+            myView.invalidate();
+
+
+
+        }
+
+    }
+
     public void createScript(MenuItem item) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 

@@ -365,7 +365,8 @@ public class NewGameActivity extends AppCompatActivity {
 
             System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
 
-
+            Game.setPages(CustomView.gamePages);
+            Game.save("test_game_name");
 
 
 

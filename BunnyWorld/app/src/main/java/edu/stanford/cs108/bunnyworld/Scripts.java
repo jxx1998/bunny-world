@@ -3,6 +3,7 @@ package edu.stanford.cs108.bunnyworld;
 import android.content.Context;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.*;
@@ -38,29 +39,40 @@ public class Scripts implements Serializable {
         return scriptStr;
     }
 
+    private void throwToast(String msg) {
+        Toast toast = Toast.makeText(getGlobalContext(), msg, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
     public void setScripts(String str) {
         scriptStr = str;
         StringTokenizer st = new StringTokenizer(scriptStr, "\n");
+        boolean onClickSet = false;
         while (st.hasMoreTokens()) {
             String clause = st.nextToken();
             StringTokenizer stClause = new StringTokenizer(clause.substring(0, clause.length() - 1), " ");
             if (stClause.countTokens() < 2) {
-                throw new RuntimeException("Incomplete clause string!");
+                throwToast("Incomplete clause string!");
             }
             String trigger = stClause.nextToken();
             trigger += " " + stClause.nextToken();
             if (!triggerKeywords.contains(trigger)) {
-                throw new RuntimeException("Invalid clause trigger word detected!");
+                throwToast("Invalid clause trigger word detected!");
             }
 
             List<Action> actions = new ArrayList<Action>();
             if (trigger == "on click") {
-                onClickClauses = actions;
+                if (!onClickSet) {
+                    onClickClauses = actions;
+                    onClickSet = true;
+                } else {
+                    continue;
+                }
             } else if (trigger == "on enter") {
                 onEnterClauses = actions;
             } else if (trigger == "on drop") {
                 if (!stClause.hasMoreTokens()) {
-                    throw new RuntimeException("Incomplete on drop clause!");
+                    throwToast("Incomplete on drop clause!");
                 }
                 String shapeName = stClause.nextToken();
                 onDropClauses.put(shapeName, new ArrayList<Action>());
@@ -70,10 +82,10 @@ public class Scripts implements Serializable {
             while (stClause.hasMoreTokens()) {
                 String keyword = stClause.nextToken();
                 if (!actionKeywords.contains(keyword)) {
-                    throw new RuntimeException("Input includes invalid action primitive!");
+                    throwToast("Input includes invalid action primitive!");
                 }
                 if (!stClause.hasMoreTokens()) {
-                    throw new RuntimeException("Incomplete clause string detected!");
+                    throwToast("Incomplete clause string detected!");
                 }
                 String name = stClause.nextToken();
                 Action a = new Action(keyword, name);

@@ -41,12 +41,12 @@ public class Scripts implements Serializable {
             String clause = st.nextToken();
             StringTokenizer stClause = new StringTokenizer(clause.substring(0, clause.length() - 1), " ");
             if (stClause.countTokens() < 2) {
-                throw new RuntimeException("Invalid TextEdit clause string");
+                throw new RuntimeException("Invalid TextEdit clause string!");
             }
-            String trigger = st.nextToken();
-            trigger += " " + st.nextToken();
+            String trigger = stClause.nextToken();
+            trigger += " " + stClause.nextToken();
             if (!triggerKeywords.contains(trigger)) {
-                throw new RuntimeException("Invalid TextEdit clause string");
+                throw new RuntimeException("Invalid clause trigger word detected!");
             }
 
             List<Action> actions = new ArrayList<Action>();
@@ -56,7 +56,7 @@ public class Scripts implements Serializable {
                 onEnterClauses = actions;
             } else if (trigger == "on drop") {
                 if (!stClause.hasMoreTokens()) {
-                    throw new RuntimeException("Invalid on drop clause");
+                    throw new RuntimeException("Invalid on drop clause!");
                 }
                 String shapeName = stClause.nextToken();
                 onDropClauses.put(shapeName, new ArrayList<Action>());
@@ -65,8 +65,11 @@ public class Scripts implements Serializable {
 
             while (stClause.hasMoreTokens()) {
                 String keyword = stClause.nextToken();
+                if (!actionKeywords.contains(keyword)) {
+                    throw new RuntimeException("Input includes invalid action primitive!");
+                }
                 if (!stClause.hasMoreTokens()) {
-                    throw new RuntimeException("Invalid TextEdit clause string");
+                    throw new RuntimeException("Incomplete clause string detected!");
                 }
                 String name = stClause.nextToken();
                 Action a = new Action(keyword, name);

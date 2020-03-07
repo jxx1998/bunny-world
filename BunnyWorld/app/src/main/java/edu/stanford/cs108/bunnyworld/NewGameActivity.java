@@ -43,10 +43,6 @@ public class NewGameActivity extends AppCompatActivity {
         return true;
     }
 
-    public void showScript(MenuItem item) {
-        //Display script
-    }
-
     public void changeDrawShape(View view){
         System.out.println("I CLICKED THE CHANGE SHAPE BUTTON");
 
@@ -406,7 +402,7 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
-    public void createScript(MenuItem item) {
+    public void editScript(MenuItem item) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         //maybe change this to .setMessage

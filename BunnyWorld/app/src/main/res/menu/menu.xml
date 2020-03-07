@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="Create Script"
-        android:onClick="createScript" />
-    <item
-        android:title="Show Script"
-        android:onClick="showScript"/>
+        android:title="Edit Script"
+        android:onClick="editScript"/>
 </menu>

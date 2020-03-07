@@ -27,19 +27,17 @@ public class EditorActivity extends AppCompatActivity {
     // This function can eventually be used to return a list of game names instead for a dropdown menu for game selection.
     private ArrayList<String> getGameNames() {
         SQLiteDatabase db = Database.getInstance();
-        // Log.i("hi", "entered the printDatabaseGames method");
         Cursor cursor = db.rawQuery("SELECT DISTINCT name FROM games",null);
         ArrayList<String> output = new ArrayList<String>();
 
 
         while (cursor.moveToNext()) {
-            Log.i("hi", cursor.getString(0));
             output.add(cursor.getString(0));
         }
 
-        for (int i = 0; i < output.size(); i++) {
-            Log.i("hi", "table contains " + output.get(i));
-        }
+        // for (int i = 0; i < output.size(); i++) {
+        //     Log.i("hi", "table contains " + output.get(i));
+        // }
         return output;
     }
 }

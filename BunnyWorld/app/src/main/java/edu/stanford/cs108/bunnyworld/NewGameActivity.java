@@ -2,6 +2,7 @@ package edu.stanford.cs108.bunnyworld;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -426,7 +427,7 @@ public class NewGameActivity extends AppCompatActivity {
         alert.show();
 
         // Save game without using customized functions
-        Game.setPages(CustomView.gamePages);
+        Game.setPages(EditorView.gamePages);
         Game.save("test_game_name");
     }
 

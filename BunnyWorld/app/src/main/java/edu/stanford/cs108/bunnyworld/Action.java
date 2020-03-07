@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 
-import static android.app.Application.getProcessName;
 import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;
 
 public class Action {
@@ -37,8 +36,8 @@ public class Action {
     public void execute() {
         if (keyword == "goto") {
             int pageNum = -1;
-            for (int i = 0; i < CustomView.gamePages.size(); i++) {
-                if (CustomView.gamePages.get(i).name == this.name) {
+            for (int i = 0; i < EditorView.gamePages.size(); i++) {
+                if (EditorView.gamePages.get(i).name == this.name) {
                     pageNum = i;
                     break;
                 }
@@ -46,10 +45,10 @@ public class Action {
             if (pageNum < 0) {
                 throw new RuntimeException("Invalid page name");
             }
-            CustomView.currPagePos = pageNum;
-            CustomView.currPage = CustomView.gamePages.get(pageNum);
+            EditorView.currPagePos = pageNum;
+            EditorView.currPage = EditorView.gamePages.get(pageNum);
 
-           // CustomView myView = getView().findViewById(R.id.myCustomView);
+           // EditorView myView = getView().findViewById(R.id.myCustomView);
 
         } else if (keyword == "play") {
             playSound();

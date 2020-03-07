@@ -120,11 +120,17 @@ public class CustomView extends View {
 
         selectedShape = currPage.shapeTouched(selectedX, selectedY, true, true);
 
+
         if (selectedShape != null) {
             isAShapeSelected = true;
+            currPage.makeTopMost(selectedShape);
 
             if (!changingDimensions) {
                 selectedShape.setCenterCoordinates(selectedX, selectedY, selectedShape.getWidth(), selectedShape.getHeight());
+            }
+
+            if (selectedShape.isHidden()){
+                selectedShape.setHighlightColor(Color.BLACK);
             }
             //selectedShape.setCoordinates();
             currPage.draw(canvas);

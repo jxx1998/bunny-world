@@ -402,6 +402,10 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
+    public void saveGame(View view){
+        
+    }
+
     public void editScript(MenuItem item) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 

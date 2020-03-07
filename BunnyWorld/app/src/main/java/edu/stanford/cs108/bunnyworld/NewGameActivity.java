@@ -374,7 +374,7 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
-    public void createScript(View view) {
+    public void createScript(MenuItem item) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         //maybe change this to .setMessage
@@ -398,8 +398,8 @@ public class NewGameActivity extends AppCompatActivity {
         alert.show();
 
         // Save game without using customized functions
-        Game.setPages(CustomView.gamePages);
-        Game.save("test_game_name");
+//        Game.setPages(CustomView.gamePages);
+//        Game.save("test_game_name");
     }
 
 }

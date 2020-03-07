@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 
-public class CustomView extends View {
+public class EditorView extends View {
     protected static Page currPage;
     protected static Game currGame;
     protected static ArrayList<Page> gamePages;
@@ -38,7 +38,7 @@ public class CustomView extends View {
 
 
 
-    public CustomView(Context context, @Nullable AttributeSet attrs) {
+    public EditorView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }

@@ -95,10 +95,9 @@ public class Game implements Serializable {
 
     public static Shape getShape(String name) {
         for (Page page: instance.pages) {
-            for (Shape shape: page.shapes) {
-                if (shape.name == name) {
-                    return shape;
-                }
+            Shape shape = page.getShape(name);
+            if (shape != null) {
+                return shape;
             }
         }
         return null;

@@ -43,8 +43,8 @@ public class Scripts implements Serializable {
             if (stClause.countTokens() < 2) {
                 throw new RuntimeException("Invalid TextEdit clause string");
             }
-            String trigger = st.nextToken();
-            trigger += " " + st.nextToken();
+            String trigger = stClause.nextToken();
+            trigger += " " + stClause.nextToken();
             if (!triggerKeywords.contains(trigger)) {
                 throw new RuntimeException("Invalid TextEdit clause string");
             }

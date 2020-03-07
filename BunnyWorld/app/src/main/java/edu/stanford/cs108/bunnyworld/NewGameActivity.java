@@ -407,6 +407,7 @@ public class NewGameActivity extends AppCompatActivity {
         alert.setTitle("Create Script");
 
         final EditText input = new EditText(this);
+        input.setText(CustomView.selectedShape.scripts.getScripts());
         alert.setView(input);
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

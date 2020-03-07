@@ -71,6 +71,15 @@ public class Page implements Serializable {
         this.shapes.remove(shape);
     }
 
+    public Shape getShape(String name) {
+        for (Shape shape: shapes) {
+            if (shape.name == name) {
+                return shape;
+            }
+        }
+        return null;
+    }
+
     // Sets the Shapes of the Page in bulk
     public void setShapes(List<Shape> shapes) {
         this.shapes = shapes;

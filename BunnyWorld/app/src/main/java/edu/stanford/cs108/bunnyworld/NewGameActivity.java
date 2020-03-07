@@ -43,10 +43,6 @@ public class NewGameActivity extends AppCompatActivity {
         return true;
     }
 
-    public void showScript(MenuItem item) {
-        //Display script
-    }
-
     public void changeDrawShape(View view){
         System.out.println("I CLICKED THE CHANGE SHAPE BUTTON");
 
@@ -123,9 +119,9 @@ public class NewGameActivity extends AppCompatActivity {
                 CustomView myView = findViewById(R.id.myCustomView);
                 myView.invalidate();
 
-                Game.addPage(newPage);
-                // Need to change this so you save under the current game name
+                Game.setPages(CustomView.gamePages);
                 Game.save("test_game_name");
+
             }
         });
 
@@ -182,12 +178,14 @@ public class NewGameActivity extends AppCompatActivity {
         System.out.println("I CLICKED THE CHANGE PAGE BUTTON");
 
         final ArrayList<Page> pages = CustomView.gamePages;
+
         int numPages = pages.size();
         final String[] arrayNames = new String[numPages];
         final ArrayList<String> pageNames = new ArrayList<String>();
         for (Page page : pages){
             pageNames.add(page.name);
         }
+        System.out.println("Number of pages: "+numPages);
 
         for (int i = 0; i < numPages; i++){
             arrayNames[i] = pageNames.get(i);
@@ -404,13 +402,14 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
-    public void createScript(MenuItem item) {
+    public void editScript(MenuItem item) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         //maybe change this to .setMessage
-        alert.setTitle("Create Script");
+        alert.setTitle("Edit Script");
 
         final EditText input = new EditText(this);
+        input.setText(CustomView.selectedShape.scripts.getScripts());
         alert.setView(input);
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

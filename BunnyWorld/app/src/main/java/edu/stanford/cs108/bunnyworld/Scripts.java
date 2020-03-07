@@ -34,6 +34,10 @@ public class Scripts implements Serializable {
         onDropClauses = new HashMap<String, List<Action>>();
     }
 
+    public String getScripts() {
+        return scriptStr;
+    }
+
     public void setScripts(String str) {
         scriptStr = str;
         StringTokenizer st = new StringTokenizer(scriptStr, "\n");

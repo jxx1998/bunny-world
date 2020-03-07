@@ -22,23 +22,6 @@ public class Scripts implements Serializable {
     private final Set<String> actionKeywords = new HashSet<String>
             (Arrays.asList("goto", "play", "hide", "show"));
 
-    String scriptStr;
-    List<String> onClickClauses;
-    List<String> onEnterClauses;
-    List<String> onDropClauses;
-
-    public Scripts() {
-        scriptStr = "";
-        onClickClauses = new ArrayList<String>();
-        onEnterClauses = new ArrayList<String>();
-        onDropClauses = new ArrayList<String>();
-    }
-
-    public void addScripts(String str) { scriptStr = str; }
-
-
-
-
 
     // getters and setters
 

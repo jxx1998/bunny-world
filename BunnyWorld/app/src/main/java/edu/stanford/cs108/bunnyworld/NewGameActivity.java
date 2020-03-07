@@ -47,6 +47,7 @@ public class NewGameActivity extends AppCompatActivity {
         //Display script
     }
 
+    
     public void changeDrawShape(View view){
         System.out.println("I CLICKED THE CHANGE SHAPE BUTTON");
 
@@ -277,7 +278,9 @@ public class NewGameActivity extends AppCompatActivity {
         CustomView myView = findViewById(R.id.myCustomView);
         myView.invalidate();
 
-        int pageIndex = CustomView.currPagePos;
+        // We save to database using setPages instead of customized functionality
+        Game.setPages(CustomView.gamePages);
+        Game.save("test_game_name");
 
     }
 
@@ -393,6 +396,10 @@ public class NewGameActivity extends AppCompatActivity {
         });
 
         alert.show();
+
+        // Save game without using customized functions
+        Game.setPages(CustomView.gamePages);
+        Game.save("test_game_name");
     }
 
 }

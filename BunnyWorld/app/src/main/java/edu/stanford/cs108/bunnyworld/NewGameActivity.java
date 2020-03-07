@@ -426,8 +426,13 @@ public class NewGameActivity extends AppCompatActivity {
         alert.show();
 
         // Save game without using customized functions
+<<<<<<< HEAD
 //        Game.setPages(EditorView.gamePages);
 //        Game.save("test_game_name");
+=======
+        Game.setPages(CustomView.gamePages);
+        Game.save("test_game_name");
+>>>>>>> ea667c89c347ccdfa81cdd56e1de714415fdcfa3
     }
 
 }

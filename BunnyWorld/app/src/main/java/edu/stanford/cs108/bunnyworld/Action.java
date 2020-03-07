@@ -3,6 +3,8 @@ package edu.stanford.cs108.bunnyworld;
 import android.content.Context;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
+
+import static android.app.Application.getProcessName;
 import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;
 
 public class Action {
@@ -13,11 +15,12 @@ public class Action {
         keyword = str1;
         name = str2;
     }
+
     /**
      * Plays a sound with filename stored in this.name
      * If file not found, this method does nothing
      */
-    public void playSound() {
+    private void playSound() {
         Context context = getGlobalContext();
         Resources resources = context.getResources();
         final int resourceId = resources.getIdentifier(name, "raw", context.getPackageName());
@@ -46,16 +49,20 @@ public class Action {
             CustomView.currPagePos = pageNum;
             CustomView.currPage = CustomView.gamePages.get(pageNum);
 
-
            // CustomView myView = getView().findViewById(R.id.myCustomView);
-            // WE NEED TO FIGURE THIS SHIT OUT
 
         } else if (keyword == "play") {
             playSound();
         } else if (keyword == "hide") {
-
+            Shape shape = Game.getShape(name);
+            if (shape != null) {
+                shape.setHidden(true);
+            }
         } else if (keyword == "show") {
-
+            Shape shape = Game.getShape(name);
+            if (shape != null) {
+                shape.setHidden(false);
+            }
         }
     }
 }

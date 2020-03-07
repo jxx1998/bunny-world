@@ -23,15 +23,15 @@ public class Scripts implements Serializable {
             (Arrays.asList("goto", "play", "hide", "show"));
 
     String scriptStr;
-    ArrayList<Action> onClickClauses; //these Strings actually contain two words each, e.g. goto page 3
-    ArrayList<Action> onEnterClauses;
-    HashMap<String, ArrayList<Action>> onDropClauses;
+    List<Action> onClickClauses; //these Strings actually contain two words each, e.g. goto page 3
+    List<Action> onEnterClauses;
+    Map<String, List<Action>> onDropClauses;
 
     public Scripts() {
         scriptStr = "";
         onClickClauses = new ArrayList<Action>();
         onEnterClauses = new ArrayList<Action>();
-        onDropClauses = new HashMap<String, ArrayList<Action>>();
+        onDropClauses = new HashMap<String, List<Action>>();
     }
 
     public void setScripts(String str) {
@@ -49,7 +49,7 @@ public class Scripts implements Serializable {
                 throw new RuntimeException("Invalid TextEdit clause string");
             }
 
-            ArrayList<Action> actions = new ArrayList<Action>();
+            List<Action> actions = new ArrayList<Action>();
             if (trigger == "on click") {
                 onClickClauses = actions;
             } else if (trigger == "on enter") {

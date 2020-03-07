@@ -41,7 +41,7 @@ public class Scripts implements Serializable {
             String clause = st.nextToken();
             StringTokenizer stClause = new StringTokenizer(clause.substring(0, clause.length() - 1), " ");
             if (stClause.countTokens() < 2) {
-                throw new RuntimeException("Invalid TextEdit clause string!");
+                throw new RuntimeException("Incomplete clause string!");
             }
             String trigger = stClause.nextToken();
             trigger += " " + stClause.nextToken();
@@ -56,7 +56,7 @@ public class Scripts implements Serializable {
                 onEnterClauses = actions;
             } else if (trigger == "on drop") {
                 if (!stClause.hasMoreTokens()) {
-                    throw new RuntimeException("Invalid on drop clause!");
+                    throw new RuntimeException("Incomplete on drop clause!");
                 }
                 String shapeName = stClause.nextToken();
                 onDropClauses.put(shapeName, new ArrayList<Action>());

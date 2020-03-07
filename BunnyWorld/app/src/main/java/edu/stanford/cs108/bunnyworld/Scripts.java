@@ -51,9 +51,9 @@ public class Scripts implements Serializable {
 
             ArrayList<Action> actions = new ArrayList<Action>();
             if (trigger == "on click") {
-                actions = onClickClauses; // Shouldn't this be onClickClauses = actions?
+                onClickClauses = actions;
             } else if (trigger == "on enter") {
-                actions = onEnterClauses;
+                onClickClauses = actions;
             } else if (trigger == "on drop") {
                 if (!stClause.hasMoreTokens()) {
                     throw new RuntimeException("Invalid on drop clause");

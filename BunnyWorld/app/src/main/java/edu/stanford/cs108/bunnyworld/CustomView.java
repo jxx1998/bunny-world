@@ -31,7 +31,7 @@ public class CustomView extends View {
     final float START_Y = 200.0f;
     protected static float selectedX, selectedY;
     Paint myPaint;
-    protected boolean isAShapeSelected;
+    protected static boolean isAShapeSelected;
     protected float minusX, minusY, plusX, plusY;
     protected static boolean changingDimensions;
 
@@ -141,6 +141,8 @@ public class CustomView extends View {
             canvas.drawRect(selectedLeft,selectedTop,selectedRight,selectedBot,myPaintDrawOutline);
             invalidate();
 
+        } else{
+            isAShapeSelected = false;
         }
 
 

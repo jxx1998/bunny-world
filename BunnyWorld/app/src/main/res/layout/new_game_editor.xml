@@ -93,6 +93,7 @@
             android:layout_row="1"
             android:layout_column="3"
             android:layout_gravity="fill_horizontal"
+            android:onClick="deleteShape"
             android:text="Delete Shape" />
 
         <Button

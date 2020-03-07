@@ -406,7 +406,7 @@ public class NewGameActivity extends AppCompatActivity {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         //maybe change this to .setMessage
-        alert.setTitle("Create Script");
+        alert.setTitle("Edit Script");
 
         final EditText input = new EditText(this);
         input.setText(CustomView.selectedShape.scripts.getScripts());

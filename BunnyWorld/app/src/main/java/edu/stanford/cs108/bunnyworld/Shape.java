@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.MediaPlayer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,14 +17,15 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
 public class Shape implements Serializable {
 
     String name;
-    SerializableRectF coordinates;
-    String imageName; // Name of the image this Shape can draw
-    String text; // Some text that this Shape can draw
+    transient RectF coordinates;
+    String imageName = ""; // Name of the image this Shape can draw
+    String text = ""; // Some text that this Shape can draw
     float textSize = 10.0f; // The size of the text in case Shape needs to draw the text
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
     boolean movable = true; // Whether this shape can be dragged around during Play time
-    Scripts scripts;
-    boolean highlighted = false;
+    Scripts scripts = new Scripts();
+    int highlightColor = Color.TRANSPARENT;
+
     transient Paint textPaint, defaultPaint, highlightPaint;
     transient BitmapDrawable imageDrawable;
 
@@ -35,10 +35,7 @@ public class Shape implements Serializable {
      */
     public Shape(String name, RectF coordinates) {
         this.name = name;
-        this.coordinates = new SerializableRectF(coordinates);
-        this.imageName = "";
-        this.text = "";
-        this.scripts = new Scripts();
+        this.coordinates = new RectF(coordinates);
         init();
     }
 
@@ -46,8 +43,8 @@ public class Shape implements Serializable {
      * Constructor intended to be called by ShapeBuilder only
      * Calling this Shape constructor is not recommended; use ShapeBuilder to customize & construct the new Shape
      */
-    public Shape(String name, SerializableRectF coordinates, String imageName, String text, float textSize,
-                 boolean hidden, boolean movable, Scripts scripts, boolean highlighted) {
+    public Shape(String name, RectF coordinates, String imageName, String text, float textSize,
+                 boolean hidden, boolean movable, Scripts scripts, int highlightColor) {
         this.name = name;
         this.coordinates = coordinates;
         this.imageName = imageName;
@@ -56,7 +53,7 @@ public class Shape implements Serializable {
         this.hidden = hidden;
         this.movable = movable;
         this.scripts = scripts;
-        this.highlighted = highlighted;
+        this.highlightColor = highlightColor;
         init();
     }
 
@@ -66,7 +63,7 @@ public class Shape implements Serializable {
         defaultPaint = new Paint();
         defaultPaint.setColor(Color.LTGRAY);
         highlightPaint = new Paint();
-        highlightPaint.setColor(Color.GREEN);
+        highlightPaint.setColor(highlightColor);
         highlightPaint.setStyle(Paint.Style.STROKE);
         highlightPaint.setStrokeWidth(15.0f);
         loadImage();
@@ -84,13 +81,13 @@ public class Shape implements Serializable {
     }
 
     // Getters
-    public RectF getRectF() { return coordinates.getRectF(); }
-    public float getLeft() { return coordinates.getRectF().left; }
-    public float getRight() { return coordinates.getRectF().right; }
-    public float getBottom() { return coordinates.getRectF().bottom; }
-    public float getTop() { return coordinates.getRectF().top; }
-    public float getWidth() { return coordinates.getRectF().width(); }
-    public float getHeight() { return coordinates.getRectF().height(); }
+    public RectF getRectF() { return coordinates; }
+    public float getLeft() { return coordinates.left; }
+    public float getRight() { return coordinates.right; }
+    public float getBottom() { return coordinates.bottom; }
+    public float getTop() { return coordinates.top; }
+    public float getWidth() { return coordinates.width(); }
+    public float getHeight() { return coordinates.height(); }
     public String getName() { return this.name; }
     public String getImageName() { return imageName; }
     public String getText() { return text; }
@@ -98,20 +95,29 @@ public class Shape implements Serializable {
     public boolean isHidden() { return hidden; }
     public boolean isMovable() { return movable; }
     public Scripts getScripts() { return scripts; }
-    public boolean isHighlighted() { return highlighted; }
+    public int getHighlightColor() { return highlightColor; }
 
     // Below are some Setters
 
     // Set Coordinates directly with a RectF
     public void setCoordinates(RectF coordinates) {
         coordinates.sort();
-        this.coordinates.setRectF(coordinates);
+        this.coordinates.set(coordinates);
     }
 
     // Set Coordinates with (left, top, right, bottom)
     public void setCoordinates(float left, float top, float right, float bottom) {
         RectF coordinates = new RectF(left, top, right, bottom);
         setCoordinates(coordinates);
+    }
+
+    public void setCenterCoordinates(float x, float y, float width, float height){
+        float newLeft = x - (width / 2);
+        float newRight = x + (width / 2);
+        float newTop = y - (height / 2);
+        float newBottom = y + (height / 2);
+
+        setCoordinates(newLeft, newTop, newRight, newBottom);
     }
 
     public void setText(String text, float textSize) {
@@ -125,14 +131,19 @@ public class Shape implements Serializable {
         loadImage();
     }
 
+    public void setHighlightColor(int highlightColor) {
+        this.highlightColor = highlightColor;
+        highlightPaint.setColor(this.highlightColor);
+    }
+
     public void setName(String name) { this.name = name; }
     public void setHidden(boolean hidden) { this.hidden = hidden; }
     public void setMovable(boolean movable) { this.movable = movable; }
     public void setScripts(Scripts scripts) { this.scripts = scripts; }
-    public void setHighlighted(boolean highlighted) { this.highlighted = highlighted; }
 
     // Other methods
     public void draw(Canvas canvas) {
+        canvas.drawRect(coordinates, highlightPaint);
         if (hidden) { return; }
         if (!text.equals("")) {
             canvas.drawText(text, this.getLeft(), this.getTop(), textPaint);
@@ -141,18 +152,32 @@ public class Shape implements Serializable {
         } else {
             canvas.drawRect(this.getRectF(), defaultPaint);
         }
-        if (highlighted) {
-            canvas.drawRect(coordinates.getRectF(), highlightPaint);
-        }
     }
 
     // Returns whether a given (x, y) is located within the Shape
     public boolean contains(float x, float y) {
-        return coordinates.getRectF().contains(x, y);
+        return coordinates.contains(x, y);
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+
+        float left = in.readFloat();
+        float top = in.readFloat();
+        float right = in.readFloat();
+        float bottom = in.readFloat();
+        this.coordinates = new RectF(left, top, right, bottom);
+
         init();
     }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+
+        out.writeFloat(this.coordinates.left);
+        out.writeFloat(this.coordinates.top);
+        out.writeFloat(this.coordinates.right);
+        out.writeFloat(this.coordinates.bottom);
+    }
+
 }

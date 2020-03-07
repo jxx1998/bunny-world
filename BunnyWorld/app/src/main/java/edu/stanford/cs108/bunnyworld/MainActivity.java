@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
         Database.createInstance(this);
 
         testGame(); // Testing only - could be deleted later
+
+        //printDatabaseGames();
+        //ArrayList<String> testList = getGameNames();
     }
 
     /**
@@ -39,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("hi", Game.getPages().get(0).name);
         Log.i("hi", Game.getPages().get(0).shapes.get(0).name);
-        Log.i("hi", Float.toString(Game.getPages().get(0).shapes.get(0).coordinates.getRectF().top));
+        Log.i("hi", Float.toString(Game.getPages().get(0).shapes.get(0).coordinates.top));
+
     }
 
     public void onChooseEditor(View view) {
@@ -53,18 +59,26 @@ public class MainActivity extends AppCompatActivity {
      * This function is for testing the database. Will be deleted eventually.
      */
 
+    /*
     // This function can eventually be used to return a list of game names instead for a dropdown menu for game selection.
-    private void printDatabaseGames() {
+    private ArrayList<String> getGameNames() {
         SQLiteDatabase db = Database.getInstance();
-        Cursor cursor = db.rawQuery("SELECT * FROM games",null);
-        String output = "";
+        // Log.i("hi", "entered the printDatabaseGames method");
+        Cursor cursor = db.rawQuery("SELECT DISTINCT name FROM games",null);
+        ArrayList<String> output = new ArrayList<String>();
+
 
         while (cursor.moveToNext()) {
             Log.i("hi", cursor.getString(0));
-            output += cursor.getString(0) + "\n";
+            output.add(cursor.getString(0));
         }
 
-        Log.i("hi", "The table contains " + output);
+        for (int i = 0; i < output.size(); i++) {
+            Log.i("hi", "table contains " + output.get(i));
+        }
+        return output;
     }
+
+     */
 
 }

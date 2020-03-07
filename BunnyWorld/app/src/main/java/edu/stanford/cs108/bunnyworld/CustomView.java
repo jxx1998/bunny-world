@@ -4,15 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+
 
 public class CustomView extends View {
     protected static Page currPage;
@@ -23,16 +22,18 @@ public class CustomView extends View {
     protected static float selectedLeft,selectedRight,selectedTop,selectedBot;
     protected static String currDrawShapeName;
     protected static ArrayList<String> shapeNames;
-    protected static Shape selectedShape;
+    protected static Shape selectedShape, mostRecentAddedShape;
     protected static boolean createNewShape;
 
     //FOR DRAGGABLE SHAPE
     final float SQUARE_SIZE = 100.0f;
     final float START_X = 200.0f;
     final float START_Y = 200.0f;
-    protected float selectedX, selectedY;
+    protected static float selectedX, selectedY;
     Paint myPaint;
     protected boolean isAShapeSelected;
+    protected float minusX, minusY, plusX, plusY;
+    protected static boolean changingDimensions;
 
 
 
@@ -76,6 +77,7 @@ public class CustomView extends View {
         myPaint.setColor(Color.rgb(140,21,21));
         createNewShape = false;
         isAShapeSelected = false;
+        changingDimensions = false;
 
     }
 
@@ -96,11 +98,16 @@ public class CustomView extends View {
             float startright = START_X + SQUARE_SIZE;
             float startbottom = START_Y + SQUARE_SIZE;
 
+
             Shape newShape = new ShapeBuilder().name("NewAddedShape").coordinates(startleft,starttop,startright,startbottom).imageName(currDrawShapeName).buildShape();
             //This is what I used for the click, create, and move feature
             //Shape newShape = new ShapeBuilder().name("AddedShape").coordinates(left,top,right,bottom).imageName(currDrawShapeName).buildShape();
             currPage.addShape(newShape);
+            mostRecentAddedShape = newShape;
             createNewShape = false;
+            isAShapeSelected = true;
+            selectedX = START_X;
+            selectedY = START_Y;
         }
 
 
@@ -110,19 +117,17 @@ public class CustomView extends View {
 
         //Redraws the selected shape
         //selectedShape = currPage.shapeTouched(xSelect,ySelect,true, true);
-        selectedShape = currPage.shapeTouched(selectedX,selectedY,true, true);
+
+        selectedShape = currPage.shapeTouched(selectedX, selectedY, true, true);
+
         if (selectedShape != null) {
             isAShapeSelected = true;
 
-            float newleft= selectedX - SQUARE_SIZE;
-            float newtop = selectedY - SQUARE_SIZE;
-            float newright = selectedX + SQUARE_SIZE;
-            float newbottom = selectedY + SQUARE_SIZE;
-
-            selectedShape.setCoordinates(newleft,newtop,newright,newbottom);
+            if (!changingDimensions) {
+                selectedShape.setCenterCoordinates(selectedX, selectedY, selectedShape.getWidth(), selectedShape.getHeight());
+            }
+            //selectedShape.setCoordinates();
             currPage.draw(canvas);
-
-
             selectedLeft = selectedShape.getLeft();
             selectedRight = selectedShape.getRight();
             selectedTop = selectedShape.getTop();
@@ -165,6 +170,8 @@ public class CustomView extends View {
                 invalidate();
 
         }
+
+        changingDimensions =false;
         return true;
     }
 }

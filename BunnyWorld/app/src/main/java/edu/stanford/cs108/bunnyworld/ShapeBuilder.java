@@ -1,5 +1,6 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.graphics.Color;
 import android.graphics.RectF;
 
 /**
@@ -26,26 +27,20 @@ public class ShapeBuilder {
 
     String name;
     RectF coordinates;
-    String imageName; // Name of the image this Shape can draw
-    String text; // Some text that this Shape can draw
+    String imageName = ""; // Name of the image this Shape can draw
+    String text = ""; // Some text that this Shape can draw
     float textSize = 10.0f; // The size of the text in case Shape needs to draw the text
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
     boolean movable = true; // Whether this shape can be dragged around during Play time
-    Scripts scripts;
-    boolean highlighted = false;
-
-    public ShapeBuilder() {
-        text = "";
-        imageName = "";
-        scripts = new Scripts();
-    }
+    Scripts scripts = new Scripts();
+    int highlightColor = Color.TRANSPARENT;
 
     public Shape buildShape() {
         if (name == null || coordinates == null) {
             return null;
         } else {
-            SerializableRectF serializableRectF = new SerializableRectF(coordinates);
-            return new Shape(name, serializableRectF, imageName, text, textSize, hidden, movable, scripts, highlighted);
+            RectF rectF = new RectF(coordinates);
+            return new Shape(name, rectF, imageName, text, textSize, hidden, movable, scripts, highlightColor);
         }
     }
 
@@ -90,8 +85,8 @@ public class ShapeBuilder {
         return this;
     }
 
-    public ShapeBuilder highlighted(boolean highlighted) {
-        this.highlighted = highlighted;
+    public ShapeBuilder setHighlightColor(int highlightColor) {
+        this.highlightColor = highlightColor;
         return this;
     }
 

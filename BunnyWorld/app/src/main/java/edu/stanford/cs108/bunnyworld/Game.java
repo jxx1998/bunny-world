@@ -35,6 +35,7 @@ public class Game implements Serializable {
         SQLiteDatabase db = Database.getInstance();
 
         String command = "SELECT * FROM games WHERE name='" + gameName + "'";
+        String orderBy = " ORDER BY _id DESC";
         Cursor cursor = db.rawQuery(command, null);
 
         if(cursor.moveToFirst()) {
@@ -67,6 +68,10 @@ public class Game implements Serializable {
         instance.pages.add(page);
     }
 
+    public static void addShape(int pageIndex, Shape shape) {
+        instance.pages.get(pageIndex).addShape(shape);
+    }
+
     public static void setPages(List<Page> pages) {
         instance.pages = pages;
     }
@@ -77,6 +82,15 @@ public class Game implements Serializable {
 
     public static void removePage(Page page) {
         instance.pages.remove(page);
+    }
+
+    public static void renamePage(String oldName, String newName) {
+        for (int i = 0; i < instance.pages.size(); i++) {
+            if (instance.pages.get(i).name == oldName) {
+                instance.pages.get(i).name = newName;
+                return;
+            }
+        }
     }
 
     // Below are private helper methods

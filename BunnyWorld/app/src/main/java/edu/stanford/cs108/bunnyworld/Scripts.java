@@ -22,6 +22,63 @@ public class Scripts implements Serializable {
     private final Set<String> actionKeywords = new HashSet<String>
             (Arrays.asList("goto", "play", "hide", "show"));
 
+<<<<<<< HEAD
+=======
+    String scriptStr;
+    ArrayList<Action> onClickClauses; //these Strings actually contain two words each, e.g. goto page 3
+    ArrayList<Action> onEnterClauses;
+    HashMap<String, ArrayList<Action>> onDropClauses;
+
+    public Scripts() {
+        scriptStr = "";
+        onClickClauses = new ArrayList<Action>();
+        onEnterClauses = new ArrayList<Action>();
+        onDropClauses = new HashMap<String, ArrayList<Action>>();
+    }
+
+    public void setScripts(String str) {
+        scriptStr = str;
+        StringTokenizer st = new StringTokenizer(scriptStr, "\n");
+        while (st.hasMoreTokens()) {
+            String clause = st.nextToken();
+            StringTokenizer stClause = new StringTokenizer(clause.substring(0, clause.length() - 1), " ");
+            if (stClause.countTokens() < 2) {
+                throw new RuntimeException("Invalid TextEdit clause string");
+            }
+            String trigger = st.nextToken();
+            trigger += " " + st.nextToken();
+            if (!triggerKeywords.contains(trigger)) {
+                throw new RuntimeException("Invalid TextEdit clause string");
+            }
+
+            ArrayList<Action> actions = new ArrayList<Action>();
+            if (trigger == "on click") {
+                onClickClauses = actions;
+            } else if (trigger == "on enter") {
+                onClickClauses = actions;
+            } else if (trigger == "on drop") {
+                if (!stClause.hasMoreTokens()) {
+                    throw new RuntimeException("Invalid on drop clause");
+                }
+                String shapeName = stClause.nextToken();
+                onDropClauses.put(shapeName, new ArrayList<Action>());
+                actions = onDropClauses.get(shapeName);
+            }
+
+            while (stClause.hasMoreTokens()) {
+                String keyword = stClause.nextToken();
+                if (!stClause.hasMoreTokens()) {
+                    throw new RuntimeException("Invalid TextEdit clause string");
+                }
+                String name = stClause.nextToken();
+                Action a = new Action(keyword, name);
+                actions.add(a);
+            }
+
+        }
+
+    }
+>>>>>>> b6780e5ebc4785d12c40992dc2131090f6e8d999
 
     // getters and setters
 

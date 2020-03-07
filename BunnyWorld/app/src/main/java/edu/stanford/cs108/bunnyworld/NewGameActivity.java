@@ -2,6 +2,7 @@ package edu.stanford.cs108.bunnyworld;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +16,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /*
@@ -46,7 +46,7 @@ public class NewGameActivity extends AppCompatActivity {
     public void changeDrawShape(View view){
         System.out.println("I CLICKED THE CHANGE SHAPE BUTTON");
 
-        final ArrayList<String> shapes = CustomView.shapeNames;
+        final ArrayList<String> shapes = EditorView.shapeNames;
         int numPages = shapes.size();
         final String[] arrayShapeNames = new String[numPages];
 
@@ -58,7 +58,7 @@ public class NewGameActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Pick The Shape");
 
-        int currPos = CustomView.currShapePos;
+        int currPos = EditorView.currShapePos;
 
 
 
@@ -73,11 +73,11 @@ public class NewGameActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                CustomView.currShapePos = shapeSelectionID;
-                CustomView.currDrawShapeName = shapes.get(shapeSelectionID);
+                EditorView.currShapePos = shapeSelectionID;
+                EditorView.currDrawShapeName = shapes.get(shapeSelectionID);
                 //So that latest added shape isnt added
-                CustomView.left = -10f;
-                CustomView myView = findViewById(R.id.myCustomView);
+                EditorView.left = -10f;
+                EditorView myView = findViewById(R.id.myCustomView);
                 myView.invalidate();
 
             }
@@ -109,17 +109,17 @@ public class NewGameActivity extends AppCompatActivity {
                 String inputStr = input.getText().toString();
                 Page newPage = new Page(inputStr);
 
-                CustomView.gamePages.add(newPage);
-                int currentPos = CustomView.gamePages.indexOf(newPage);
-                CustomView.currPagePos = currentPos;
-                CustomView.currPage = CustomView.gamePages.get(currentPos);
+                EditorView.gamePages.add(newPage);
+                int currentPos = EditorView.gamePages.indexOf(newPage);
+                EditorView.currPagePos = currentPos;
+                EditorView.currPage = EditorView.gamePages.get(currentPos);
                 //So that latest added shape isnt added
-                CustomView.left = -10f;
+                EditorView.left = -10f;
 
-                CustomView myView = findViewById(R.id.myCustomView);
+                EditorView myView = findViewById(R.id.myCustomView);
                 myView.invalidate();
 
-                Game.setPages(CustomView.gamePages);
+                Game.setPages(EditorView.gamePages);
                 Game.save("test_game_name");
 
             }
@@ -151,14 +151,14 @@ public class NewGameActivity extends AppCompatActivity {
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String inputStr = input.getText().toString();
-                Page currPage = CustomView.currPage;
+                Page currPage = EditorView.currPage;
 
                 String currPageName = currPage.name;
                 Game.renamePage(currPageName, inputStr);
 
                 currPage.setName(inputStr);
 
-                CustomView myView = findViewById(R.id.myCustomView);
+                EditorView myView = findViewById(R.id.myCustomView);
                 myView.invalidate();
             }
         });
@@ -177,7 +177,7 @@ public class NewGameActivity extends AppCompatActivity {
     public void changePage(View view){
         System.out.println("I CLICKED THE CHANGE PAGE BUTTON");
 
-        final ArrayList<Page> pages = CustomView.gamePages;
+        final ArrayList<Page> pages = EditorView.gamePages;
 
         int numPages = pages.size();
         final String[] arrayNames = new String[numPages];
@@ -196,7 +196,7 @@ public class NewGameActivity extends AppCompatActivity {
         builder.setTitle("Pick The Page");
 
         //to begin with, the selected page will be the current page we're on
-        final int currPos = CustomView.currPagePos;
+        final int currPos = EditorView.currPagePos;
         selection = arrayNames[currPos];
         selectionID = currPos;
 
@@ -211,11 +211,11 @@ public class NewGameActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                CustomView.currPagePos = selectionID;
-                CustomView.currPage = pages.get(selectionID);
+                EditorView.currPagePos = selectionID;
+                EditorView.currPage = pages.get(selectionID);
                 //So that latest added shape isnt added
-                CustomView.left = -10f;
-                CustomView myView = findViewById(R.id.myCustomView);
+                EditorView.left = -10f;
+                EditorView myView = findViewById(R.id.myCustomView);
                 myView.invalidate();
 
             }
@@ -236,11 +236,11 @@ public class NewGameActivity extends AppCompatActivity {
     public void deletePage(View view){
         System.out.println("I CLICKED THE DELETE BUTTON");
 
-        int currentPagePosition = CustomView.currPagePos;
+        int currentPagePosition = EditorView.currPagePos;
 
         System.out.println("current page position: " + currentPagePosition);
 
-        int numPages = CustomView.gamePages.size();
+        int numPages = EditorView.gamePages.size();
         if (numPages == 1){
             Toast toast = Toast.makeText(getApplicationContext(),
                     "There is only 1 Page Left",
@@ -249,21 +249,21 @@ public class NewGameActivity extends AppCompatActivity {
         } else{
 
 
-            Game.removePage(CustomView.gamePages.get(currentPagePosition));
+            Game.removePage(EditorView.gamePages.get(currentPagePosition));
 
-            CustomView.gamePages.remove(currentPagePosition);
-            int numPagesNew = CustomView.gamePages.size();
+            EditorView.gamePages.remove(currentPagePosition);
+            int numPagesNew = EditorView.gamePages.size();
             if (currentPagePosition == numPagesNew){
                 currentPagePosition = currentPagePosition -1;
             }
 
 
-            Page toChangeToPage = CustomView.gamePages.get(currentPagePosition);
-            CustomView.currPage = toChangeToPage;
-            CustomView.currPagePos = currentPagePosition;
-            CustomView.left = -10f;
+            Page toChangeToPage = EditorView.gamePages.get(currentPagePosition);
+            EditorView.currPage = toChangeToPage;
+            EditorView.currPagePos = currentPagePosition;
+            EditorView.left = -10f;
 
-            CustomView myView = findViewById(R.id.myCustomView);
+            EditorView myView = findViewById(R.id.myCustomView);
             myView.invalidate();
         }
 
@@ -271,12 +271,12 @@ public class NewGameActivity extends AppCompatActivity {
 
     public void addShape(View view){
         System.out.println("I CLICKED THE ADD SHAPE BUTTON");
-        CustomView.createNewShape = true;
-        CustomView myView = findViewById(R.id.myCustomView);
+        EditorView.createNewShape = true;
+        EditorView myView = findViewById(R.id.myCustomView);
         myView.invalidate();
 
         // We save to database using setPages instead of customized functionality
-        Game.setPages(CustomView.gamePages);
+        Game.setPages(EditorView.gamePages);
         Game.save("test_game_name");
 
     }
@@ -287,7 +287,7 @@ public class NewGameActivity extends AppCompatActivity {
         //final Dialog dialog= new Dialog(this);
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.properties_dialog_layout);
-        if (CustomView.selectedShape != null) {
+        if (EditorView.selectedShape != null) {
             EditText shapeNameText = (EditText) dialog.findViewById(R.id.shapeName);
             TextView imageNameText = (TextView) dialog.findViewById(R.id.imageName);
             EditText leftText = (EditText) dialog.findViewById(R.id.left);
@@ -297,16 +297,16 @@ public class NewGameActivity extends AppCompatActivity {
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
-            shapeNameText.setText(CustomView.selectedShape.name);
-            imageNameText.setText(CustomView.selectedShape.imageName);
+            shapeNameText.setText(EditorView.selectedShape.name);
+            imageNameText.setText(EditorView.selectedShape.imageName);
             imageNameText.setKeyListener(null);
-            leftText.setText(Float.toString(CustomView.selectedShape.getLeft()));
-            rightText.setText(Float.toString(CustomView.selectedShape.getRight()));
-            topText.setText(Float.toString(CustomView.selectedShape.getTop()));
-            botText.setText(Float.toString(CustomView.selectedShape.getBottom()));
+            leftText.setText(Float.toString(EditorView.selectedShape.getLeft()));
+            rightText.setText(Float.toString(EditorView.selectedShape.getRight()));
+            topText.setText(Float.toString(EditorView.selectedShape.getTop()));
+            botText.setText(Float.toString(EditorView.selectedShape.getBottom()));
 
-            isMoveable.setChecked(CustomView.selectedShape.isMovable());
-            isVisible.setChecked(!CustomView.selectedShape.isHidden());
+            isMoveable.setChecked(EditorView.selectedShape.isMovable());
+            isVisible.setChecked(!EditorView.selectedShape.isHidden());
 
         }
 
@@ -317,12 +317,12 @@ public class NewGameActivity extends AppCompatActivity {
     public void updateProps(View view){
         System.out.println("I CLICKED ON THE UPDATE PROPS BUTTON");
 
-        if (CustomView.selectedShape != null) {
+        if (EditorView.selectedShape != null) {
 
-            String left = Float.toString(CustomView.selectedShape.getLeft());
-            String right = Float.toString(CustomView.selectedShape.getRight());
-            String top = Float.toString(CustomView.selectedShape.getTop());
-            String bot = Float.toString(CustomView.selectedShape.getBottom());
+            String left = Float.toString(EditorView.selectedShape.getLeft());
+            String right = Float.toString(EditorView.selectedShape.getRight());
+            String top = Float.toString(EditorView.selectedShape.getTop());
+            String bot = Float.toString(EditorView.selectedShape.getBottom());
 
             System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
 
@@ -345,25 +345,25 @@ public class NewGameActivity extends AppCompatActivity {
             boolean hidden = !visible;
 
 
-            CustomView.selectedShape.setName(newName);
-            CustomView.selectedShape.setCoordinates(newLeft,newTop,newRight,newBot);
-            //CustomView.selectedShape.setCenterCoordinates(CustomView.selectedShape.coordinates.centerX(), CustomView.selectedShape.coordinates.centerY(),newWidth,newHeight);
+            EditorView.selectedShape.setName(newName);
+            EditorView.selectedShape.setCoordinates(newLeft,newTop,newRight,newBot);
+            //EditorView.selectedShape.setCenterCoordinates(EditorView.selectedShape.coordinates.centerX(), EditorView.selectedShape.coordinates.centerY(),newWidth,newHeight);
 
-            CustomView.selectedShape.setMovable(moveable);
-            CustomView.selectedShape.setHidden(hidden);
+            EditorView.selectedShape.setMovable(moveable);
+            EditorView.selectedShape.setHidden(hidden);
             //This is so that the immediate drawing of the shape can be changed without a reference to the selected x and y point
-            CustomView.changingDimensions = true;
-            CustomView myView = findViewById(R.id.myCustomView);
+            EditorView.changingDimensions = true;
+            EditorView myView = findViewById(R.id.myCustomView);
             myView.invalidate();
 
-            left = Float.toString(CustomView.selectedShape.getLeft());
-            right = Float.toString(CustomView.selectedShape.getRight());
-            top = Float.toString(CustomView.selectedShape.getTop());
-            bot = Float.toString(CustomView.selectedShape.getBottom());
+            left = Float.toString(EditorView.selectedShape.getLeft());
+            right = Float.toString(EditorView.selectedShape.getRight());
+            top = Float.toString(EditorView.selectedShape.getTop());
+            bot = Float.toString(EditorView.selectedShape.getBottom());
 
             System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
 
-            Game.setPages(CustomView.gamePages);
+            Game.setPages(EditorView.gamePages);
             Game.save("test_game_name");
 
 
@@ -375,13 +375,13 @@ public class NewGameActivity extends AppCompatActivity {
     public void deleteShape(View view){
         System.out.println("I CLICKED THE DELETE SHAPE BUTTON");
 
-        int currentPagePosition = CustomView.currPagePos;
-        boolean isThereASelectedShape = CustomView.isAShapeSelected;
+        int currentPagePosition = EditorView.currPagePos;
+        boolean isThereASelectedShape = EditorView.isAShapeSelected;
 
         System.out.println("current page position: " + currentPagePosition);
         System.out.println("shape selected :" + isThereASelectedShape);
 
-        int numPages = CustomView.gamePages.size();
+        int numPages = EditorView.gamePages.size();
         if (!isThereASelectedShape){
             Toast toast = Toast.makeText(getApplicationContext(),
                     "No Shape is Selected",
@@ -389,11 +389,11 @@ public class NewGameActivity extends AppCompatActivity {
             toast.show();
         } else{
 
-            Shape selectedShape = CustomView.selectedShape;
-            Page currPage = CustomView.currPage;
+            Shape selectedShape = EditorView.selectedShape;
+            Page currPage = EditorView.currPage;
             currPage.removeShape(selectedShape);
 
-            CustomView myView = findViewById(R.id.myCustomView);
+            EditorView myView = findViewById(R.id.myCustomView);
             myView.invalidate();
 
 
@@ -409,12 +409,12 @@ public class NewGameActivity extends AppCompatActivity {
         alert.setTitle("Edit Script");
 
         final EditText input = new EditText(this);
-        input.setText(CustomView.selectedShape.scripts.getScripts());
+        input.setText(EditorView.selectedShape.scripts.getScripts());
         alert.setView(input);
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                CustomView.selectedShape.scripts.setScripts(input.getText().toString());
+                EditorView.selectedShape.scripts.setScripts(input.getText().toString());
             }
         });
 
@@ -427,8 +427,8 @@ public class NewGameActivity extends AppCompatActivity {
         alert.show();
 
         // Save game without using customized functions
-//        Game.setPages(CustomView.gamePages);
-//        Game.save("test_game_name");
+        Game.setPages(EditorView.gamePages);
+        Game.save("test_game_name");
     }
 
 }

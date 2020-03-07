@@ -1,8 +1,5 @@
 package edu.stanford.cs108.bunnyworld;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.media.MediaPlayer;
 import android.widget.Toast;
 
 import java.io.Serializable;

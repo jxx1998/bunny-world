@@ -22,8 +22,6 @@ public class Scripts implements Serializable {
     private final Set<String> actionKeywords = new HashSet<String>
             (Arrays.asList("goto", "play", "hide", "show"));
 
-<<<<<<< HEAD
-=======
     String scriptStr;
     ArrayList<Action> onClickClauses; //these Strings actually contain two words each, e.g. goto page 3
     ArrayList<Action> onEnterClauses;
@@ -78,7 +76,6 @@ public class Scripts implements Serializable {
         }
 
     }
->>>>>>> b6780e5ebc4785d12c40992dc2131090f6e8d999
 
     // getters and setters
 

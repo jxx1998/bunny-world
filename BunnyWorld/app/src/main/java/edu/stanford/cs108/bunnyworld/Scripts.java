@@ -72,7 +72,6 @@ public class Scripts implements Serializable {
                 Action a = new Action(keyword, name);
                 actions.add(a);
             }
-
         }
 
     }

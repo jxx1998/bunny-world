@@ -155,23 +155,15 @@ public class Shape implements Serializable {
     }
 
     public void onClick() {
-        for (Action action: scripts.onClickClauses) {
-            action.execute();
-        }
+        scripts.onClick();
     }
 
     public void onEnter() {
-        for (Action action: scripts.onEnterClauses) {
-            action.execute();
-        }
+        scripts.onEnter();
     }
 
-    public void onDrop(String shapeName) {
-        if (scripts.onDropClauses.containsKey(shapeName)) {
-            for (Action action: scripts.onDropClauses.get(shapeName)) {
-                action.execute();
-            }
-        }
+    public boolean onDrop(String shapeName) {
+        return scripts.onDrop(shapeName);
     }
 
     // Returns whether a given (x, y) is located within the Shape

@@ -87,11 +87,19 @@ public class GameView extends View {
         return true;
     }
 
-    private void processOnDrop(Shape shape) {
-        List<Shape> candidateShapes = currentPage.shapeOverlapped(shape, false, true);
-        for (Shape candidateShape: candidateShapes) {
-            candidateShape.
+    private void clearSelection() {
+        for (Shape shape: currentPage.shapes) {
+            shape.setHighlightColor(Color.TRANSPARENT);
         }
+    }
+
+    private boolean processOnDrop(Shape shape) {
+        List<Shape> candidateShapes = currentPage.shapeOverlapped(shape, false, true);
+        boolean onDropProcessed = false;
+        for (Shape candidateShape: candidateShapes) {
+            onDropProcessed = onDropProcessed | candidateShape.onDrop(shape.name);
+        }
+        return onDropProcessed;
     }
 
     @Override

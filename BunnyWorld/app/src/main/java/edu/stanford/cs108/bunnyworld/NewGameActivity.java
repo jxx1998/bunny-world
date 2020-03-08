@@ -3,12 +3,14 @@ package edu.stanford.cs108.bunnyworld;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -393,6 +395,20 @@ public class NewGameActivity extends AppCompatActivity {
 //            newScript.setScripts(scriptString);
 //
 //            EditorView.selectedShape.setScripts(newScript);
+
+            SeekBar redView = (SeekBar) dialog.findViewById(R.id.redProgress);
+            SeekBar greenView = (SeekBar) dialog.findViewById(R.id.greenProgress);
+            SeekBar blueView = (SeekBar) dialog.findViewById(R.id.blueProgress);
+
+            int red = redView.getProgress();
+            int green = greenView.getProgress();
+            int blue = blueView.getProgress();
+
+            int newTextColor = Color.rgb(red,green,blue);
+
+
+
+
 
 
             //This is so that the immediate drawing of the shape can be changed without a reference to the selected x and y point

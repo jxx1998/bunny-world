@@ -19,7 +19,7 @@ public class Shape implements Serializable {
     String name;
     transient RectF coordinates;
     String imageName = ""; // Name of the image this Shape can draw
-    String text = ""; // Some text that this Shape can draw
+    String text; // Some text that this Shape can draw
     float textSize = 10.0f; // The size of the text in case Shape needs to draw the text
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
     boolean movable = true; // Whether this shape can be dragged around during Play time
@@ -145,7 +145,7 @@ public class Shape implements Serializable {
     public void draw(Canvas canvas) {
         canvas.drawRect(coordinates, highlightPaint);
         if (hidden) { return; }
-        if (!text.equals("")) {
+        if (text != null) {
             canvas.drawText(text, this.getLeft(), this.getTop(), textPaint);
         } else if (imageDrawable != null) {
             canvas.drawBitmap(imageDrawable.getBitmap(), null, this.getRectF(), null);

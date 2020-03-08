@@ -3,11 +3,14 @@ package edu.stanford.cs108.bunnyworld;
 import android.content.Context;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.widget.Toast;
+
+import java.io.Serializable;
 
 import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;
 
-public class Action {
+public class Action implements Serializable {
     String keyword;
     String name;
 
@@ -40,10 +43,10 @@ public class Action {
     }
 
     public void execute() {
-        if (keyword == "goto") {
+        if (keyword.equals("goto")) {
             Page page = null;
             for (Page candidatePage: Game.getPages()) {
-                if (candidatePage.name == name) {
+                if (candidatePage.name.equals(name)) {
                     page = candidatePage;
                     break;
                 }
@@ -53,14 +56,14 @@ public class Action {
             } else {
                 GameView.changePage(page);
             }
-        } else if (keyword == "play") {
+        } else if (keyword.equals("play")) {
             playSound();
-        } else if (keyword == "hide") {
+        } else if (keyword.equals("hide")) {
             Shape shape = Game.getShape(name);
             if (shape != null) {
                 shape.setHidden(true);
             }
-        } else if (keyword == "show") {
+        } else if (keyword.equals("show")) {
             Shape shape = Game.getShape(name);
             if (shape != null) {
                 shape.setHidden(false);

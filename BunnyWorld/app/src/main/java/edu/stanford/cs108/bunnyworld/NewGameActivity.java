@@ -301,6 +301,7 @@ public class NewGameActivity extends AppCompatActivity {
             EditText botText = (EditText) dialog.findViewById(R.id.bottom);
             EditText textText = (EditText) dialog.findViewById(R.id.text);
             EditText sizeText = (EditText) dialog.findViewById(R.id.textSize);
+            EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
@@ -317,6 +318,7 @@ public class NewGameActivity extends AppCompatActivity {
                 textText.setText(EditorView.selectedShape.getText());
                 sizeText.setText(Float.toString(EditorView.selectedShape.getTextSize()));
             }
+            scriptText.setText(EditorView.selectedShape.scripts.getScripts());
             imageNameText.setKeyListener(null);
             leftText.setText(Float.toString(EditorView.selectedShape.getLeft()));
             rightText.setText(Float.toString(EditorView.selectedShape.getRight()));
@@ -352,7 +354,7 @@ public class NewGameActivity extends AppCompatActivity {
             EditText botText = (EditText) dialog.findViewById(R.id.bottom);
             EditText textText = (EditText) dialog.findViewById(R.id.text);
             EditText sizeText = (EditText) dialog.findViewById(R.id.textSize);
-
+            EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
@@ -368,6 +370,7 @@ public class NewGameActivity extends AppCompatActivity {
             boolean hidden = !visible;
 
 
+
             EditorView.selectedShape.setName(newName);
             EditorView.selectedShape.setCoordinates(newLeft,newTop,newRight,newBot);
             //EditorView.selectedShape.setCenterCoordinates(EditorView.selectedShape.coordinates.centerX(), EditorView.selectedShape.coordinates.centerY(),newWidth,newHeight);
@@ -376,6 +379,15 @@ public class NewGameActivity extends AppCompatActivity {
             }
             EditorView.selectedShape.setMovable(moveable);
             EditorView.selectedShape.setHidden(hidden);
+
+
+            String scriptString = scriptText.getText().toString();
+            Scripts newScript = new Scripts();
+            newScript.setScripts(scriptString);
+
+            EditorView.selectedShape.setScripts(newScript);
+
+
             //This is so that the immediate drawing of the shape can be changed without a reference to the selected x and y point
             EditorView.changingDimensions = true;
             EditorView myView = findViewById(R.id.myCustomView);

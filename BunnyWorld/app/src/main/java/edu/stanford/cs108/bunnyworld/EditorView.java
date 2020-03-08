@@ -84,7 +84,7 @@ public class EditorView extends View {
         currPagePos = 0;
         currPage = gamePages.get(currPagePos);
 
-        Game.setPages(gamePages);
+        Game.set(gamePages, currPagePos);
         Game.save(currGameName);
 
     }

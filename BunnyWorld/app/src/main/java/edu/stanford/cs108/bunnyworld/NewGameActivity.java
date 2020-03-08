@@ -3,12 +3,14 @@ package edu.stanford.cs108.bunnyworld;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -120,7 +122,7 @@ public class NewGameActivity extends AppCompatActivity {
                 EditorView myView = findViewById(R.id.myCustomView);
                 myView.invalidate();
 
-                Game.setPages(EditorView.gamePages);
+                Game.set(EditorView.gamePages, EditorView.currPagePos);
                 Game.save(EditorView.currGameName);
 
             }
@@ -163,7 +165,7 @@ public class NewGameActivity extends AppCompatActivity {
                 EditorView myView = findViewById(R.id.myCustomView);
                 myView.invalidate();
 
-                Game.setPages(EditorView.gamePages);
+                Game.set(EditorView.gamePages, EditorView.currPagePos);
                 Game.save(EditorView.currGameName);
             }
         });
@@ -261,7 +263,7 @@ public class NewGameActivity extends AppCompatActivity {
                 currentPagePosition = currentPagePosition -1;
             }
 
-            Game.setPages(EditorView.gamePages);
+            Game.set(EditorView.gamePages, EditorView.currPagePos);
             Game.save(EditorView.currGameName);
 
 
@@ -282,8 +284,8 @@ public class NewGameActivity extends AppCompatActivity {
         EditorView myView = findViewById(R.id.myCustomView);
         myView.invalidate();
 
-        // We save to database using setPages instead of customized functionality
-        Game.setPages(EditorView.gamePages);
+        // We save to database using set instead of customized functionality
+        Game.set(EditorView.gamePages, EditorView.currPagePos);
         Game.save(EditorView.currGameName);
 
     }
@@ -303,7 +305,7 @@ public class NewGameActivity extends AppCompatActivity {
             EditText botText = (EditText) dialog.findViewById(R.id.bottom);
             EditText textText = (EditText) dialog.findViewById(R.id.text);
             EditText sizeText = (EditText) dialog.findViewById(R.id.textSize);
-            EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
+           // EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
@@ -320,12 +322,12 @@ public class NewGameActivity extends AppCompatActivity {
                 textText.setText(EditorView.selectedShape.getText());
                 sizeText.setText(Float.toString(EditorView.selectedShape.getTextSize()));
             }
-            String scriptStr = EditorView.selectedShape.scripts.getScripts();
-            if (scriptStr == null || scriptStr.equals("")){
-                scriptText.setHint("No Scripts");
-            } else{
-                scriptText.setText(EditorView.selectedShape.scripts.getScripts());
-            }
+//            String scriptStr = EditorView.selectedShape.scripts.getScripts();
+//            if (scriptStr == null || scriptStr.equals("")){
+//                scriptText.setHint("No Scripts");
+//            } else{
+//                scriptText.setText(EditorView.selectedShape.scripts.getScripts());
+//            }
             imageNameText.setKeyListener(null);
             leftText.setText(Float.toString(EditorView.selectedShape.getLeft()));
             rightText.setText(Float.toString(EditorView.selectedShape.getRight()));
@@ -361,7 +363,7 @@ public class NewGameActivity extends AppCompatActivity {
             EditText botText = (EditText) dialog.findViewById(R.id.bottom);
             EditText textText = (EditText) dialog.findViewById(R.id.text);
             EditText sizeText = (EditText) dialog.findViewById(R.id.textSize);
-            EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
+            //EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
@@ -388,11 +390,25 @@ public class NewGameActivity extends AppCompatActivity {
             EditorView.selectedShape.setHidden(hidden);
 
 
-            String scriptString = scriptText.getText().toString();
-            Scripts newScript = new Scripts();
-            newScript.setScripts(scriptString);
+//            String scriptString = scriptText.getText().toString();
+//            Scripts newScript = new Scripts();
+//            newScript.setScripts(scriptString);
+//
+//            EditorView.selectedShape.setScripts(newScript);
 
-            EditorView.selectedShape.setScripts(newScript);
+            SeekBar redView = (SeekBar) dialog.findViewById(R.id.redProgress);
+            SeekBar greenView = (SeekBar) dialog.findViewById(R.id.greenProgress);
+            SeekBar blueView = (SeekBar) dialog.findViewById(R.id.blueProgress);
+
+            int red = redView.getProgress();
+            int green = greenView.getProgress();
+            int blue = blueView.getProgress();
+
+            int newTextColor = Color.rgb(red,green,blue);
+
+
+
+
 
 
             //This is so that the immediate drawing of the shape can be changed without a reference to the selected x and y point
@@ -407,7 +423,7 @@ public class NewGameActivity extends AppCompatActivity {
 
             System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
 
-            Game.setPages(EditorView.gamePages);
+            Game.set(EditorView.gamePages, EditorView.currPagePos);
             Game.save(EditorView.currGameName);
 
 
@@ -437,7 +453,7 @@ public class NewGameActivity extends AppCompatActivity {
             Page currPage = EditorView.currPage;
             currPage.removeShape(selectedShape);
 
-            Game.setPages(EditorView.gamePages);
+            Game.set(EditorView.gamePages, EditorView.currPagePos);
             Game.save(EditorView.currGameName);
 
             EditorView myView = findViewById(R.id.myCustomView);
@@ -450,7 +466,7 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     public void saveGame(View view){
-        Game.setPages(EditorView.gamePages);
+        Game.set(EditorView.gamePages, EditorView.currPagePos);
         Game.save(EditorView.currGameName);
     }
 
@@ -479,7 +495,7 @@ public class NewGameActivity extends AppCompatActivity {
         alert.show();
 
         // Save game without using customized functions
-        Game.setPages(EditorView.gamePages);
+        Game.set(EditorView.gamePages, EditorView.currPagePos);
         Game.save(EditorView.currGameName);
     }
 
@@ -487,7 +503,13 @@ public class NewGameActivity extends AppCompatActivity {
     public void undo(View view){
         System.out.println("We've clicked the undo button");
 
-        
+        Game.loadPrevious(EditorView.currGameName);
+        EditorView.gamePages =(ArrayList<Page>) Game.getPages();
+        EditorView.currPagePos = Game.getCurrPagePos();
+        EditorView.currPage = EditorView.gamePages.get(EditorView.currPagePos);
+
+        EditorView myView = findViewById(R.id.myCustomView);
+        myView.invalidate();
 
     }
 

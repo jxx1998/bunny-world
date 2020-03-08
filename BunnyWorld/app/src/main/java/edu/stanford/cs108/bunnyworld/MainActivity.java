@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         Database.createInstance(this);
 
-        testGame(); // Testing only - could be deleted later
+        // testGame(); // Testing only - could be deleted later
 
         //printDatabaseGames();
         //ArrayList<String> testList = getGameNames();

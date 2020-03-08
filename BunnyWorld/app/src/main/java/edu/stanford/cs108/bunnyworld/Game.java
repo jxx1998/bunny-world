@@ -67,6 +67,17 @@ public class Game implements Serializable {
 
         String selectCommand = "SELECT * FROM games WHERE name='" + gameName + "'";
         String orderBy = " ORDER BY _id DESC";
+
+        // Does nothing if there are less than two entries for this game in the database
+        Cursor precursor = db.rawQuery(selectCommand + orderBy, null);
+        int entryCount = 0;
+        while (precursor.moveToNext()) {
+            entryCount++;
+        }
+        if (entryCount < 2) {
+            return;
+        }
+
         Cursor cursor = db.rawQuery(selectCommand + orderBy, null);
 
         int id = -1;

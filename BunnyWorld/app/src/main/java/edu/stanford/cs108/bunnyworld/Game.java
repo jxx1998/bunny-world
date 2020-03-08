@@ -66,7 +66,7 @@ public class Game implements Serializable {
 
         String command = "DELETE FROM games WHERE name = '" + gameName + "'";
         String orderBy = " ORDER BY _id DESC";
-        String limit = " LIMIT 1";
+        String limit = " LIMIT 1;";
 
         db.execSQL(command + orderBy + limit);
 

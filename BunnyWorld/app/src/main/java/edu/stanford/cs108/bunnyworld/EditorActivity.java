@@ -22,19 +22,27 @@ public class EditorActivity extends AppCompatActivity {
     private String selection, shapeSelection;
     private int selectionID, shapeSelectionID;
     private Dialog dialog;
-    protected static boolean okToGo = false;
+    protected static boolean okToGo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+        okToGo = false;
 
     }
 
     public void goToEditor(View view){
         //ADD AN ERROR HANDLER IF NO INPUT NAME WAS GIVEN (ie okToGo boolean)
-        Intent intent = new Intent(this,NewGameActivity.class);
-        startActivity(intent);
+        if (!okToGo) {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Please Select a Game or Create a New One",
+                    Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            Intent intent = new Intent(this, NewGameActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void onOpenNewGame(View view) {
@@ -62,6 +70,7 @@ public class EditorActivity extends AppCompatActivity {
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 // Canceled.
+                okToGo = false;
             }
         });
 
@@ -72,10 +81,6 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     public void openExistingGames(View view){
-        Toast toast = Toast.makeText(getApplicationContext(),
-                "You've selected to open an existing Game",
-                Toast.LENGTH_SHORT);
-        toast.show();
         System.out.println("I CLICKED THE CHANGE PAGE BUTTON");
 
         final ArrayList<String> gameNames = getGameNames();
@@ -91,35 +96,24 @@ public class EditorActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Pick The Game");
 
-        //to begin with, the selected page will be the current page we're on
-       // final int currPos = CustomView.currPagePos;
-        //selection = arrayNames[currPos];
-        //selectionID = currPos;
 
         builder.setSingleChoiceItems(arrayNames, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 selection = arrayNames[i];
-               // selectionID = i;
+                okToGo = false;
             }
         });
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "You've clicked ok",
-                        Toast.LENGTH_SHORT);
-                toast.show();
-                Game.load(selection);
-                EditorView.gamePages = (ArrayList) Game.getPages();
-                EditorView.isNew = false;
-//                CustomView.currPagePos = selectionID;
-//                CustomView.currPage = pages.get(selectionID);
-//                //So that latest added shape isnt added
-//                CustomView.left = -10f;
-//                CustomView myView = findViewById(R.id.myCustomView);
-//                myView.invalidate();
+                if (selection != null) {
+                    Game.load(selection);
+                    EditorView.gamePages = (ArrayList) Game.getPages();
+                    EditorView.isNew = false;
+                    okToGo = true;
+                }
 
             }
         });
@@ -127,6 +121,7 @@ public class EditorActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                okToGo = false;
 
             }
         });
@@ -146,9 +141,6 @@ public class EditorActivity extends AppCompatActivity {
             output.add(cursor.getString(0));
         }
 
-        // for (int i = 0; i < output.size(); i++) {
-        //     Log.i("hi", "table contains " + output.get(i));
-        // }
         return output;
     }
 }

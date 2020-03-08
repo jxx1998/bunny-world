@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class EditorView extends View {
     protected static Page currPage;
-    protected static Game currGame;
+    protected static String currGameName;
     protected static ArrayList<Page> gamePages;
     protected static int currPagePos, currShapePos;
     protected static float x1, x2, y1, y2, left, right, top, bottom,xSelect, ySelect;
@@ -24,6 +24,7 @@ public class EditorView extends View {
     protected static ArrayList<String> shapeNames;
     protected static Shape selectedShape, mostRecentAddedShape;
     protected static boolean createNewShape;
+    protected static boolean isNew;
 
     //FOR DRAGGABLE SHAPE
     final float SQUARE_SIZE = 100.0f;
@@ -48,26 +49,17 @@ public class EditorView extends View {
     }
 
     private void init(){
+        System.out.println("is new game?: "+isNew);
+
         //We create a game object and add an initial page (just to test out, this initial page will have three shapes in them)
-
-        //currGame = new Game();
-
-        //Creating a new page
-
-        gamePages = new ArrayList<Page>();
         shapeNames = new ArrayList<String>();
-
-        Page firstPage = new Page("Page 1");
-        gamePages.add(firstPage);
-        currPagePos = 0;
-        currPage = gamePages.get(currPagePos);
-
         shapeNames.add("carrot");
         shapeNames.add("carrot2");
         shapeNames.add("death");
         shapeNames.add("duck");
         shapeNames.add("fire");
         shapeNames.add("mystic");
+        shapeNames.add("TextBox");
 
         currShapePos = 0;
         currDrawShapeName = shapeNames.get(currShapePos);
@@ -78,6 +70,21 @@ public class EditorView extends View {
         createNewShape = false;
         isAShapeSelected = false;
         changingDimensions = false;
+
+        //Creating a new page
+        if (isNew) {
+            gamePages = new ArrayList<Page>();
+
+            Page firstPage = new Page("Page 1");
+            gamePages.add(firstPage);
+
+        }
+
+        currPagePos = 0;
+        currPage = gamePages.get(currPagePos);
+
+        Game.setPages(gamePages);
+        Game.save(currGameName);
 
     }
 

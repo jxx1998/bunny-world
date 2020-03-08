@@ -11,8 +11,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class EditorActivity extends AppCompatActivity {
@@ -20,16 +22,53 @@ public class EditorActivity extends AppCompatActivity {
     private String selection, shapeSelection;
     private int selectionID, shapeSelectionID;
     private Dialog dialog;
+    protected static boolean okToGo = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+
+    }
+
+    public void goToEditor(View view){
+        //ADD AN ERROR HANDLER IF NO INPUT NAME WAS GIVEN (ie okToGo boolean)
+        Intent intent = new Intent(this,NewGameActivity.class);
+        startActivity(intent);
     }
 
     public void onOpenNewGame(View view) {
-        Intent intent = new Intent(this,NewGameActivity.class);
-        startActivity(intent);
+
+        System.out.println("I CLICKED THE CREATE NEW GAME BUTTON");
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        //maybe change this to .setMessage
+        alert.setTitle("Name New Game");
+
+        final EditText input = new EditText(this);
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                String inputStr = input.getText().toString();
+                EditorView.currGameName = inputStr;
+                EditorView.isNew = true;
+                okToGo = true;
+
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
+
+
+
     }
 
     public void openExistingGames(View view){
@@ -72,6 +111,9 @@ public class EditorActivity extends AppCompatActivity {
                         "You've clicked ok",
                         Toast.LENGTH_SHORT);
                 toast.show();
+                Game.load(selection);
+                EditorView.gamePages = (ArrayList) Game.getPages();
+                EditorView.isNew = false;
 //                CustomView.currPagePos = selectionID;
 //                CustomView.currPage = pages.get(selectionID);
 //                //So that latest added shape isnt added

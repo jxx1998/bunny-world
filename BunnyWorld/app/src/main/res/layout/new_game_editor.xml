@@ -112,7 +112,8 @@
             android:layout_row="1"
             android:layout_column="4"
             android:layout_gravity="fill_horizontal"
-            android:text="Other Shape" />
+            android:onClick="undo"
+            android:text="Undo" />
 
 
     </GridLayout>

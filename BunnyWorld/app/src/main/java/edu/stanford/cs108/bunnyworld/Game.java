@@ -21,6 +21,8 @@ public class Game implements Serializable {
 
     private List<Page> pages;
 
+    private int currPagePos;
+
     private Game() {
         pages = new ArrayList<Page>();
     }
@@ -121,13 +123,16 @@ public class Game implements Serializable {
         instance.pages.get(pageIndex).addShape(shape);
     }
 
-    public static void setPages(List<Page> pages) {
+    public static void set(List<Page> pages, int currPagePos) {
         instance.pages = pages;
+        instance.currPagePos = currPagePos;
     }
 
     public static List<Page> getPages() {
         return instance.pages;
     }
+
+    public static int getCurrPagePos() {return instance.currPagePos; }
 
     public static void removePage(Page page) {
         instance.pages.remove(page);

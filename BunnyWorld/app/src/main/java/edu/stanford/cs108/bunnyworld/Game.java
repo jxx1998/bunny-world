@@ -21,6 +21,8 @@ public class Game implements Serializable {
 
     private List<Page> pages;
 
+    private int currPagePos;
+
     private Game() {
         pages = new ArrayList<Page>();
     }
@@ -53,6 +55,7 @@ public class Game implements Serializable {
 
         if(cursor.moveToFirst()) {
             byte[] game_bytes = cursor.getBlob(1);
+            Log.i("hi", "this loaded game's id is: " + Integer.toString(cursor.getInt(2)));
             deserialize(game_bytes);
         }
         if (cursor != null && !cursor.isClosed()) {
@@ -66,12 +69,24 @@ public class Game implements Serializable {
 
         String selectCommand = "SELECT * FROM games WHERE name='" + gameName + "'";
         String orderBy = " ORDER BY _id DESC";
+
+        // Does nothing if there are less than two entries for this game in the database
+        Cursor precursor = db.rawQuery(selectCommand + orderBy, null);
+        int entryCount = 0;
+        while (precursor.moveToNext()) {
+            entryCount++;
+        }
+        if (entryCount < 2) {
+            return;
+        }
+
         Cursor cursor = db.rawQuery(selectCommand + orderBy, null);
 
         int id = -1;
         if (cursor.moveToFirst()) {
             id = cursor.getInt(2);
         }
+        Log.i("hi", Integer.toString(id));
         if (id != -1) {
             String deleteCommand = "DELETE FROM games WHERE _id=" + Integer.toString(id) + ";";
             db.execSQL(deleteCommand);
@@ -79,7 +94,7 @@ public class Game implements Serializable {
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
-        load(gameName);
+        Game.load(gameName);
 
     }
 
@@ -108,13 +123,16 @@ public class Game implements Serializable {
         instance.pages.get(pageIndex).addShape(shape);
     }
 
-    public static void setPages(List<Page> pages) {
+    public static void set(List<Page> pages, int currPagePos) {
         instance.pages = pages;
+        instance.currPagePos = currPagePos;
     }
 
     public static List<Page> getPages() {
         return instance.pages;
     }
+
+    public static int getCurrPagePos() {return instance.currPagePos; }
 
     public static void removePage(Page page) {
         instance.pages.remove(page);

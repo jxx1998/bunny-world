@@ -53,7 +53,7 @@ public class GameView extends View {
 
     // Testing only
     private void initDummyGame() {
-        Game.setPages(new ArrayList<Page>());
+        Game.set(new ArrayList<Page>(), 0);
         Shape shape = new ShapeBuilder().name("carrot").coordinates(0.0f, 0.0f, 200.0f, 200.0f).imageName("carrot").buildShape();
         Page page = new Page("page_0");
         page.addShape(shape);

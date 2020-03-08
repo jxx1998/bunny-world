@@ -53,6 +53,7 @@ public class Game implements Serializable {
 
         if(cursor.moveToFirst()) {
             byte[] game_bytes = cursor.getBlob(1);
+            Log.i("hi", "this loaded game's id is: " + Integer.toString(cursor.getInt(2)));
             deserialize(game_bytes);
         }
         if (cursor != null && !cursor.isClosed()) {
@@ -72,6 +73,7 @@ public class Game implements Serializable {
         if (cursor.moveToFirst()) {
             id = cursor.getInt(2);
         }
+        Log.i("hi", Integer.toString(id));
         if (id != -1) {
             String deleteCommand = "DELETE FROM games WHERE _id=" + Integer.toString(id) + ";";
             db.execSQL(deleteCommand);
@@ -79,7 +81,7 @@ public class Game implements Serializable {
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
-        load(gameName);
+        Game.load(gameName);
 
     }
 

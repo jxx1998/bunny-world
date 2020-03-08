@@ -32,8 +32,9 @@ public class NewGameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_game_editor);
-
+        if (EditorActivity.okToGo) {
+            setContentView(R.layout.new_game_editor);
+        }
     }
 
     @Override
@@ -120,7 +121,7 @@ public class NewGameActivity extends AppCompatActivity {
                 myView.invalidate();
 
                 Game.setPages(EditorView.gamePages);
-                Game.save("test_game_name");
+                Game.save(EditorView.currGameName);
 
             }
         });
@@ -153,13 +154,17 @@ public class NewGameActivity extends AppCompatActivity {
                 String inputStr = input.getText().toString();
                 Page currPage = EditorView.currPage;
 
-                String currPageName = currPage.name;
-                Game.renamePage(currPageName, inputStr);
+//                String currPageName = currPage.name;
+//                Game.renamePage(currPageName, inputStr);
+
 
                 currPage.setName(inputStr);
 
                 EditorView myView = findViewById(R.id.myCustomView);
                 myView.invalidate();
+
+                Game.setPages(EditorView.gamePages);
+                Game.save(EditorView.currGameName);
             }
         });
 
@@ -277,7 +282,7 @@ public class NewGameActivity extends AppCompatActivity {
 
         // We save to database using setPages instead of customized functionality
         Game.setPages(EditorView.gamePages);
-        Game.save("test_game_name");
+        Game.save(EditorView.currGameName);
 
     }
 
@@ -364,7 +369,7 @@ public class NewGameActivity extends AppCompatActivity {
             System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
 
             Game.setPages(EditorView.gamePages);
-            Game.save("test_game_name");
+            Game.save(EditorView.currGameName);
 
 
 
@@ -402,6 +407,10 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
+    public void saveGame(View view){
+        Game.save(EditorView.currGameName);
+    }
+
     public void editScript(MenuItem item) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -428,7 +437,7 @@ public class NewGameActivity extends AppCompatActivity {
 
         // Save game without using customized functions
         Game.setPages(EditorView.gamePages);
-        Game.save("test_game_name");
+        Game.save(EditorView.currGameName);
     }
 
 }

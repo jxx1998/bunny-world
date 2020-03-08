@@ -28,7 +28,7 @@ public class ShapeBuilder {
     String name;
     RectF coordinates;
     String imageName = ""; // Name of the image this Shape can draw
-    String text = ""; // Some text that this Shape can draw
+    String text; // Some text that this Shape can draw
     float textSize = 10.0f; // The size of the text in case Shape needs to draw the text
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
     boolean movable = true; // Whether this shape can be dragged around during Play time

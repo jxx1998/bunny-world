@@ -17,9 +17,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:onClick="onChooseEditor"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create New"/>
+        android:onClick="onChooseEditor"
+        android:text="Create New" />
+
+    <Button
+        android:id="@+id/gameButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Play Game"
+        android:onClick="onChooseGame" />
 
 </LinearLayout>

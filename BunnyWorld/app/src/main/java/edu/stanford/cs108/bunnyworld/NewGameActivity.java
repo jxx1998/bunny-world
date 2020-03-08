@@ -303,7 +303,7 @@ public class NewGameActivity extends AppCompatActivity {
             EditText botText = (EditText) dialog.findViewById(R.id.bottom);
             EditText textText = (EditText) dialog.findViewById(R.id.text);
             EditText sizeText = (EditText) dialog.findViewById(R.id.textSize);
-            EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
+           // EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
@@ -320,12 +320,12 @@ public class NewGameActivity extends AppCompatActivity {
                 textText.setText(EditorView.selectedShape.getText());
                 sizeText.setText(Float.toString(EditorView.selectedShape.getTextSize()));
             }
-            String scriptStr = EditorView.selectedShape.scripts.getScripts();
-            if (scriptStr == null || scriptStr.equals("")){
-                scriptText.setHint("No Scripts");
-            } else{
-                scriptText.setText(EditorView.selectedShape.scripts.getScripts());
-            }
+//            String scriptStr = EditorView.selectedShape.scripts.getScripts();
+//            if (scriptStr == null || scriptStr.equals("")){
+//                scriptText.setHint("No Scripts");
+//            } else{
+//                scriptText.setText(EditorView.selectedShape.scripts.getScripts());
+//            }
             imageNameText.setKeyListener(null);
             leftText.setText(Float.toString(EditorView.selectedShape.getLeft()));
             rightText.setText(Float.toString(EditorView.selectedShape.getRight()));
@@ -361,7 +361,7 @@ public class NewGameActivity extends AppCompatActivity {
             EditText botText = (EditText) dialog.findViewById(R.id.bottom);
             EditText textText = (EditText) dialog.findViewById(R.id.text);
             EditText sizeText = (EditText) dialog.findViewById(R.id.textSize);
-            EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
+            //EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
@@ -388,11 +388,11 @@ public class NewGameActivity extends AppCompatActivity {
             EditorView.selectedShape.setHidden(hidden);
 
 
-            String scriptString = scriptText.getText().toString();
-            Scripts newScript = new Scripts();
-            newScript.setScripts(scriptString);
-
-            EditorView.selectedShape.setScripts(newScript);
+//            String scriptString = scriptText.getText().toString();
+//            Scripts newScript = new Scripts();
+//            newScript.setScripts(scriptString);
+//
+//            EditorView.selectedShape.setScripts(newScript);
 
 
             //This is so that the immediate drawing of the shape can be changed without a reference to the selected x and y point
@@ -487,7 +487,11 @@ public class NewGameActivity extends AppCompatActivity {
     public void undo(View view){
         System.out.println("We've clicked the undo button");
 
-        
+        Game.loadPrevious(EditorView.currGameName);
+        EditorView.gamePages =(ArrayList<Page>) Game.getPages();
+
+        EditorView myView = findViewById(R.id.myCustomView);
+        myView.invalidate();
 
     }
 

@@ -254,13 +254,15 @@ public class NewGameActivity extends AppCompatActivity {
         } else{
 
 
-            Game.removePage(EditorView.gamePages.get(currentPagePosition));
-
+            //Game.removePage(EditorView.gamePages.get(currentPagePosition));
             EditorView.gamePages.remove(currentPagePosition);
             int numPagesNew = EditorView.gamePages.size();
             if (currentPagePosition == numPagesNew){
                 currentPagePosition = currentPagePosition -1;
             }
+
+            Game.setPages(EditorView.gamePages);
+            Game.save(EditorView.currGameName);
 
 
             Page toChangeToPage = EditorView.gamePages.get(currentPagePosition);
@@ -318,7 +320,12 @@ public class NewGameActivity extends AppCompatActivity {
                 textText.setText(EditorView.selectedShape.getText());
                 sizeText.setText(Float.toString(EditorView.selectedShape.getTextSize()));
             }
-            scriptText.setText(EditorView.selectedShape.scripts.getScripts());
+            String scriptStr = EditorView.selectedShape.scripts.getScripts();
+            if (scriptStr == null || scriptStr.equals("")){
+                scriptText.setHint("No Scripts");
+            } else{
+                scriptText.setText(EditorView.selectedShape.scripts.getScripts());
+            }
             imageNameText.setKeyListener(null);
             leftText.setText(Float.toString(EditorView.selectedShape.getLeft()));
             rightText.setText(Float.toString(EditorView.selectedShape.getRight()));
@@ -430,6 +437,9 @@ public class NewGameActivity extends AppCompatActivity {
             Page currPage = EditorView.currPage;
             currPage.removeShape(selectedShape);
 
+            Game.setPages(EditorView.gamePages);
+            Game.save(EditorView.currGameName);
+
             EditorView myView = findViewById(R.id.myCustomView);
             myView.invalidate();
 
@@ -440,6 +450,7 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     public void saveGame(View view){
+        Game.setPages(EditorView.gamePages);
         Game.save(EditorView.currGameName);
     }
 
@@ -470,6 +481,14 @@ public class NewGameActivity extends AppCompatActivity {
         // Save game without using customized functions
         Game.setPages(EditorView.gamePages);
         Game.save(EditorView.currGameName);
+    }
+
+
+    public void undo(View view){
+        System.out.println("We've clicked the undo button");
+
+        
+
     }
 
 }

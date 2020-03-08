@@ -25,6 +25,18 @@ public class Game implements Serializable {
         pages = new ArrayList<Page>();
     }
 
+    public static List<String> getGameNames() {
+        SQLiteDatabase db = Database.getInstance();
+        Cursor cursor = db.rawQuery("SELECT DISTINCT name FROM games",null);
+
+        ArrayList<String> results = new ArrayList<String>();
+        while (cursor.moveToNext()) {
+            results.add(cursor.getString(0));
+        }
+
+        return results;
+    }
+
     /**
      * Load a Game of given game_name from the Database, and set the Singleton instance.
      * If game_name doesn't exist, this function doesn't do anything.
@@ -34,7 +46,7 @@ public class Game implements Serializable {
     public static void load(String gameName) {
         SQLiteDatabase db = Database.getInstance();
 
-        String command = "SELECT * FROM games WHERE name='" + gameName + "'" + " ORDER BY _id DESC";
+        String command = "SELECT * FROM games WHERE name='" + gameName + "'";
         String orderBy = " ORDER BY _id DESC";
 
         command = command + orderBy;

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EditorActivity extends AppCompatActivity {
 
@@ -78,7 +79,7 @@ public class EditorActivity extends AppCompatActivity {
         toast.show();
         System.out.println("I CLICKED THE CHANGE PAGE BUTTON");
 
-        final ArrayList<String> gameNames = getGameNames();
+        final List<String> gameNames = Game.getGameNames();
         int numGames = gameNames.size();
         final String[] arrayNames = new String[numGames];
         final ArrayList<String> pageNames = new ArrayList<String>();
@@ -133,22 +134,5 @@ public class EditorActivity extends AppCompatActivity {
 
         builder.show();
 
-    }
-
-    // This function can eventually be used to return a list of game names instead for a dropdown menu for game selection.
-    private ArrayList<String> getGameNames() {
-        SQLiteDatabase db = Database.getInstance();
-        Cursor cursor = db.rawQuery("SELECT DISTINCT name FROM games",null);
-        ArrayList<String> output = new ArrayList<String>();
-
-
-        while (cursor.moveToNext()) {
-            output.add(cursor.getString(0));
-        }
-
-        // for (int i = 0; i < output.size(); i++) {
-        //     Log.i("hi", "table contains " + output.get(i));
-        // }
-        return output;
     }
 }

@@ -104,6 +104,7 @@ public class Scripts implements Serializable {
         }
     }
 
+    // Returns true if on-drop clause exists for shapeName
     public boolean onDrop(String shapeName) {
         if (onDropClauses.containsKey(shapeName)) {
             for (Action action: onDropClauses.get(shapeName)) {

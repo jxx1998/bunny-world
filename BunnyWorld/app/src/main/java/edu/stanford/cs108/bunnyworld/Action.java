@@ -3,6 +3,7 @@ package edu.stanford.cs108.bunnyworld;
 import android.content.Context;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
+import android.widget.Toast;
 
 import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;
 
@@ -33,23 +34,25 @@ public class Action {
         mp.start();
     }
 
+    private void throwToast(String msg) {
+        Toast toast = Toast.makeText(getGlobalContext(), msg, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
     public void execute() {
         if (keyword == "goto") {
-            int pageNum = -1;
-            for (int i = 0; i < EditorView.gamePages.size(); i++) {
-                if (EditorView.gamePages.get(i).name == this.name) {
-                    pageNum = i;
+            Page page = null;
+            for (Page candidatePage: Game.getPages()) {
+                if (candidatePage.name == name) {
+                    page = candidatePage;
                     break;
                 }
             }
-            if (pageNum < 0) {
-                throw new RuntimeException("Invalid page name");
+            if (page == null) {
+                throwToast("Invalid page name in scripts!");
+            } else {
+                GameView.changePage(page);
             }
-            EditorView.currPagePos = pageNum;
-            EditorView.currPage = EditorView.gamePages.get(pageNum);
-
-           // EditorView myView = getView().findViewById(R.id.myCustomView);
-
         } else if (keyword == "play") {
             playSound();
         } else if (keyword == "hide") {

@@ -36,6 +36,8 @@ public class Game implements Serializable {
 
         String command = "SELECT * FROM games WHERE name='" + gameName + "'" + " ORDER BY _id DESC";
         String orderBy = " ORDER BY _id DESC";
+
+        command = command + orderBy;
         Cursor cursor = db.rawQuery(command, null);
 
         if(cursor.moveToFirst()) {

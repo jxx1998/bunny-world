@@ -49,8 +49,7 @@ public class Game implements Serializable {
         String command = "SELECT * FROM games WHERE name='" + gameName + "'";
         String orderBy = " ORDER BY _id DESC";
 
-        command = command + orderBy;
-        Cursor cursor = db.rawQuery(command, null);
+        Cursor cursor = db.rawQuery(command + orderBy, null);
 
         if(cursor.moveToFirst()) {
             byte[] game_bytes = cursor.getBlob(1);

@@ -64,13 +64,23 @@ public class Game implements Serializable {
     public static void loadPrevious(String gameName) {
         SQLiteDatabase db = Database.getInstance();
 
-        String command = "DELETE FROM games WHERE name = '" + gameName + "'";
+        String selectCommand = "SELECT * FROM games WHERE name='" + gameName + "'";
         String orderBy = " ORDER BY _id DESC";
-        String limit = " LIMIT 1;";
+        Cursor cursor = db.rawQuery(selectCommand + orderBy, null);
 
-        db.execSQL(command + orderBy + limit);
-
+        int id = -1;
+        if (cursor.moveToFirst()) {
+            id = cursor.getInt(2);
+        }
+        if (id != -1) {
+            String deleteCommand = "DELETE FROM games WHERE _id=" + Integer.toString(id) + ";";
+            db.execSQL(deleteCommand);
+        }
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
         load(gameName);
+
     }
 
     /**

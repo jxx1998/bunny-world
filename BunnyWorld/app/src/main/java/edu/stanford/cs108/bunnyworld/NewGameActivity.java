@@ -262,6 +262,7 @@ public class NewGameActivity extends AppCompatActivity {
             }
 
             Game.setPages(EditorView.gamePages);
+            Game.save(EditorView.currGameName);
 
 
             Page toChangeToPage = EditorView.gamePages.get(currentPagePosition);
@@ -436,6 +437,9 @@ public class NewGameActivity extends AppCompatActivity {
             Page currPage = EditorView.currPage;
             currPage.removeShape(selectedShape);
 
+            Game.setPages(EditorView.gamePages);
+            Game.save(EditorView.currGameName);
+
             EditorView myView = findViewById(R.id.myCustomView);
             myView.invalidate();
 
@@ -446,6 +450,7 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     public void saveGame(View view){
+        Game.setPages(EditorView.gamePages);
         Game.save(EditorView.currGameName);
     }
 

@@ -35,7 +35,7 @@ public class Game implements Serializable {
         SQLiteDatabase db = Database.getInstance();
 
         String command = "SELECT * FROM games WHERE name='" + gameName + "'" + " ORDER BY _id DESC";
-        
+
         Cursor cursor = db.rawQuery(command, null);
 
         if(cursor.moveToFirst()) {

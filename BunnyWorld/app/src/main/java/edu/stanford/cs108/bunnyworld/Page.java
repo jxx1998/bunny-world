@@ -80,6 +80,12 @@ public class Page implements Serializable {
         return null;
     }
 
+    public void onEnter() {
+        for (Shape shape: shapes) {
+            shape.onEnter();
+        }
+    }
+
     // Sets the Shapes of the Page in bulk
     public void setShapes(List<Shape> shapes) {
         this.shapes = shapes;

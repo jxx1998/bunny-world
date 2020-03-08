@@ -55,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onChooseGame(View view) {
+        Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
+    }
+
     /**
      * This function is for testing the database. Will be deleted eventually.
      */

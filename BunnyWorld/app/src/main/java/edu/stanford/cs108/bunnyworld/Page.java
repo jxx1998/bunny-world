@@ -114,6 +114,11 @@ public class Page implements Serializable {
         return null;
     }
 
+    public void makeTopMost(Shape selectedShape){
+        removeShape(selectedShape);
+        addShape(selectedShape);
+    }
+
     /**
      * Given a Shape, returns all shapes in the current Page that have at least some overlap with
      * the given Shape in a List.

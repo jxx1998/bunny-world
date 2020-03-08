@@ -43,7 +43,7 @@ public class GameView extends View {
     }
 
     private void init() {
-        initDummyGame();
+        // initDummyGame();
         dividerPaint = new Paint();
         dividerPaint.setStyle(Paint.Style.STROKE);
         dividerPaint.setStrokeWidth(5.0f);

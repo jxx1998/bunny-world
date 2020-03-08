@@ -19,7 +19,7 @@ public class Scripts implements Serializable {
     private final Set<String> triggerKeywords = new HashSet<String>
             (Arrays.asList("on click", "on enter", "on drop"));
     private final Set<String> actionKeywords = new HashSet<String>
-            (Arrays.asList("goto", "play", "hide", "show"));
+            (Arrays.asList("goto", "play", "hide", "show", "switch", "move", "bounce"));
 
     String scriptStr;
     List<Action> onClickClauses; //these Strings actually contain two words each, e.g. goto page 3

@@ -3,6 +3,7 @@ package edu.stanford.cs108.bunnyworld;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 import java.io.ByteArrayInputStream;
@@ -16,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game implements Serializable {
+
+    // to keep track of ambient sound
+    protected static MediaPlayer ambientSound = null;
 
     private static Game instance = new Game();
 

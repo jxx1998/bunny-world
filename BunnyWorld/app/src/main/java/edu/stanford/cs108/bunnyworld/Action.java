@@ -2,6 +2,7 @@ package edu.stanford.cs108.bunnyworld;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
 public class Action implements Serializable {
     String keyword;
     String name;
+    transient BitmapDrawable imageDrawable;
 
     public Action(String str1, String str2) {
         keyword = str1;
@@ -23,24 +25,44 @@ public class Action implements Serializable {
      * Plays a sound with filename stored in this.name
      * If file not found, this method does nothing
      */
-    private void playSound() {
+    private void playSound(boolean ambient) {
         Context context = getGlobalContext();
         Resources resources = context.getResources();
         final int resourceId = resources.getIdentifier(name, "raw", context.getPackageName());
-        final MediaPlayer mp = MediaPlayer.create(context, resourceId);
-        if (mp == null) { return; }
-        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+        // play once
+        if (!ambient) {
+            final MediaPlayer mp = MediaPlayer.create(context, resourceId);
+            if (mp == null) { return; }
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                public void onCompletion(MediaPlayer mp) {
+                    mp.release();
+                }
+            });
+            mp.start();
+            return;
+        }
+
+        // ambient sound
+        if (Game.ambientSound != null) {
+            Game.ambientSound.stop();
+        }
+        Game.ambientSound = MediaPlayer.create(context, resourceId);
+        if (Game.ambientSound == null) { return; }
+        Game.ambientSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer mp) {
-                mp.release();
+                Game.ambientSound.release();
             }
         });
-        mp.start();
+        Game.ambientSound.setLooping(ambient);
+        Game.ambientSound.start();
     }
 
     private void throwToast(String msg) {
         Toast toast = Toast.makeText(getGlobalContext(), msg, Toast.LENGTH_SHORT);
         toast.show();
     }
+
 
     public void execute() {
         if (keyword.equals("goto")) {
@@ -57,7 +79,9 @@ public class Action implements Serializable {
                 GameView.changePage(page);
             }
         } else if (keyword.equals("play")) {
-            playSound();
+            playSound(false);
+        } else if (keyword.equals("ambient")) {
+            playSound(true);
         } else if (keyword.equals("hide")) {
             Shape shape = Game.getShape(name);
             if (shape != null) {
@@ -68,6 +92,33 @@ public class Action implements Serializable {
             if (shape != null) {
                 shape.setHidden(false);
             }
+        } else if (keyword.equals("switch")) {
+            Shape shape = GameView.shapeSelected;
+            if (!EditorView.shapeNames.contains(name)) {
+                throwToast("Invalid shape name in scripts!");
+            }
+            shape.setImageName(name);
+        } else if (keyword.equals("move")) {
+            // final float offset = 0.5f;
+            char dir = name.charAt(0);
+            float dis = Float.parseFloat(name.substring(1));
+            Shape shape = GameView.shapeSelected;
+            // float d = 0.0;
+            if (dir == 'r') {
+                shape.setCoordinates(shape.getLeft() + dis, shape.getTop(),
+                        shape.getRight() + dis, shape.getBottom());
+            } else if (dir == 'l') {
+                shape.setCoordinates(shape.getLeft() - dis, shape.getTop(),
+                        shape.getRight() - dis, shape.getBottom());
+            } else if (dir == 'u') {
+                shape.setCoordinates(shape.getLeft(), shape.getTop() - dis,
+                        shape.getRight(), shape.getBottom() - dis);
+            } else if (dir == 'd') {
+                shape.setCoordinates(shape.getLeft(), shape.getTop() + dis,
+                        shape.getRight(), shape.getBottom() + dis);
+            }
+        } else if (keyword.equals("bounce")) {
+            //TODO
         }
     }
 }

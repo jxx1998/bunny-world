@@ -166,6 +166,12 @@ public class GameView extends View {
     }
 
     public static void changePage(Page newPage) {
+        // clear ambient sound
+        if (!newPage.equals(currentPage) && Game.ambientSound != null) {
+            Game.ambientSound.stop();
+            Game.ambientSound = null;
+        }
+
         currentPage = newPage;
         shapeSelected = null;
         for (Shape shape: currentPage.shapes) {

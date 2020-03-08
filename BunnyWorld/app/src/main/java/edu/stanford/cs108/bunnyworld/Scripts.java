@@ -92,6 +92,30 @@ public class Scripts implements Serializable {
 
     }
 
+    public void onEnter() {
+        for (Action action: onEnterClauses) {
+            action.execute();
+        }
+    }
+
+    public void onClick() {
+        for (Action action: onClickClauses) {
+            action.execute();
+        }
+    }
+
+    // Returns true if on-drop clause exists for shapeName
+    public boolean onDrop(String shapeName) {
+        if (onDropClauses.containsKey(shapeName)) {
+            for (Action action: onDropClauses.get(shapeName)) {
+                action.execute();
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // getters and setters
 
 

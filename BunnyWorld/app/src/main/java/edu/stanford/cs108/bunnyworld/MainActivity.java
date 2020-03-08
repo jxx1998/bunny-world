@@ -1,19 +1,23 @@
 package edu.stanford.cs108.bunnyworld;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    int selectedGameIndex;
+    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         Database.createInstance(this);
 
         testGame(); // Testing only - could be deleted later
+        // Database.setupDatabase();
 
         //printDatabaseGames();
         //ArrayList<String> testList = getGameNames();
@@ -56,34 +61,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onChooseGame(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
-        startActivity(intent);
+        List<String> gameNameList = Game.getGameNames();
+        final String[] gameNames = gameNameList.toArray(new String[gameNameList.size()]);
+        selectedGameIndex = -1;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select a Game To Play");
+        builder.setSingleChoiceItems(gameNames, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                selectedGameIndex = i;
+            }
+        });
+        builder.setPositiveButton("Start Game", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (selectedGameIndex != -1) {
+                    Game.load(gameNames[selectedGameIndex]);
+                    Intent intent = new Intent(context, GameActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {}
+        });
+        builder.show();
     }
-
-    /**
-     * This function is for testing the database. Will be deleted eventually.
-     */
-
-    /*
-    // This function can eventually be used to return a list of game names instead for a dropdown menu for game selection.
-    private ArrayList<String> getGameNames() {
-        SQLiteDatabase db = Database.getInstance();
-        // Log.i("hi", "entered the printDatabaseGames method");
-        Cursor cursor = db.rawQuery("SELECT DISTINCT name FROM games",null);
-        ArrayList<String> output = new ArrayList<String>();
-
-
-        while (cursor.moveToNext()) {
-            Log.i("hi", cursor.getString(0));
-            output.add(cursor.getString(0));
-        }
-
-        for (int i = 0; i < output.size(); i++) {
-            Log.i("hi", "table contains " + output.get(i));
-        }
-        return output;
-    }
-
-     */
 
 }

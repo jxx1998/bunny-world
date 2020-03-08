@@ -3,6 +3,8 @@ package edu.stanford.cs108.bunnyworld;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 
 import java.io.IOException;
@@ -34,6 +36,9 @@ public class Page implements Serializable {
     }
 
     public void draw(Canvas canvas) {
+        if (imageDrawable != null) {
+            canvas.drawBitmap(imageDrawable.getBitmap(), null, new RectF(0.0f, 0.0f, GameView.width, GameView.dividerY), null);
+        }
         for (Shape shape: shapes) {
             shape.draw(canvas);
         }
@@ -86,6 +91,21 @@ public class Page implements Serializable {
         }
     }
 
+    // Returns true only if dropped onto a shape that doesn't have a on-drop clause
+    public boolean processOnDrop(Shape shape) {
+        List<Shape> candidateShapes = shapeOverlapped(shape, false, true);
+        boolean snapBack = false;
+        if (candidateShapes.size() > 0) {
+            snapBack = true;
+        }
+        for (Shape candidateShape: candidateShapes) {
+             if (candidateShape.onDrop(shape.name)) {
+                 snapBack = false;
+             }
+        }
+        return snapBack;
+    }
+
     // Sets the Shapes of the Page in bulk
     public void setShapes(List<Shape> shapes) {
         this.shapes = shapes;
@@ -130,6 +150,9 @@ public class Page implements Serializable {
     public List<Shape> shapeOverlapped(Shape shape, boolean returnHidden, boolean returnUnmovable) {
         List<Shape> overlaps = new ArrayList<Shape>();
         for (Shape candidate: shapes) {
+            if (candidate == shape) {
+                continue;
+            }
             if (returnHidden == false && candidate.isHidden()) {
                 continue;
             }

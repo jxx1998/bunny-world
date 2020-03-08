@@ -299,16 +299,32 @@ public class NewGameActivity extends AppCompatActivity {
             EditText rightText = (EditText) dialog.findViewById(R.id.right);
             EditText topText = (EditText) dialog.findViewById(R.id.top);
             EditText botText = (EditText) dialog.findViewById(R.id.bottom);
+            EditText textText = (EditText) dialog.findViewById(R.id.text);
+            EditText sizeText = (EditText) dialog.findViewById(R.id.textSize);
+            EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
             shapeNameText.setText(EditorView.selectedShape.name);
             imageNameText.setText(EditorView.selectedShape.imageName);
+            String shapeText = EditorView.selectedShape.getText();
+            if (shapeText == null){
+                textText.setText("No Text");
+                textText.setInputType(0);
+                textText.setClickable(false);
+                sizeText.setText(Float.toString(EditorView.selectedShape.getTextSize()));
+                sizeText.setInputType(0);
+            } else {
+                textText.setText(EditorView.selectedShape.getText());
+                sizeText.setText(Float.toString(EditorView.selectedShape.getTextSize()));
+            }
+            scriptText.setText(EditorView.selectedShape.scripts.getScripts());
             imageNameText.setKeyListener(null);
             leftText.setText(Float.toString(EditorView.selectedShape.getLeft()));
             rightText.setText(Float.toString(EditorView.selectedShape.getRight()));
             topText.setText(Float.toString(EditorView.selectedShape.getTop()));
             botText.setText(Float.toString(EditorView.selectedShape.getBottom()));
+
 
             isMoveable.setChecked(EditorView.selectedShape.isMovable());
             isVisible.setChecked(!EditorView.selectedShape.isHidden());
@@ -336,7 +352,9 @@ public class NewGameActivity extends AppCompatActivity {
             EditText rightText = (EditText) dialog.findViewById(R.id.right);
             EditText topText = (EditText) dialog.findViewById(R.id.top);
             EditText botText = (EditText) dialog.findViewById(R.id.bottom);
-
+            EditText textText = (EditText) dialog.findViewById(R.id.text);
+            EditText sizeText = (EditText) dialog.findViewById(R.id.textSize);
+            EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
@@ -345,17 +363,31 @@ public class NewGameActivity extends AppCompatActivity {
             float newRight = Float.parseFloat(rightText.getText().toString());
             float newTop = Float.parseFloat(topText.getText().toString());
             float newBot = Float.parseFloat(botText.getText().toString());
+            String text = textText.getText().toString();
+            float textSize = Float.parseFloat(sizeText.getText().toString());
             boolean moveable = isMoveable.isChecked();
             boolean visible = isVisible.isChecked();
             boolean hidden = !visible;
 
 
+
             EditorView.selectedShape.setName(newName);
             EditorView.selectedShape.setCoordinates(newLeft,newTop,newRight,newBot);
             //EditorView.selectedShape.setCenterCoordinates(EditorView.selectedShape.coordinates.centerX(), EditorView.selectedShape.coordinates.centerY(),newWidth,newHeight);
-
+            if (textText.isClickable()) {
+                EditorView.selectedShape.setText(text, textSize);
+            }
             EditorView.selectedShape.setMovable(moveable);
             EditorView.selectedShape.setHidden(hidden);
+
+
+            String scriptString = scriptText.getText().toString();
+            Scripts newScript = new Scripts();
+            newScript.setScripts(scriptString);
+
+            EditorView.selectedShape.setScripts(newScript);
+
+
             //This is so that the immediate drawing of the shape can be changed without a reference to the selected x and y point
             EditorView.changingDimensions = true;
             EditorView myView = findViewById(R.id.myCustomView);

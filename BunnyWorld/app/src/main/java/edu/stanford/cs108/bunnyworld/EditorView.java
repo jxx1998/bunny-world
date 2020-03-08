@@ -42,6 +42,7 @@ public class EditorView extends View {
     public EditorView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
+        EditorActivity.okToGo =false;
     }
 
     public void setCurrPage(Page currPage) {
@@ -105,8 +106,15 @@ public class EditorView extends View {
             float startright = START_X + SQUARE_SIZE;
             float startbottom = START_Y + SQUARE_SIZE;
 
+            Shape newShape;
+            if (!currDrawShapeName.equals("TextBox")) {
+                newShape = new ShapeBuilder().name("NewShape").coordinates(startleft, starttop, startright, startbottom).imageName(currDrawShapeName).buildShape();
+            } else{
+                newShape = new ShapeBuilder().name("NewShape").coordinates(startleft, starttop, startright, startbottom).buildShape();
+                newShape.setText("This is my shapeText", 50);
 
-            Shape newShape = new ShapeBuilder().name("NewAddedShape").coordinates(startleft,starttop,startright,startbottom).imageName(currDrawShapeName).buildShape();
+               // newShape.setText(shapeText);
+            }
             //This is what I used for the click, create, and move feature
             //Shape newShape = new ShapeBuilder().name("AddedShape").coordinates(left,top,right,bottom).imageName(currDrawShapeName).buildShape();
             currPage.addShape(newShape);

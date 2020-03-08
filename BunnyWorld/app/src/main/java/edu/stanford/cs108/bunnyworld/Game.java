@@ -60,6 +60,19 @@ public class Game implements Serializable {
         }
     }
 
+
+    public static void loadPrevious(String gameName) {
+        SQLiteDatabase db = Database.getInstance();
+
+        String command = "DELETE FROM games WHERE name = '" + gameName + "'";
+        String orderBy = " ORDER BY _id DESC";
+        String limit = " LIMIT 1";
+
+        db.execSQL(command + orderBy + limit);
+
+        load(gameName);
+    }
+
     /**
      * Saves the current Game into the Database with name "game_name".
      * @param gameName String, name of the game

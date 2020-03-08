@@ -120,7 +120,7 @@ public class NewGameActivity extends AppCompatActivity {
                 EditorView myView = findViewById(R.id.myCustomView);
                 myView.invalidate();
 
-                Game.setPages(EditorView.gamePages);
+                Game.set(EditorView.gamePages, EditorView.currPagePos);
                 Game.save(EditorView.currGameName);
 
             }
@@ -163,7 +163,7 @@ public class NewGameActivity extends AppCompatActivity {
                 EditorView myView = findViewById(R.id.myCustomView);
                 myView.invalidate();
 
-                Game.setPages(EditorView.gamePages);
+                Game.set(EditorView.gamePages, EditorView.currPagePos);
                 Game.save(EditorView.currGameName);
             }
         });
@@ -261,7 +261,7 @@ public class NewGameActivity extends AppCompatActivity {
                 currentPagePosition = currentPagePosition -1;
             }
 
-            Game.setPages(EditorView.gamePages);
+            Game.set(EditorView.gamePages, EditorView.currPagePos);
             Game.save(EditorView.currGameName);
 
 
@@ -282,8 +282,8 @@ public class NewGameActivity extends AppCompatActivity {
         EditorView myView = findViewById(R.id.myCustomView);
         myView.invalidate();
 
-        // We save to database using setPages instead of customized functionality
-        Game.setPages(EditorView.gamePages);
+        // We save to database using set instead of customized functionality
+        Game.set(EditorView.gamePages, EditorView.currPagePos);
         Game.save(EditorView.currGameName);
 
     }
@@ -407,7 +407,7 @@ public class NewGameActivity extends AppCompatActivity {
 
             System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
 
-            Game.setPages(EditorView.gamePages);
+            Game.set(EditorView.gamePages, EditorView.currPagePos);
             Game.save(EditorView.currGameName);
 
 
@@ -437,7 +437,7 @@ public class NewGameActivity extends AppCompatActivity {
             Page currPage = EditorView.currPage;
             currPage.removeShape(selectedShape);
 
-            Game.setPages(EditorView.gamePages);
+            Game.set(EditorView.gamePages, EditorView.currPagePos);
             Game.save(EditorView.currGameName);
 
             EditorView myView = findViewById(R.id.myCustomView);
@@ -450,7 +450,7 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     public void saveGame(View view){
-        Game.setPages(EditorView.gamePages);
+        Game.set(EditorView.gamePages, EditorView.currPagePos);
         Game.save(EditorView.currGameName);
     }
 
@@ -479,7 +479,7 @@ public class NewGameActivity extends AppCompatActivity {
         alert.show();
 
         // Save game without using customized functions
-        Game.setPages(EditorView.gamePages);
+        Game.set(EditorView.gamePages, EditorView.currPagePos);
         Game.save(EditorView.currGameName);
     }
 
@@ -489,6 +489,8 @@ public class NewGameActivity extends AppCompatActivity {
 
         Game.loadPrevious(EditorView.currGameName);
         EditorView.gamePages =(ArrayList<Page>) Game.getPages();
+        EditorView.currPagePos = Game.getCurrPagePos();
+        EditorView.currPage = EditorView.gamePages.get(EditorView.currPagePos);
 
         EditorView myView = findViewById(R.id.myCustomView);
         myView.invalidate();

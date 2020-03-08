@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         Database.createInstance(this);
 
-        testGame(); // Testing only - could be deleted later
+        // testGame(); // Testing only - could be deleted later
         // Database.setupDatabase();
 
         //printDatabaseGames();

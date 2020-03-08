@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -1,5 +1,6 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -58,16 +59,16 @@ public class Scripts implements Serializable {
             }
 
             List<Action> actions = new ArrayList<Action>();
-            if (trigger == "on click") {
+            if (trigger.equals("on click")) {
                 if (!onClickSet) {
                     onClickClauses = actions;
                     onClickSet = true;
                 } else {
                     continue;
                 }
-            } else if (trigger == "on enter") {
+            } else if (trigger.equals("on enter")) {
                 onEnterClauses = actions;
-            } else if (trigger == "on drop") {
+            } else if (trigger.equals("on drop")) {
                 if (!stClause.hasMoreTokens()) {
                     throwToast("Incomplete on drop clause!");
                 }

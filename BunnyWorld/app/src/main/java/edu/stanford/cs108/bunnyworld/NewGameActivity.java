@@ -483,4 +483,12 @@ public class NewGameActivity extends AppCompatActivity {
         Game.save(EditorView.currGameName);
     }
 
+
+    public void undo(View view){
+        System.out.println("We've clicked the undo button");
+
+        
+
+    }
+
 }

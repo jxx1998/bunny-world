@@ -254,13 +254,14 @@ public class NewGameActivity extends AppCompatActivity {
         } else{
 
 
-            Game.removePage(EditorView.gamePages.get(currentPagePosition));
-
+            //Game.removePage(EditorView.gamePages.get(currentPagePosition));
             EditorView.gamePages.remove(currentPagePosition);
             int numPagesNew = EditorView.gamePages.size();
             if (currentPagePosition == numPagesNew){
                 currentPagePosition = currentPagePosition -1;
             }
+
+            Game.setPages(EditorView.gamePages);
 
 
             Page toChangeToPage = EditorView.gamePages.get(currentPagePosition);
@@ -318,7 +319,12 @@ public class NewGameActivity extends AppCompatActivity {
                 textText.setText(EditorView.selectedShape.getText());
                 sizeText.setText(Float.toString(EditorView.selectedShape.getTextSize()));
             }
-            scriptText.setText(EditorView.selectedShape.scripts.getScripts());
+            String scriptStr = EditorView.selectedShape.scripts.getScripts();
+            if (scriptStr == null || scriptStr.equals("")){
+                scriptText.setHint("No Scripts");
+            } else{
+                scriptText.setText(EditorView.selectedShape.scripts.getScripts());
+            }
             imageNameText.setKeyListener(null);
             leftText.setText(Float.toString(EditorView.selectedShape.getLeft()));
             rightText.setText(Float.toString(EditorView.selectedShape.getRight()));

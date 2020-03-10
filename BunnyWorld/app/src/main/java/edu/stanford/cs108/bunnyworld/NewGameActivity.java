@@ -10,6 +10,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -310,6 +312,13 @@ public class NewGameActivity extends AppCompatActivity {
             EditText sizeText = (EditText) dialog.findViewById(R.id.textSize);
             Switch isBold = (Switch) dialog.findViewById(R.id.bold);
             Switch isItalic = (Switch) dialog.findViewById(R.id.italics);
+            RadioGroup group = (RadioGroup) dialog.findViewById(R.id.font_group);
+
+            SeekBar redView = (SeekBar) dialog.findViewById(R.id.redProgress);
+            SeekBar greenView = (SeekBar) dialog.findViewById(R.id.greenProgress);
+            SeekBar blueView = (SeekBar) dialog.findViewById(R.id.blueProgress);
+
+
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
@@ -322,16 +331,54 @@ public class NewGameActivity extends AppCompatActivity {
                 textText.setClickable(false);
                 sizeText.setText(Float.toString(EditorView.selectedShape.getTextSize()));
                 sizeText.setInputType(0);
+                isBold.setClickable(false);
+                isItalic.setClickable(false);
+                redView.setEnabled(false);
+                blueView.setEnabled(false);
+                greenView.setEnabled(false);
+                for(int i = 0; i < group.getChildCount(); i++){
+                    ((RadioButton)group.getChildAt(i)).setEnabled(false);
+                }
             } else {
                 textText.setText(EditorView.selectedShape.getText());
                 sizeText.setText(Float.toString(EditorView.selectedShape.getTextSize()));
+                int red = EditorView.selectedShape.red;
+                int green = EditorView.selectedShape.green;
+                int blue = EditorView.selectedShape.blue;
+
+                redView.setProgress(red);
+                blueView.setProgress(blue);
+                greenView.setProgress(green);
+
+
+                String fontType = EditorView.selectedShape.getTypeface();
+                System.out.println(fontType);
+                int currButton = 0;
+                if (fontType.equals("MONOSPACE")){
+                    currButton = 1;
+                } else if (fontType.equals("SANS_SERIF")){
+                    currButton = 2;
+                } else if (fontType.equals("SERIF")){
+                    currButton = 3;
+                }
+
+
+
+                for(int i = 0; i < group.getChildCount(); i++){
+                    if (i == currButton) {
+                        ((RadioButton) group.getChildAt(i)).setChecked(true);
+                    } else{
+                        ((RadioButton)group.getChildAt(i)).setChecked(false);
+                    }
+
+                }
+
+                isBold.setChecked(EditorView.selectedShape.bold);
+                isItalic.setChecked((EditorView.selectedShape.italics));
+
+
             }
-//            String scriptStr = EditorView.selectedShape.scripts.getScripts();
-//            if (scriptStr == null || scriptStr.equals("")){
-//                scriptText.setHint("No Scripts");
-//            } else{
-//                scriptText.setText(EditorView.selectedShape.scripts.getScripts());
-//            }
+
             imageNameText.setKeyListener(null);
             leftText.setText(Float.toString(EditorView.selectedShape.getLeft()));
             rightText.setText(Float.toString(EditorView.selectedShape.getRight()));
@@ -367,9 +414,37 @@ public class NewGameActivity extends AppCompatActivity {
             EditText botText = (EditText) dialog.findViewById(R.id.bottom);
             EditText textText = (EditText) dialog.findViewById(R.id.text);
             EditText sizeText = (EditText) dialog.findViewById(R.id.textSize);
-            //EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
+            RadioGroup group = (RadioGroup) dialog.findViewById(R.id.font_group);
+            Switch isBold = (Switch) dialog.findViewById(R.id.bold);
+            Switch isItalic = (Switch) dialog.findViewById(R.id.italics);
+
+            String fontStr = "DEFAULT";
+
+            int currentCheck = group.getCheckedRadioButtonId();
+            switch(currentCheck){
+                case R.id.defaultFont:
+                    break;
+                case R.id.monospace:
+                    fontStr = "MONOSPACE";
+                    break;
+                case R.id.sansSerif:
+                    fontStr = "SANS_SERIF";
+                    break;
+                case R.id.serif:
+                    fontStr = "SERIF";
+                    break;
+            }
+            SeekBar redView = (SeekBar) dialog.findViewById(R.id.redProgress);
+            SeekBar greenView = (SeekBar) dialog.findViewById(R.id.greenProgress);
+            SeekBar blueView = (SeekBar) dialog.findViewById(R.id.blueProgress);
+
+            int red = redView.getProgress();
+            int green = greenView.getProgress();
+            int blue = blueView.getProgress();
+
+            int newTextColor = Color.rgb(red,green,blue);
 
             String newName = shapeNameText.getText().toString();
             float newLeft = Float.parseFloat(leftText.getText().toString());
@@ -389,26 +464,21 @@ public class NewGameActivity extends AppCompatActivity {
             //EditorView.selectedShape.setCenterCoordinates(EditorView.selectedShape.coordinates.centerX(), EditorView.selectedShape.coordinates.centerY(),newWidth,newHeight);
             if (textText.isClickable()) {
                 EditorView.selectedShape.setText(text, textSize);
+                EditorView.selectedShape.setBold(isBold.isChecked());
+                EditorView.selectedShape.setItalic(isItalic.isChecked());
+                EditorView.selectedShape.setColor(newTextColor);
+                EditorView.selectedShape.red = red;
+                EditorView.selectedShape.green = green;
+                EditorView.selectedShape.blue = blue;
+
+                EditorView.selectedShape.setTypeface(fontStr);
+
             }
             EditorView.selectedShape.setMovable(moveable);
             EditorView.selectedShape.setHidden(hidden);
 
 
-//            String scriptString = scriptText.getText().toString();
-//            Scripts newScript = new Scripts();
-//            newScript.setScripts(scriptString);
-//
-//            EditorView.selectedShape.setScripts(newScript);
 
-            SeekBar redView = (SeekBar) dialog.findViewById(R.id.redProgress);
-            SeekBar greenView = (SeekBar) dialog.findViewById(R.id.greenProgress);
-            SeekBar blueView = (SeekBar) dialog.findViewById(R.id.blueProgress);
-
-            int red = redView.getProgress();
-            int green = greenView.getProgress();
-            int blue = blueView.getProgress();
-
-            int newTextColor = Color.rgb(red,green,blue);
 
 
 

@@ -34,6 +34,11 @@ public class Shape implements Serializable {
     boolean movable = true; // Whether this shape can be dragged around during Play time
     String typeface = "DEFAULT";
     Scripts scripts = new Scripts();
+    int red = 0;
+    int green = 0;
+    int blue = 0;
+    boolean bold = false;
+    boolean italics = false;
 
     transient Paint paint, defaultPaint, highlightPaint;
     transient BitmapDrawable imageDrawable;
@@ -125,19 +130,23 @@ public class Shape implements Serializable {
         paint.setColor(color);
     }
 
-    public void setBold(boolean bold) {
-        if (bold) {
+    public void setBold(boolean bolded) {
+        if (bolded) {
             paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.BOLD));
+            bold = true;
         } else {
             paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.NORMAL));
+            bold = false;
         }
     }
 
-    public void setItalic(boolean italic) {
-        if (italic) {
+    public void setItalic(boolean italiced) {
+        if (italiced) {
             paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.ITALIC));
+            italics = true;
         } else {
             paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.NORMAL));
+            italics = false;
         }
     }
 

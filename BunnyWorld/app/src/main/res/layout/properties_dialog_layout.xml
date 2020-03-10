@@ -179,25 +179,6 @@
         />
     </LinearLayout>
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_row="5"-->
-<!--        android:layout_column="0"-->
-<!--        android:layout_columnSpan="2"-->
-<!--        android:orientation="horizontal">-->
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Shape Scripts: "/>-->
-<!--        <EditText-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:id="@+id/shapeScripts"-->
-<!--            android:hint="Select a Shape"-->
-<!--            />-->
-<!--    </LinearLayout>-->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -273,26 +254,113 @@
         android:layout_column="1"
         android:orientation="vertical">
 
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
 
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bold"
+                android:textOn="On"
+                android:textOff="Off"
+                android:showText="true"
+                android:id="@+id/bold"
+                />
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Italics"
+                android:textOn="On"
+                android:textOff="Off"
+                android:showText="true"
+                android:id="@+id/italics"
+                />
+
+<!--        </LinearLayout>-->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="6"
+        android:layout_columnSpan="2"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Font: "
+            android:textSize="15sp"/>
+
+
+        <RadioGroup
+            android:id="@+id/size_group"
+            android:orientation="horizontal"
+            android:layout_row="6"
+            android:layout_columnSpan="2"
+            android:checkedButton="@+id/defaultFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <RadioButton
+                android:id="@id/defaultFont"
+                android:text="Normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/monospace"
+                android:text="Monospace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/sansSerif"
+                android:text="Sans Sarif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/serif"
+                android:text="Sarif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RadioGroup>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_row="8"
+        android:layout_column="0"
+        android:orientation="horizontal">
 
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bold"
+            android:layout_row="8"
+            android:layout_column="0"
+            android:text="Moveable"
             android:textOn="On"
             android:textOff="Off"
             android:showText="true"
-            android:id="@+id/bold"
+            android:id="@+id/moveable"
             />
-
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Italics"
+            android:layout_row="7"
+            android:layout_column="1"
+            android:text="Visible"
             android:textOn="On"
             android:textOff="Off"
             android:showText="true"
-            android:id="@+id/italics"
+            android:id="@+id/visible"
             />
 
 
@@ -301,33 +369,11 @@
 
 
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_row="6"
-        android:layout_column="0"
-        android:text="Moveable"
-        android:textOn="On"
-        android:textOff="Off"
-        android:showText="true"
-        android:id="@+id/moveable"
-        />
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_row="6"
-        android:layout_column="1"
-        android:text="Visible"
-        android:textOn="On"
-        android:textOff="Off"
-        android:showText="true"
-        android:id="@+id/visible"
-        />
 
     <Button
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_row="7"
+        android:layout_row="8"
         android:layout_column="1"
         android:text="Update Properties"
         android:onClick="updateProps"/>

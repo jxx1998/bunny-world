@@ -112,6 +112,7 @@ public class EditorActivity extends AppCompatActivity {
                 if (selection != null) {
                     Game.load(selection);
                     EditorView.gamePages = (ArrayList) Game.getPages();
+                    EditorView.currGameName = selection;
                     EditorView.isNew = false;
                     okToGo = true;
                 }

@@ -305,7 +305,8 @@ public class NewGameActivity extends AppCompatActivity {
             EditText botText = (EditText) dialog.findViewById(R.id.bottom);
             EditText textText = (EditText) dialog.findViewById(R.id.text);
             EditText sizeText = (EditText) dialog.findViewById(R.id.textSize);
-           // EditText scriptText = (EditText) dialog.findViewById(R.id.shapeScripts);
+            Switch isBold = (Switch) dialog.findViewById(R.id.bold);
+            Switch isItalic = (Switch) dialog.findViewById(R.id.italics);
             Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
             Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 

@@ -284,8 +284,8 @@ public class NewGameActivity extends AppCompatActivity {
 
 
         // We save to database using set instead of customized functionality
-        Game.set(EditorView.gamePages, EditorView.currPagePos);
-        Game.save(EditorView.currGameName);
+        //Game.set(EditorView.gamePages, EditorView.currPagePos);
+        //Game.save(EditorView.currGameName);
 
         EditorView myView = findViewById(R.id.myCustomView);
         myView.invalidate();

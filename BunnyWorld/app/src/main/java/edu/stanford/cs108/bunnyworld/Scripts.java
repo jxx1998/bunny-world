@@ -20,11 +20,14 @@ public class Scripts implements Serializable {
             (Arrays.asList("on click", "on enter", "on drop"));
     private final Set<String> actionKeywords = new HashSet<String>
             (Arrays.asList("goto", "play", "hide", "show", "switch", "move", "bounce", "ambient"));
+    private final Set<String> conditionalActionKeywords = new HashSet<String>
+            (Arrays.asList("inventory"));
 
     String scriptStr;
-    List<Action> onClickClauses; //these Strings actually contain two words each, e.g. goto page 3
+    List<Action> onClickClauses; //these Strings actually contain two words each, e.g. goto page3
     List<Action> onEnterClauses;
     Map<String, List<Action>> onDropClauses;
+
 
     public Scripts() {
         scriptStr = "";
@@ -77,6 +80,23 @@ public class Scripts implements Serializable {
                 actions = onDropClauses.get(shapeName);
             }
 
+            //ADD CONDITIONALS
+            if (stClause.hasMoreTokens() && stClause.nextToken().equals("if")) {
+                String keyword = stClause.nextToken();
+                if (!conditionalActionKeywords.contains(keyword)) {
+                    throwToast("Input includes invalid conditional action primitive!");
+                }
+                if (!stClause.hasMoreTokens()) {
+                    throwToast("Incomplete conditional clause string detected!");
+                }
+                String name = stClause.nextToken();
+
+                //If inventory contains object with name "name", then...
+
+                //TO-DO: How to check conditionals
+
+
+            }
             while (stClause.hasMoreTokens()) {
                 String keyword = stClause.nextToken();
                 if (!actionKeywords.contains(keyword)) {

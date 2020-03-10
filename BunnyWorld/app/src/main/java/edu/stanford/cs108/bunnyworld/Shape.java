@@ -32,10 +32,10 @@ public class Shape implements Serializable {
     String text; // Some text that this Shape can draw
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
     boolean movable = true; // Whether this shape can be dragged around during Play time
-    String textTypeface = "DEFAULT";
+    String typeface = "DEFAULT";
     Scripts scripts = new Scripts();
 
-    transient Paint textPaint, defaultPaint, highlightPaint;
+    transient Paint paint, defaultPaint, highlightPaint;
     transient BitmapDrawable imageDrawable;
 
     /**
@@ -46,13 +46,13 @@ public class Shape implements Serializable {
         this.name = name;
         this.coordinates = coordinates;
         constantInit();
-        textPaint.setTypeface(Typeface.create(nameToTypeface.get(textTypeface), Typeface.NORMAL));
-        textPaint.setTextSize(10.0f);
+        paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.NORMAL));
+        paint.setTextSize(10.0f);
         highlightPaint.setColor(Color.TRANSPARENT);
     }
 
     private void constantInit() {
-        textPaint = new Paint();
+        paint = new Paint();
         defaultPaint = new Paint();
         highlightPaint = new Paint();
         loadImage();
@@ -84,10 +84,10 @@ public class Shape implements Serializable {
     public String getName() { return this.name; }
     public String getImageName() { return imageName; }
     public String getText() { return text; }
-    public float getTextSize() { return textPaint.getTextSize(); }
-    public int getTextColor() { return textPaint.getColor(); }
-    public int getTextStyle() { return textPaint.getTypeface().getStyle(); }
-    public String getTextTypeface() { return textTypeface; }
+    public float getTextSize() { return paint.getTextSize(); }
+    public int getColor() { return paint.getColor(); }
+    public int getStyle() { return paint.getTypeface().getStyle(); }
+    public String getTypeface() { return typeface; }
     public boolean isHidden() { return hidden; }
     public boolean isMovable() { return movable; }
     public Scripts getScripts() { return scripts; }
@@ -118,33 +118,33 @@ public class Shape implements Serializable {
 
     public void setText(String text, float textSize) {
         this.text = text;
-        textPaint.setTextSize(textSize);
+        paint.setTextSize(textSize);
     }
 
-    public void setTextColor(int color) {
-        textPaint.setColor(color);
+    public void setColor(int color) {
+        paint.setColor(color);
     }
 
-    public void setTextBold(boolean bold) {
+    public void setBold(boolean bold) {
         if (bold) {
-            textPaint.setTypeface(Typeface.create(nameToTypeface.get(textTypeface), Typeface.BOLD));
+            paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.BOLD));
         } else {
-            textPaint.setTypeface(Typeface.create(nameToTypeface.get(textTypeface), Typeface.NORMAL));
+            paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.NORMAL));
         }
     }
 
-    public void setTextItalic(boolean italic) {
+    public void setItalic(boolean italic) {
         if (italic) {
-            textPaint.setTypeface(Typeface.create(nameToTypeface.get(textTypeface), Typeface.ITALIC));
+            paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.ITALIC));
         } else {
-            textPaint.setTypeface(Typeface.create(nameToTypeface.get(textTypeface), Typeface.NORMAL));
+            paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.NORMAL));
         }
     }
 
-    public void setTextTypeface(String typeface) {
+    public void setTypeface(String typeface) {
         if (nameToTypeface.containsKey(typeface)) {
-            this.textTypeface = typeface;
-            textPaint.setTypeface(Typeface.create(nameToTypeface.get(typeface), textPaint.getTypeface().getStyle()));
+            this.typeface = typeface;
+            paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), paint.getTypeface().getStyle()));
         }
     }
 
@@ -167,9 +167,9 @@ public class Shape implements Serializable {
         canvas.drawRect(coordinates, highlightPaint);
         if (hidden) { return; }
         if (text != null) {
-            canvas.drawText(text, this.getLeft(), this.getTop(), textPaint);
+            canvas.drawText(text, this.getLeft(), this.getTop(), paint);
         } else if (imageDrawable != null) {
-            canvas.drawBitmap(imageDrawable.getBitmap(), null, this.getRectF(), null);
+            canvas.drawBitmap(imageDrawable.getBitmap(), null, this.getRectF(), paint);
         } else {
             canvas.drawRect(this.getRectF(), defaultPaint);
         }
@@ -204,11 +204,11 @@ public class Shape implements Serializable {
         this.coordinates = new RectF(left, top, right, bottom);
 
         float textSize = in.readFloat();
-        textPaint.setTextSize(textSize);
+        paint.setTextSize(textSize);
         int textStyle = in.readInt();
-        textPaint.setTypeface(Typeface.create(nameToTypeface.get(textTypeface), textStyle));
+        paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), textStyle));
         int textColor = in.readInt();
-        textPaint.setColor(textColor);
+        paint.setColor(textColor);
 
         int highlightColor = in.readInt();
         highlightPaint.setColor(highlightColor);
@@ -221,9 +221,9 @@ public class Shape implements Serializable {
         out.writeFloat(this.coordinates.top);
         out.writeFloat(this.coordinates.right);
         out.writeFloat(this.coordinates.bottom);
-        out.writeFloat(textPaint.getTextSize());
-        out.writeInt(textPaint.getTypeface().getStyle());
-        out.writeInt(textPaint.getColor());
+        out.writeFloat(paint.getTextSize());
+        out.writeInt(paint.getTypeface().getStyle());
+        out.writeInt(paint.getColor());
         out.writeInt(highlightPaint.getColor());
     }
 

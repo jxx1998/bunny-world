@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -108,9 +109,10 @@ public class EditorView extends View {
 
             Shape newShape;
             if (!currDrawShapeName.equals("TextBox")) {
-                newShape = new ShapeBuilder().name("NewShape").coordinates(startleft, starttop, startright, startbottom).imageName(currDrawShapeName).buildShape();
+                newShape = new Shape("NewShape", new RectF(startleft, starttop, startright, startbottom));
+                newShape.setImageName(currDrawShapeName);
             } else{
-                newShape = new ShapeBuilder().name("NewShape").coordinates(startleft, starttop, startright, startbottom).buildShape();
+                newShape = new Shape("NewShape", new RectF(startleft, starttop, startright, startbottom));
                 newShape.setText("This is my shapeText", 50);
 
                // newShape.setText(shapeText);

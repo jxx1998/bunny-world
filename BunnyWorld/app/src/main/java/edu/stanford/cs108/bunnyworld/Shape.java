@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,6 +21,10 @@ public class Shape implements Serializable {
     String imageName = ""; // Name of the image this Shape can draw
     String text; // Some text that this Shape can draw
     float textSize = 10.0f; // The size of the text in case Shape needs to draw the text
+    int textColor = Color.BLACK;
+    boolean textItalics = false;
+    boolean textBold = false;
+
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
     boolean movable = true; // Whether this shape can be dragged around during Play time
     Scripts scripts = new Scripts();

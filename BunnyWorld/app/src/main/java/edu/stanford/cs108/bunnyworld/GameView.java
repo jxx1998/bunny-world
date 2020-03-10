@@ -1,25 +1,16 @@
 package edu.stanford.cs108.bunnyworld;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-
-import static edu.stanford.cs108.bunnyworld.EditorView.selectedShape;
 
 /**
  * View class for game play
@@ -44,20 +35,10 @@ public class GameView extends View {
     }
 
     private void init() {
-        // initDummyGame();
         dividerPaint = new Paint();
         dividerPaint.setStyle(Paint.Style.STROKE);
         dividerPaint.setStrokeWidth(5.0f);
         changePage(Game.getPages().get(0));
-    }
-
-    // Testing only
-    private void initDummyGame() {
-        Game.set(new ArrayList<Page>(), 0);
-        Shape shape = new ShapeBuilder().name("carrot").coordinates(0.0f, 0.0f, 200.0f, 200.0f).imageName("carrot").buildShape();
-        Page page = new Page("page_0");
-        page.addShape(shape);
-        Game.addPage(page);
     }
 
     @Override

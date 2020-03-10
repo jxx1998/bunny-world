@@ -121,6 +121,10 @@ public class EditorView extends View {
             //Shape newShape = new ShapeBuilder().name("AddedShape").coordinates(left,top,right,bottom).imageName(currDrawShapeName).buildShape();
             currPage.addShape(newShape);
             mostRecentAddedShape = newShape;
+
+            Game.set(EditorView.gamePages, EditorView.currPagePos);
+            Game.save(EditorView.currGameName);
+
             createNewShape = false;
             isAShapeSelected = true;
             selectedX = START_X;

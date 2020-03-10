@@ -44,18 +44,18 @@ public class Action implements Serializable {
         }
 
         // ambient sound
-        if (Game.ambientSound != null) {
-            Game.ambientSound.stop();
+        if (MainActivity.ambientSound != null) {
+            MainActivity.ambientSound.stop();
         }
-        Game.ambientSound = MediaPlayer.create(context, resourceId);
-        if (Game.ambientSound == null) { return; }
-        Game.ambientSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        MainActivity.ambientSound = MediaPlayer.create(context, resourceId);
+        if (MainActivity.ambientSound == null) { return; }
+        MainActivity.ambientSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             public void onCompletion(MediaPlayer mp) {
-                Game.ambientSound.release();
+                MainActivity.ambientSound.release();
             }
         });
-        Game.ambientSound.setLooping(ambient);
-        Game.ambientSound.start();
+        MainActivity.ambientSound.setLooping(ambient);
+        MainActivity.ambientSound.start();
     }
 
     private void throwToast(String msg) {

@@ -6,29 +6,34 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;
 
 public class Shape implements Serializable {
 
+    static final Map<String, Typeface> nameToTypeface = new HashMap<String, Typeface>() {{
+        put("DEFAULT", Typeface.DEFAULT);
+        put("MONOSPACE", Typeface.MONOSPACE);
+        put("SANS_SERIF", Typeface.SANS_SERIF);
+        put("SERIF", Typeface.SERIF);
+    }};
+
     String name;
     transient RectF coordinates;
-    String imageName = ""; // Name of the image this Shape can draw
+    String imageName; // Name of the image this Shape can draw
     String text; // Some text that this Shape can draw
-    float textSize = 10.0f; // The size of the text in case Shape needs to draw the text
-    int textColor = Color.BLACK;
-    boolean textItalics = false;
-    boolean textBold = false;
-
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
     boolean movable = true; // Whether this shape can be dragged around during Play time
+    String textTypeface = "DEFAULT";
     Scripts scripts = new Scripts();
-    int highlightColor = Color.TRANSPARENT;
 
     transient Paint textPaint, defaultPaint, highlightPaint;
     transient BitmapDrawable imageDrawable;
@@ -39,38 +44,22 @@ public class Shape implements Serializable {
      */
     public Shape(String name, RectF coordinates) {
         this.name = name;
-        this.coordinates = new RectF(coordinates);
-        init();
-    }
-
-    /**
-     * Constructor intended to be called by ShapeBuilder only
-     * Calling this Shape constructor is not recommended; use ShapeBuilder to customize & construct the new Shape
-     */
-    public Shape(String name, RectF coordinates, String imageName, String text, float textSize,
-                 boolean hidden, boolean movable, Scripts scripts, int highlightColor) {
-        this.name = name;
         this.coordinates = coordinates;
-        this.imageName = imageName;
-        this.text = text;
-        this.textSize = textSize;
-        this.hidden = hidden;
-        this.movable = movable;
-        this.scripts = scripts;
-        this.highlightColor = highlightColor;
-        init();
+        constantInit();
+        textPaint.setTypeface(Typeface.create(nameToTypeface.get(textTypeface), Typeface.NORMAL));
+        textPaint.setTextSize(10.0f);
+        highlightPaint.setColor(Color.TRANSPARENT);
     }
 
-    private void init() {
+    private void constantInit() {
         textPaint = new Paint();
-        textPaint.setTextSize(this.textSize);
         defaultPaint = new Paint();
-        defaultPaint.setColor(Color.LTGRAY);
         highlightPaint = new Paint();
-        highlightPaint.setColor(highlightColor);
+        loadImage();
+
+        defaultPaint.setColor(Color.LTGRAY);
         highlightPaint.setStyle(Paint.Style.STROKE);
         highlightPaint.setStrokeWidth(15.0f);
-        loadImage();
     }
 
     private void loadImage() {
@@ -79,7 +68,7 @@ public class Shape implements Serializable {
         try {
             final int resourceId = resources.getIdentifier(imageName, "drawable", context.getPackageName());
             imageDrawable = (BitmapDrawable) resources.getDrawable(resourceId);
-        } catch (Resources.NotFoundException e) {
+        } catch (Exception e) {
             imageDrawable = null;
         }
     }
@@ -95,11 +84,14 @@ public class Shape implements Serializable {
     public String getName() { return this.name; }
     public String getImageName() { return imageName; }
     public String getText() { return text; }
-    public float getTextSize() { return textSize; }
+    public float getTextSize() { return textPaint.getTextSize(); }
+    public int getTextColor() { return textPaint.getColor(); }
+    public int getTextStyle() { return textPaint.getTypeface().getStyle(); }
+    public String getTextTypeface() { return textTypeface; }
     public boolean isHidden() { return hidden; }
     public boolean isMovable() { return movable; }
     public Scripts getScripts() { return scripts; }
-    public int getHighlightColor() { return highlightColor; }
+    public int getHighlightColor() { return highlightPaint.getColor(); }
 
     // Below are some Setters
 
@@ -126,8 +118,34 @@ public class Shape implements Serializable {
 
     public void setText(String text, float textSize) {
         this.text = text;
-        this.textSize = textSize;
-        textPaint.setTextSize(this.textSize);
+        textPaint.setTextSize(textSize);
+    }
+
+    public void setTextColor(int color) {
+        textPaint.setColor(color);
+    }
+
+    public void setTextBold(boolean bold) {
+        if (bold) {
+            textPaint.setTypeface(Typeface.create(nameToTypeface.get(textTypeface), Typeface.BOLD));
+        } else {
+            textPaint.setTypeface(Typeface.create(nameToTypeface.get(textTypeface), Typeface.NORMAL));
+        }
+    }
+
+    public void setTextItalic(boolean italic) {
+        if (italic) {
+            textPaint.setTypeface(Typeface.create(nameToTypeface.get(textTypeface), Typeface.ITALIC));
+        } else {
+            textPaint.setTypeface(Typeface.create(nameToTypeface.get(textTypeface), Typeface.NORMAL));
+        }
+    }
+
+    public void setTextTypeface(String typeface) {
+        if (nameToTypeface.containsKey(typeface)) {
+            this.textTypeface = typeface;
+            textPaint.setTypeface(Typeface.create(nameToTypeface.get(typeface), textPaint.getTypeface().getStyle()));
+        }
     }
 
     public void setImageName(String imageName) {
@@ -136,8 +154,7 @@ public class Shape implements Serializable {
     }
 
     public void setHighlightColor(int highlightColor) {
-        this.highlightColor = highlightColor;
-        highlightPaint.setColor(this.highlightColor);
+        highlightPaint.setColor(highlightColor);
     }
 
     public void setName(String name) { this.name = name; }
@@ -178,13 +195,23 @@ public class Shape implements Serializable {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
 
+        constantInit();
+
         float left = in.readFloat();
         float top = in.readFloat();
         float right = in.readFloat();
         float bottom = in.readFloat();
         this.coordinates = new RectF(left, top, right, bottom);
 
-        init();
+        float textSize = in.readFloat();
+        textPaint.setTextSize(textSize);
+        int textStyle = in.readInt();
+        textPaint.setTypeface(Typeface.create(nameToTypeface.get(textTypeface), textStyle));
+        int textColor = in.readInt();
+        textPaint.setColor(textColor);
+
+        int highlightColor = in.readInt();
+        highlightPaint.setColor(highlightColor);
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
@@ -194,6 +221,10 @@ public class Shape implements Serializable {
         out.writeFloat(this.coordinates.top);
         out.writeFloat(this.coordinates.right);
         out.writeFloat(this.coordinates.bottom);
+        out.writeFloat(textPaint.getTextSize());
+        out.writeInt(textPaint.getTypeface().getStyle());
+        out.writeInt(textPaint.getColor());
+        out.writeInt(highlightPaint.getColor());
     }
 
 }

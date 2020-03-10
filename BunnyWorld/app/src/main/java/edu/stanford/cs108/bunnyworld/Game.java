@@ -18,9 +18,6 @@ import java.util.List;
 
 public class Game implements Serializable {
 
-    // to keep track of ambient sound
-    protected static MediaPlayer ambientSound = null;
-
     private static Game instance = new Game();
 
     private List<Page> pages;

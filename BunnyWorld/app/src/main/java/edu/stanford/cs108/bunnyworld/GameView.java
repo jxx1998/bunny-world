@@ -1,5 +1,6 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,17 +13,21 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;
+
 /**
  * View class for game play
  */
 public class GameView extends View {
 
     static float width, height, dividerY;
+    static float animationDivider;
     float shapeOriginalLeft, shapeOriginalTop;
     Paint dividerPaint;
     static Shape shapeSelected;
     static Page currentPage;
     long mouseDownTime;
+    static GameView instance;
 
     static final int MAX_CLICK_DURATION = 200;
 
@@ -30,6 +35,7 @@ public class GameView extends View {
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        instance = this;
         init();
         invalidate();
     }
@@ -148,10 +154,20 @@ public class GameView extends View {
 
     public static void changePage(Page newPage) {
         // clear ambient sound
-        if (!newPage.equals(currentPage) && Game.ambientSound != null) {
-            Game.ambientSound.stop();
-            Game.ambientSound = null;
+        if (!newPage.equals(currentPage) && MainActivity.ambientSound != null) {
+            MainActivity.ambientSound.stop();
+            MainActivity.ambientSound = null;
         }
+
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.0f, width);
+        valueAnimator.setDuration(1000);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                animationDivider = (float) valueAnimator.getAnimatedValue();
+                // instance.invalidate();
+            }
+        });
 
         currentPage = newPage;
         shapeSelected = null;

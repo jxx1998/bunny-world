@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.RectF;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
 
     int selectedGameIndex;
     Context context = this;
+
+    // to keep track of ambient sound
+    protected static MediaPlayer ambientSound = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

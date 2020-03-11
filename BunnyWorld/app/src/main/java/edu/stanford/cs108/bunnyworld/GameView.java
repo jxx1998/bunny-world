@@ -5,7 +5,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -20,42 +24,40 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
  */
 public class GameView extends View {
 
-    static float width, height, dividerY;
-    static float animationDivider;
+    static float animDivideY;
     float shapeOriginalLeft, shapeOriginalTop;
     Paint dividerPaint;
     static Shape shapeSelected;
     static Page currentPage;
     long mouseDownTime;
     static GameView instance;
-
     static final int MAX_CLICK_DURATION = 200;
+    static Page previousPage;
 
     static List<Shape> inventory = new ArrayList<Shape>();
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         instance = this;
-        init();
-        invalidate();
-    }
-
-    private void init() {
         dividerPaint = new Paint();
         dividerPaint.setStyle(Paint.Style.STROKE);
         dividerPaint.setStrokeWidth(5.0f);
-        changePage(Game.getPages().get(0));
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        width = w;
-        height = h;
-        dividerY = 2.0f / 3.0f * height;
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                changePage(Game.getPages().get(0));
+            }
+        }, 100);
     }
 
     private static void clearDivider(Shape shape, boolean init) {
+        float dividerY = (2f / 3f) * instance.getHeight();
         if (shape.coordinates.bottom > dividerY && shape.coordinates.top < dividerY) {
             float centerY = shape.coordinates.centerY();
             if (centerY < dividerY || init) {
@@ -93,6 +95,7 @@ public class GameView extends View {
         mouseDownTime = Calendar.getInstance().getTimeInMillis();
         clearSelection();
         shapeSelected = null;
+        float dividerY = (2f / 3f) * instance.getHeight();
         if (y >= dividerY) {
             shapeSelected = inventoryShapeTouched(x, y);
         } else {
@@ -140,6 +143,7 @@ public class GameView extends View {
                     shapeSelected.coordinates.offsetTo(shapeOriginalLeft, shapeOriginalTop);
                 }
             }
+            float dividerY = (2f / 3f) * instance.getHeight();
             if (oldShapeSelected.getTop() >= dividerY) {
                 inventory.remove(oldShapeSelected);
                 inventory.add(oldShapeSelected);
@@ -153,22 +157,13 @@ public class GameView extends View {
     }
 
     public static void changePage(Page newPage) {
-        // clear ambient sound
+        // Clear ambient sound
         if (!newPage.equals(currentPage) && MainActivity.ambientSound != null) {
             MainActivity.ambientSound.stop();
             MainActivity.ambientSound = null;
         }
 
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.0f, width);
-        valueAnimator.setDuration(1000);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                animationDivider = (float) valueAnimator.getAnimatedValue();
-                // instance.invalidate();
-            }
-        });
-
+        previousPage = currentPage;
         currentPage = newPage;
         shapeSelected = null;
         for (Shape shape: currentPage.shapes) {
@@ -176,6 +171,17 @@ public class GameView extends View {
         }
         clearSelection();
         currentPage.onEnter();
+
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(instance.getWidth(), 0.0f);
+        valueAnimator.setDuration(2500);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                animDivideY = (float) valueAnimator.getAnimatedValue();
+                instance.invalidate();
+            }
+        });
+        valueAnimator.start();
     }
 
     private static void clearSelection() {
@@ -190,10 +196,23 @@ public class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawLine(0, dividerY, width, dividerY, dividerPaint);
+        if (currentPage == null) { return; }
+        canvas.save();
+        canvas.clipRect(0.0f, 0.0f, animDivideY, getHeight());
+        if (previousPage != null) {
+            previousPage.draw(canvas);
+        } else {
+            canvas.drawColor(getSolidColor());
+        }
+        canvas.restore();
+        canvas.save();
+        canvas.clipRect(animDivideY, 0.0f, getWidth(), getHeight());
+        currentPage.draw(canvas);
+        canvas.restore();
+        float dividerY = (2f / 3f) * instance.getHeight();
+        canvas.drawLine(0, dividerY, getWidth(), dividerY, dividerPaint);
         for (Shape shape: inventory) {
             shape.draw(canvas);
         }
-        currentPage.draw(canvas);
     }
 }

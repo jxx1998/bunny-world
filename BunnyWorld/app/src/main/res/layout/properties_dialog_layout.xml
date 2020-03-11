@@ -297,7 +297,7 @@
 
 
         <RadioGroup
-            android:id="@+id/size_group"
+            android:id="@+id/font_group"
             android:orientation="horizontal"
             android:layout_row="6"
             android:layout_columnSpan="2"

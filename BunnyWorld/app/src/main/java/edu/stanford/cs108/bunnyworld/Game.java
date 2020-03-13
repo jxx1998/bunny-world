@@ -166,6 +166,7 @@ public class Game implements Serializable {
     }
 
     private static void printShapesPrivate() {
+        if (instance.pages.size() < 1) { return; }
         Page printPage = instance.pages.get(0);
         for (int i = 0; i < printPage.shapes.size(); i++) {
             Log.i("hi", printPage.shapes.get(i).imageName);

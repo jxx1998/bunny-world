@@ -165,6 +165,13 @@ public class Game implements Serializable {
         db.execSQL(command);
     }
 
+    private static void printShapesPrivate() {
+        Page printPage = instance.pages.get(0);
+        for (int i = 0; i < printPage.shapes.size(); i++) {
+            Log.i("hi", printPage.shapes.get(i).imageName);
+        }
+    }
+
     private static byte[] serialize() {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] gameBytes = null;

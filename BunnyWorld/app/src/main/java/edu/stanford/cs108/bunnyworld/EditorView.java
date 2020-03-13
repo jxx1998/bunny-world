@@ -183,6 +183,7 @@ public class EditorView extends View {
             case MotionEvent.ACTION_MOVE:
                 //From Handout Code....might have to manipulate
                 //Prob wont work with dragging feature
+                System.out.println("IN THE ACTION MOVE CASE");
                 if (isAShapeSelected) {
                     selectedX = event.getX();
                     selectedY = event.getY();
@@ -194,9 +195,18 @@ public class EditorView extends View {
 //                ySelect = event.getY();
 //                x1 = event.getX();
 //                y1 = event.getY();
+                System.out.println("IN THE ACTION DOWN CASE");
                 selectedX = event.getX();
                 selectedY = event.getY();
                 invalidate();
+
+
+            case MotionEvent.ACTION_UP:
+                System.out.println("IN THE ACTION UP CASE");
+                if (isAShapeSelected){
+                    Game.set(gamePages, currPagePos);
+                    Game.save(currGameName);
+                }
 
         }
 

@@ -20,7 +20,7 @@ public class Game implements Serializable {
 
     private static Game instance = new Game();
 
-    private List<Page> pages;
+    private ArrayList<Page> pages;
 
     private int currPagePos;
 
@@ -124,7 +124,7 @@ public class Game implements Serializable {
         instance.pages.get(pageIndex).addShape(shape);
     }
 
-    public static void set(List<Page> pages, int currPagePos) {
+    public static void set(ArrayList<Page> pages, int currPagePos) {
         instance.pages = pages;
         instance.currPagePos = currPagePos;
     }
@@ -165,7 +165,7 @@ public class Game implements Serializable {
         db.execSQL(command);
     }
 
-    private static void printShapesPrivate() {
+    public static void printShapesPrivate() {
         if (instance.pages.size() < 1) { return; }
         Page printPage = instance.pages.get(0);
         for (int i = 0; i < printPage.shapes.size(); i++) {

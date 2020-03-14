@@ -301,13 +301,18 @@ public class NewGameActivity extends AppCompatActivity {
         float startbottom = START_Y + SQUARE_SIZE;
 
         Shape newShape;
-        if (!EditorView.currDrawShapeName.equals("TextBox")) {
+        if (!EditorView.currDrawShapeName.equals("TextBox") && !EditorView.currDrawShapeName.equals("Button")) {
             newShape = new Shape("NewShape", new RectF(startleft, starttop, startright, startbottom));
             newShape.setImageName(EditorView.currDrawShapeName);
-        } else{
+        } else if (EditorView.currDrawShapeName.equals("Button")) {
+            newShape = new Shape("NewShape", new RectF(startleft, starttop, startright, startbottom));
+            newShape.setText("", 50.0f);
+            newShape.setImageName("Button");
+
+        } else {
             newShape = new Shape("NewShape", new RectF(startleft, starttop, startright, startbottom));
             newShape.setText("This is my shapeText", 50.0f);
-            newShape.setImageName("===Text Box===");
+            newShape.setImageName("TextBox");
             // newShape.setText(shapeText);
         }
         //This is what I used for the click, create, and move feature

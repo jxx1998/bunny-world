@@ -81,22 +81,22 @@ public class Scripts implements Serializable {
             }
 
             //ADD CONDITIONALS
-            if (stClause.hasMoreTokens() && stClause.nextToken().equals("if")) {
-                String keyword = stClause.nextToken();
-                if (!conditionalActionKeywords.contains(keyword)) {
-                    throwToast("Input includes invalid conditional action primitive!");
-                }
-                if (!stClause.hasMoreTokens()) {
-                    throwToast("Incomplete conditional clause string detected!");
-                }
-                String name = stClause.nextToken();
-
-                //If inventory contains object with name "name", then...
-
-                //TO-DO: How to check conditionals
-
-
-            }
+//            if (stClause.hasMoreTokens() && stClause.nextToken().equals("if")) {
+//                String keyword = stClause.nextToken();
+//                if (!conditionalActionKeywords.contains(keyword)) {
+//                    throwToast("Input includes invalid conditional action primitive!");
+//                }
+//                if (!stClause.hasMoreTokens()) {
+//                    throwToast("Incomplete conditional clause string detected!");
+//                }
+//                String name = stClause.nextToken();
+//
+//                //If inventory contains object with name "name", then...
+//
+//                //TO-DO: How to check conditionals
+//
+//
+//            }
             while (stClause.hasMoreTokens()) {
                 String keyword = stClause.nextToken();
                 if (!actionKeywords.contains(keyword)) {

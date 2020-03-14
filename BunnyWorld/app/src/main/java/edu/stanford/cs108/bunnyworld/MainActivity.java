@@ -11,6 +11,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -91,6 +92,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {}
         });
         builder.show();
+    }
+
+    public void onClickClearDatabase(View view) {
+        Database.setupDatabase();
+        Toast toast = Toast.makeText(getApplicationContext(), "Database Reset", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 }

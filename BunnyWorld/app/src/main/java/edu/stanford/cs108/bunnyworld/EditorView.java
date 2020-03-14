@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -189,24 +190,25 @@ public class EditorView extends View {
                     selectedY = event.getY();
                     invalidate();
                 }
+                break;
 
             case MotionEvent.ACTION_DOWN:
 //                xSelect = event.getX();
 //                ySelect = event.getY();
 //                x1 = event.getX();
 //                y1 = event.getY();
-                System.out.println("IN THE ACTION DOWN CASE");
                 selectedX = event.getX();
                 selectedY = event.getY();
                 invalidate();
+                break;
 
 
             case MotionEvent.ACTION_UP:
-                System.out.println("IN THE ACTION UP CASE");
                 if (isAShapeSelected){
                     Game.set(gamePages, currPagePos);
                     Game.save(currGameName);
                 }
+                break;
 
         }
 

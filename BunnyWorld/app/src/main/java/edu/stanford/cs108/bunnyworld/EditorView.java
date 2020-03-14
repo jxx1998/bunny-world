@@ -77,7 +77,7 @@ public class EditorView extends View {
         if (isNew) {
             gamePages = new ArrayList<Page>();
 
-            Page firstPage = new Page("Page 1");
+            Page firstPage = new Page("pg1");
             gamePages.add(firstPage);
 
         }

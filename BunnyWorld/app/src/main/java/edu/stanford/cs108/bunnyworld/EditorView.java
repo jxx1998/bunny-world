@@ -70,6 +70,7 @@ public class EditorView extends View {
         shapeNames.add("fire");
         shapeNames.add("mystic");
         shapeNames.add("TextBox");
+        shapeNames.add("Button");
 
         currShapePos = 0;
         currDrawShapeName = shapeNames.get(currShapePos);

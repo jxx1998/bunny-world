@@ -292,6 +292,7 @@ public class NewGameActivity extends AppCompatActivity {
         EditorView myView = findViewById(R.id.myCustomView);
         myView.invalidate();
 
+        Game.printShapesPrivate();
 
     }
 

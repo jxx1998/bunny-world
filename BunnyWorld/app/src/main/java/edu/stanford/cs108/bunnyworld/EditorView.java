@@ -25,7 +25,6 @@ public class EditorView extends View {
     protected static String currDrawShapeName;
     protected static ArrayList<String> shapeNames;
     protected static Shape selectedShape, mostRecentAddedShape;
-    protected static boolean createNewShape;
     protected static boolean isNew;
 
     //FOR DRAGGABLE SHAPE
@@ -37,7 +36,8 @@ public class EditorView extends View {
     protected static boolean isAShapeSelected;
     protected float minusX, minusY, plusX, plusY;
     protected static boolean changingDimensions;
-
+    Paint textPaint = new Paint();
+    Paint myPaintDrawOutline = new Paint();
 
 
 
@@ -53,6 +53,13 @@ public class EditorView extends View {
 
     private void init(){
         System.out.println("is new game?: "+isNew);
+
+        textPaint.setColor(Color.BLACK);
+        textPaint.setTextSize(50f);
+
+        myPaintDrawOutline.setColor(Color.BLUE);
+        myPaintDrawOutline.setStrokeWidth(15.0f);
+        myPaintDrawOutline.setStyle(Paint.Style.STROKE);
 
         //We create a game object and add an initial page (just to test out, this initial page will have three shapes in them)
         shapeNames = new ArrayList<String>();
@@ -70,7 +77,6 @@ public class EditorView extends View {
         //Extra for drag testing
         myPaint = new Paint();
         myPaint.setColor(Color.rgb(140,21,21));
-        createNewShape = false;
         isAShapeSelected = false;
         changingDimensions = false;
 
@@ -96,42 +102,8 @@ public class EditorView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //For Displaying Page Name
-        Paint textPaint = new Paint();
-        textPaint.setColor(Color.BLACK);
-        textPaint.setTextSize(50f);
         String pageName = currPage.name;
         canvas.drawText(pageName,50f,50f, textPaint);
-
-        if(createNewShape){
-            float startleft= START_X - SQUARE_SIZE;
-            float starttop = START_Y - SQUARE_SIZE;
-            float startright = START_X + SQUARE_SIZE;
-            float startbottom = START_Y + SQUARE_SIZE;
-
-            Shape newShape;
-            if (!currDrawShapeName.equals("TextBox")) {
-                newShape = new Shape("NewShape", new RectF(startleft, starttop, startright, startbottom));
-                newShape.setImageName(currDrawShapeName);
-            } else{
-                newShape = new Shape("NewShape", new RectF(startleft, starttop, startright, startbottom));
-                newShape.setText("This is my shapeText", 50.0f);
-                newShape.setImageName("===Text Box===");
-               // newShape.setText(shapeText);
-            }
-            //This is what I used for the click, create, and move feature
-            //Shape newShape = new ShapeBuilder().name("AddedShape").coordinates(left,top,right,bottom).imageName(currDrawShapeName).buildShape();
-            currPage.addShape(newShape);
-            mostRecentAddedShape = newShape;
-
-            Game.set(EditorView.gamePages, EditorView.currPagePos);
-            Game.save(EditorView.currGameName);
-
-            createNewShape = false;
-            isAShapeSelected = true;
-            selectedX = START_X;
-            selectedY = START_Y;
-        }
-
 
 
         //Draws all of the shapes on the page
@@ -140,38 +112,6 @@ public class EditorView extends View {
         //Redraws the selected shape
         //selectedShape = currPage.shapeTouched(xSelect,ySelect,true, true);
 
-        selectedShape = currPage.shapeTouched(selectedX, selectedY, true, true);
-
-
-        if (selectedShape != null) {
-            isAShapeSelected = true;
-            currPage.makeTopMost(selectedShape);
-
-            if (!changingDimensions) {
-                selectedShape.setCenterCoordinates(selectedX, selectedY, selectedShape.getWidth(), selectedShape.getHeight());
-            }
-
-            if (selectedShape.isHidden()){
-                selectedShape.setHighlightColor(Color.BLACK);
-            }
-            //selectedShape.setCoordinates();
-            currPage.draw(canvas);
-            selectedLeft = selectedShape.getLeft();
-            selectedRight = selectedShape.getRight();
-            selectedTop = selectedShape.getTop();
-            selectedBot = selectedShape.getBottom();
-            //System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
-
-            Paint myPaintDrawOutline = new Paint();
-            myPaintDrawOutline.setColor(Color.BLUE);
-            myPaintDrawOutline.setStrokeWidth(15.0f);
-            myPaintDrawOutline.setStyle(Paint.Style.STROKE);
-            canvas.drawRect(selectedLeft,selectedTop,selectedRight,selectedBot,myPaintDrawOutline);
-            invalidate();
-
-        } else{
-            isAShapeSelected = false;
-        }
 
 
     }
@@ -188,7 +128,7 @@ public class EditorView extends View {
                 if (isAShapeSelected) {
                     selectedX = event.getX();
                     selectedY = event.getY();
-                    invalidate();
+                    selectedShape.setCenterCoordinates(selectedX, selectedY, selectedShape.getWidth(), selectedShape.getHeight());
                 }
                 break;
 
@@ -197,11 +137,29 @@ public class EditorView extends View {
 //                ySelect = event.getY();
 //                x1 = event.getX();
 //                y1 = event.getY();
+                for (Shape shape: currPage.shapes) {
+                    shape.setHighlightColor(Color.TRANSPARENT);
+                }
                 selectedX = event.getX();
                 selectedY = event.getY();
-                invalidate();
-                break;
+                selectedShape = currPage.shapeTouched(selectedX, selectedY, true, true);
+                if (selectedShape != null) {
+                    isAShapeSelected = true;
+                    currPage.makeTopMost(selectedShape);
 
+                    if (!changingDimensions) {
+                        selectedShape.setCenterCoordinates(selectedX, selectedY, selectedShape.getWidth(), selectedShape.getHeight());
+                    }
+
+                    if (selectedShape.isHidden()){
+                        selectedShape.setHighlightColor(Color.BLACK);
+                    } else {
+                        selectedShape.setHighlightColor(Color.BLUE);
+                    }
+                } else {
+                    isAShapeSelected = false;
+                }
+                break;
 
             case MotionEvent.ACTION_UP:
                 if (isAShapeSelected){
@@ -209,9 +167,8 @@ public class EditorView extends View {
                     Game.save(currGameName);
                 }
                 break;
-
         }
-
+        invalidate();
         changingDimensions =false;
         return true;
     }

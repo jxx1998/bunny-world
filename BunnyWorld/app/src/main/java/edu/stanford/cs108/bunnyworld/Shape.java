@@ -32,7 +32,7 @@ public class Shape implements Serializable {
     String imageName; // Name of the image this Shape can draw
     String text = ""; // Some text that this Shape can draw
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
-    boolean movable = true; // Whether this shape can be dragged around during Play time
+    boolean movable = false; // Whether this shape can be dragged around during Play time
     String typeface = "DEFAULT";
     Scripts scripts = new Scripts();
     int red = 0;

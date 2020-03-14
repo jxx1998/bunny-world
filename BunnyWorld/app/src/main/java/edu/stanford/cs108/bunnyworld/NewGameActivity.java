@@ -43,6 +43,14 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        System.out.println("PRESSED THE BACK BUTTON ON EDITOR PAGE");
+        EditorActivity.currGameName = "No Game Selected";
+        super.onBackPressed();
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu (Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);

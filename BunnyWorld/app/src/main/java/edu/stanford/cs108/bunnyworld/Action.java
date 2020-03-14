@@ -87,10 +87,20 @@ public class Action implements Serializable {
             if (shape != null) {
                 shape.setHidden(true);
             }
+            for (Shape inventory_shape: GameView.inventory) {
+                if (inventory_shape.name.equals(name)) {
+                    shape.setHidden(true);
+                }
+            }
         } else if (keyword.equals("show")) {
             Shape shape = Game.getShape(name);
             if (shape != null) {
                 shape.setHidden(false);
+            }
+            for (Shape inventory_shape: GameView.inventory) {
+                if (inventory_shape.name.equals(name)) {
+                    shape.setHidden(false);
+                }
             }
         } else if (keyword.equals("switch")) {
             Shape shape = GameView.shapeSelected;

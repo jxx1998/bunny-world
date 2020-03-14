@@ -18,18 +18,24 @@
             android:onClick="onOpenNewGame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create New"/>
+            android:text="Create New Game"/>
 
         <Button
             android:onClick="openExistingGames"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Open Existing"/>
+            android:text="Select Existing Game"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Go To Editor Viewer"
             android:onClick="goToEditor"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete Game"
+            android:onClick="deleteGame"/>
 
     </LinearLayout>
 

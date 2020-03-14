@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +34,9 @@ public class NewGameActivity extends AppCompatActivity {
     private String selection, shapeSelection;
     private int selectionID, shapeSelectionID;
     private Dialog dialog;
+    final float SQUARE_SIZE = 100.0f;
+    final float START_X = 200.0f;
+    final float START_Y = 200.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -291,7 +295,32 @@ public class NewGameActivity extends AppCompatActivity {
 
     public void addShape(View view){
         System.out.println("I CLICKED THE ADD SHAPE BUTTON");
-        EditorView.createNewShape = true;
+        float startleft= START_X - SQUARE_SIZE;
+        float starttop = START_Y - SQUARE_SIZE;
+        float startright = START_X + SQUARE_SIZE;
+        float startbottom = START_Y + SQUARE_SIZE;
+
+        Shape newShape;
+        if (!EditorView.currDrawShapeName.equals("TextBox")) {
+            newShape = new Shape("NewShape", new RectF(startleft, starttop, startright, startbottom));
+            newShape.setImageName(EditorView.currDrawShapeName);
+        } else{
+            newShape = new Shape("NewShape", new RectF(startleft, starttop, startright, startbottom));
+            newShape.setText("This is my shapeText", 50.0f);
+            newShape.setImageName("===Text Box===");
+            // newShape.setText(shapeText);
+        }
+        //This is what I used for the click, create, and move feature
+        //Shape newShape = new ShapeBuilder().name("AddedShape").coordinates(left,top,right,bottom).imageName(currDrawShapeName).buildShape();
+        EditorView.currPage.addShape(newShape);
+        EditorView.mostRecentAddedShape = newShape;
+
+        Game.set(EditorView.gamePages, EditorView.currPagePos);
+        Game.save(EditorView.currGameName);
+
+        EditorView.isAShapeSelected = true;
+        EditorView.selectedX = START_X;
+        EditorView.selectedY = START_Y;
 
 
         // We save to database using set instead of customized functionality

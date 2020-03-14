@@ -114,8 +114,8 @@ public class EditorView extends View {
                 newShape.setImageName(currDrawShapeName);
             } else{
                 newShape = new Shape("NewShape", new RectF(startleft, starttop, startright, startbottom));
-                newShape.setText("This is my shapeText", 50);
-
+                newShape.setText("This is my shapeText", 50.0f);
+                newShape.setImageName("===Text Box===");
                // newShape.setText(shapeText);
             }
             //This is what I used for the click, create, and move feature

@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,7 +30,7 @@ public class Shape implements Serializable {
     String name;
     transient RectF coordinates;
     String imageName; // Name of the image this Shape can draw
-    String text; // Some text that this Shape can draw
+    String text = ""; // Some text that this Shape can draw
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
     boolean movable = true; // Whether this shape can be dragged around during Play time
     String typeface = "DEFAULT";
@@ -52,7 +53,7 @@ public class Shape implements Serializable {
         this.coordinates = coordinates;
         constantInit();
         paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.NORMAL));
-        paint.setTextSize(10.0f);
+        paint.setTextSize(50.0f);
         highlightPaint.setColor(Color.TRANSPARENT);
     }
 
@@ -131,22 +132,22 @@ public class Shape implements Serializable {
     }
 
     public void setBold(boolean bolded) {
-        if (bolded) {
-            paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.BOLD));
-            bold = true;
-        } else {
-            paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.NORMAL));
-            bold = false;
-        }
+        bold = bolded;
     }
 
     public void setItalic(boolean italiced) {
-        if (italiced) {
+        italics = italiced;
+    }
+
+    public void solidifyTextStyle() {
+        if (bold && italics) {
+            paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.BOLD_ITALIC));
+        } else if (bold) {
+            paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.BOLD));
+        } else if (italics) {
             paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.ITALIC));
-            italics = true;
         } else {
             paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.NORMAL));
-            italics = false;
         }
     }
 
@@ -175,7 +176,7 @@ public class Shape implements Serializable {
     public void draw(Canvas canvas) {
         canvas.drawRect(coordinates, highlightPaint);
         if (hidden) { return; }
-        if (text != null) {
+        if (!text.equals("")) {
             canvas.drawText(text, this.getLeft(), this.getTop(), paint);
         } else if (imageDrawable != null) {
             canvas.drawBitmap(imageDrawable.getBitmap(), null, this.getRectF(), paint);

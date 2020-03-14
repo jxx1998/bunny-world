@@ -161,4 +161,19 @@ public class EditorActivity extends AppCompatActivity {
         builder.show();
 
     }
+
+    public void deleteGame(View view){
+        if (!okToGo) {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Please Select a Game to Delete",
+                    Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            Game.deleteGame(selection);
+            okToGo = false;
+            currGameName = "No Game Selected";
+            TextView selectedGameName = (TextView) findViewById(R.id.selectedGameName);
+            selectedGameName.setText(currGameName);
+        }
+    }
 }

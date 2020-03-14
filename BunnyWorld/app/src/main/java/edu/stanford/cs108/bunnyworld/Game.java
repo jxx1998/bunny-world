@@ -159,7 +159,7 @@ public class Game implements Serializable {
     }
 
     // Below are private helper methods
-    private static void deleteGame(String gameName) {
+    public static void deleteGame(String gameName) {
         SQLiteDatabase db = Database.getInstance();
         String command = "DELETE FROM games WHERE name='" + gameName + "'";
         db.execSQL(command);

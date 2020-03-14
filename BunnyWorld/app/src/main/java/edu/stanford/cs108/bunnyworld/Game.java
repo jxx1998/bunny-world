@@ -141,7 +141,7 @@ public class Game implements Serializable {
 
     public static void renamePage(String oldName, String newName) {
         for (int i = 0; i < instance.pages.size(); i++) {
-            if (instance.pages.get(i).name == oldName) {
+            if (instance.pages.get(i).name.equals(oldName)) {
                 instance.pages.get(i).name = newName;
                 return;
             }
@@ -152,6 +152,7 @@ public class Game implements Serializable {
         for (Page page: instance.pages) {
             Shape shape = page.getShape(name);
             if (shape != null) {
+                Log.d("testHide", shape.name);
                 return shape;
             }
         }

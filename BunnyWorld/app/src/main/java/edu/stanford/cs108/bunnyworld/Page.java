@@ -82,7 +82,7 @@ public class Page implements Serializable {
 
     public Shape getShape(String name) {
         for (Shape shape: shapes) {
-            if (shape.name == name) {
+            if (shape.name.equals(name)) {
                 return shape;
             }
         }

@@ -368,8 +368,8 @@ public class NewGameActivity extends AppCompatActivity {
 
             shapeNameText.setText(EditorView.selectedShape.name);
             imageNameText.setText(EditorView.selectedShape.imageName);
-            String shapeText = EditorView.selectedShape.getText();
-            if (shapeText == null){
+            String shapeText = EditorView.selectedShape.getImageName();
+            if (shapeText != "TextBox"){
                 textText.setText("No Text");
                 textText.setInputType(0);
                 textText.setClickable(false);

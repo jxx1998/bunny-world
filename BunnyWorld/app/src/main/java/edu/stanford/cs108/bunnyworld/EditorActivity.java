@@ -136,7 +136,7 @@ public class EditorActivity extends AppCompatActivity {
                     EditorView.currGameName = selection;
                     EditorView.isNew = false;
 
-                    Game.printShapesPrivate();
+                    // Game.printShapesPrivate();
 
                     okToGo = true;
                     currGameName = selection;

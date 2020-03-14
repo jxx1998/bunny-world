@@ -166,13 +166,13 @@ public class Game implements Serializable {
         db.execSQL(command);
     }
 
-    public static void printShapesPrivate() {
-        if (instance.pages.size() < 1) { return; }
-        Page printPage = instance.pages.get(0);
-        for (int i = 0; i < printPage.shapes.size(); i++) {
-            Log.i("hi", printPage.shapes.get(i).imageName);
-        }
-    }
+//    public static void printShapesPrivate() {
+//        if (instance.pages.size() < 1) { return; }
+//        Page printPage = instance.pages.get(0);
+//        for (int i = 0; i < printPage.shapes.size(); i++) {
+//            Log.i("hi", printPage.shapes.get(i).imageName);
+//        }
+//    }
 
     private static byte[] serialize() {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();

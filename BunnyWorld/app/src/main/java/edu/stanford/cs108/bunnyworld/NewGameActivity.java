@@ -301,7 +301,7 @@ public class NewGameActivity extends AppCompatActivity {
         EditorView myView = findViewById(R.id.myCustomView);
         myView.invalidate();
 
-        Game.printShapesPrivate();
+        // Game.printShapesPrivate();
 
     }
 
@@ -476,6 +476,7 @@ public class NewGameActivity extends AppCompatActivity {
                 EditorView.selectedShape.setText(text, textSize);
                 EditorView.selectedShape.setBold(isBold.isChecked());
                 EditorView.selectedShape.setItalic(isItalic.isChecked());
+                EditorView.selectedShape.solidifyTextStyle();
                 EditorView.selectedShape.setColor(newTextColor);
                 EditorView.selectedShape.red = red;
                 EditorView.selectedShape.green = green;

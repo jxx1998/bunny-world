@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
@@ -24,13 +25,25 @@ public class EditorActivity extends AppCompatActivity {
     private int selectionID, shapeSelectionID;
     private Dialog dialog;
     protected static boolean okToGo;
+    protected static String currGameName = "No Game Selected";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         okToGo = false;
+        TextView selectedGameName = (TextView) findViewById(R.id.selectedGameName);
+        selectedGameName.setText(currGameName);
 
+    }
+
+    @Override
+    protected void onResume() {
+        System.out.println("On Resume was called");
+        okToGo = false;
+        TextView selectedGameName = (TextView) findViewById(R.id.selectedGameName);
+        selectedGameName.setText(currGameName);
+        super.onResume();
     }
 
     public void goToEditor(View view){
@@ -48,6 +61,8 @@ public class EditorActivity extends AppCompatActivity {
 
     public void onOpenNewGame(View view) {
 
+
+
         System.out.println("I CLICKED THE CREATE NEW GAME BUTTON");
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -64,6 +79,9 @@ public class EditorActivity extends AppCompatActivity {
                 EditorView.currGameName = inputStr;
                 EditorView.isNew = true;
                 okToGo = true;
+                currGameName = inputStr;
+                TextView selectedGameName = (TextView) findViewById(R.id.selectedGameName);
+                selectedGameName.setText(currGameName);
 
             }
         });
@@ -72,6 +90,9 @@ public class EditorActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int whichButton) {
                 // Canceled.
                 okToGo = false;
+                currGameName = "No Game Selected";
+                TextView selectedGameName = (TextView) findViewById(R.id.selectedGameName);
+                selectedGameName.setText(currGameName);
             }
         });
 
@@ -118,6 +139,9 @@ public class EditorActivity extends AppCompatActivity {
                     Game.printShapesPrivate();
 
                     okToGo = true;
+                    currGameName = selection;
+                    TextView selectedGameName = (TextView) findViewById(R.id.selectedGameName);
+                    selectedGameName.setText(currGameName);
                 }
 
             }
@@ -127,6 +151,9 @@ public class EditorActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 okToGo = false;
+                currGameName = "No Game Selected";
+                TextView selectedGameName = (TextView) findViewById(R.id.selectedGameName);
+                selectedGameName.setText(currGameName);
 
             }
         });

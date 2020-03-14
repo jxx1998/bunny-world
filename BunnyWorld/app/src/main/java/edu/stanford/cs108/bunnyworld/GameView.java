@@ -106,6 +106,7 @@ public class GameView extends View {
         }
         if (shapeSelected!= null) {
             shapeSelected.setHighlightColor(Color.BLUE);
+            Log.i("hello", shapeSelected.scripts.scriptStr);
             shapeOriginalLeft = shapeSelected.getLeft();
             shapeOriginalTop = shapeSelected.getTop();
             for (Shape shape: currentPage.shapes) {

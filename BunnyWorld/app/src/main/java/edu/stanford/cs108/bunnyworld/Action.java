@@ -89,7 +89,7 @@ public class Action implements Serializable {
             }
             for (Shape inventory_shape: GameView.inventory) {
                 if (inventory_shape.name.equals(name)) {
-                    shape.setHidden(true);
+                    inventory_shape.setHidden(true);
                 }
             }
         } else if (keyword.equals("show")) {
@@ -99,7 +99,7 @@ public class Action implements Serializable {
             }
             for (Shape inventory_shape: GameView.inventory) {
                 if (inventory_shape.name.equals(name)) {
-                    shape.setHidden(false);
+                    inventory_shape.setHidden(false);
                 }
             }
         } else if (keyword.equals("switch")) {

@@ -47,6 +47,9 @@ public class GameView extends View {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        shapeSelected = null;
+        previousPage = null;
+        GameView.inventory.clear();
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override

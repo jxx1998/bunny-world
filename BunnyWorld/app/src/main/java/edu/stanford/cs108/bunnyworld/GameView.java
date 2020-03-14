@@ -136,14 +136,14 @@ public class GameView extends View {
                 shape.setHighlightColor(Color.TRANSPARENT);
             }
         }
-        if (shapeSelected != null && shapeSelected.isMovable()) {
+        if (shapeSelected != null) {
             clearDivider(shapeSelected, false);
             Page oldCurrentPage = currentPage;
             Shape oldShapeSelected = shapeSelected;
             if (mouseUpTime - mouseDownTime <= MAX_CLICK_DURATION) {
                 shapeSelected.onClick();
             } else {
-                if (currentPage.processOnDrop(shapeSelected)) {
+                if (shapeSelected.isMovable() && currentPage.processOnDrop(shapeSelected)) {
                     shapeSelected.coordinates.offsetTo(shapeOriginalLeft, shapeOriginalTop);
                 }
             }

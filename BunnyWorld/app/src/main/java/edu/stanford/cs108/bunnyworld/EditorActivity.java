@@ -111,9 +111,12 @@ public class EditorActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (selection != null) {
                     Game.load(selection);
-                    EditorView.gamePages = (ArrayList) Game.getPages();
+                    EditorView.gamePages = (ArrayList<Page>) Game.getPages();
                     EditorView.currGameName = selection;
                     EditorView.isNew = false;
+
+                    Game.printShapesPrivate();
+
                     okToGo = true;
                 }
 

@@ -1,5 +1,6 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -8,13 +9,20 @@ import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;
 
 public class Game implements Serializable {
 
@@ -105,8 +113,12 @@ public class Game implements Serializable {
      */
     public static void save(String gameName) {
         // deleteGame(gameName);
-        SQLiteDatabase db = Database.getInstance();
         byte[] game_bytes = serialize();
+        saveBytes(game_bytes, gameName);
+    }
+
+    public static void saveBytes(byte[] game_bytes, String gameName) {
+        SQLiteDatabase db = Database.getInstance();
         Log.d("game", Boolean.toString(game_bytes == null));
         String command = "INSERT INTO games (name, data) VALUES (?, ?)";
         SQLiteStatement insertStatement = db.compileStatement(command);

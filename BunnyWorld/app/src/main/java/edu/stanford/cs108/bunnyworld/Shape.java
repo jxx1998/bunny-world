@@ -174,15 +174,16 @@ public class Shape implements Serializable {
 
     // Other methods
     public void draw(Canvas canvas) {
-        canvas.drawRect(coordinates, highlightPaint);
-        if (hidden) { return; }
-        if (!text.equals("")) {
-            canvas.drawText(text, this.getLeft(), this.getTop(), paint);
-        } else if (imageDrawable != null) {
-            canvas.drawBitmap(imageDrawable.getBitmap(), null, this.getRectF(), paint);
-        } else {
-            canvas.drawRect(this.getRectF(), defaultPaint);
+        if (!hidden) {
+            if (!text.equals("")) {
+                canvas.drawText(text, this.getLeft(), this.getTop(), paint);
+            } else if (imageDrawable != null) {
+                canvas.drawBitmap(imageDrawable.getBitmap(), null, this.getRectF(), paint);
+            } else {
+                canvas.drawRect(this.getRectF(), defaultPaint);
+            }
         }
+        canvas.drawRect(coordinates, highlightPaint);
     }
 
     public void onClick() {

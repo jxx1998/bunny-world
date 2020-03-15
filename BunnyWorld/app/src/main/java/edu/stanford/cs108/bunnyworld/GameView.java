@@ -1,5 +1,7 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -106,6 +108,9 @@ public class GameView extends View {
         }
         if (shapeSelected!= null) {
             currentPage.makeTopMost(shapeSelected);
+            if (!inventory.contains(shapeSelected)) {
+                inventory.add(shapeSelected);
+            }
             shapeSelected.setHighlightColor(Color.BLUE);
             Log.i("hello", shapeSelected.scripts.scriptStr);
             shapeOriginalLeft = shapeSelected.getLeft();
@@ -188,6 +193,13 @@ public class GameView extends View {
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 animDivideX = (float) valueAnimator.getAnimatedValue();
                 instance.invalidate();
+            }
+        });
+        valueAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                animDivideX = 0f;
             }
         });
         valueAnimator.start();

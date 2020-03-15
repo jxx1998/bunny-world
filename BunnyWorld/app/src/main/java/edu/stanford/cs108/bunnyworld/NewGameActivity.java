@@ -662,8 +662,6 @@ public class NewGameActivity extends AppCompatActivity {
             float defaultWidth = EditorView.selectedShape.getBitmapWidth();
             float defaultHeight = EditorView.selectedShape.getBitmapHeight();
 
-
-
             float left = Float.parseFloat(leftText.getText().toString());
             float right = Float.parseFloat(rightText.getText().toString());
             float top = Float.parseFloat(topText.getText().toString());

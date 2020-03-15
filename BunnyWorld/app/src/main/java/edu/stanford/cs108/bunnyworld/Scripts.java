@@ -97,17 +97,69 @@ public class Scripts implements Serializable {
 //
 //
 //            }
-            while (stClause.hasMoreTokens()) {
-                String keyword = stClause.nextToken();
-                if (!actionKeywords.contains(keyword)) {
-                    throwToast("Input includes invalid action primitive!");
+//            while (stClause.hasMoreTokens()) {
+//                String keyword = stClause.nextToken();
+//                if (!actionKeywords.contains(keyword)) {
+//                    throwToast("Input includes invalid action primitive!");
+//                }
+//                if (!stClause.hasMoreTokens()) {
+//                    throwToast("Incomplete clause string detected!");
+//                }
+//                String name = stClause.nextToken();
+//                Action a = new Action(keyword, name);
+//                actions.add(a);
+//            }
+                if (stClause.hasMoreTokens()) {
+                String nextToken = stClause.nextToken();
+                if (nextToken.equals("if")) {
+                    if (stClause.hasMoreTokens()) {
+                        String conditionalKeyword = stClause.nextToken();
+                        if (!conditionalActionKeywords.contains(conditionalKeyword)) {
+                            throwToast("Input includes invalid conditional action primitive!");
+                        }
+                        if (!stClause.hasMoreTokens()) {
+                            throwToast("Incomplete conditional clause string detected!");
+                        }
+                        String conditionalName = stClause.nextToken();
+                        if (conditionalKeyword.equals("inventory")) {
+                            if (GameView.inventoryStringVersion.contains(conditionalName)) {
+                                throwToast("Reached!");
+                                while (stClause.hasMoreTokens()) {
+                                    String keyword = stClause.nextToken();
+                                    if (!actionKeywords.contains(keyword)) {
+                                        throwToast("Input includes invalid action primitive!");
+                                    }
+                                    if (!stClause.hasMoreTokens()) {
+                                        throwToast("Incomplete clause string detected!");
+                                    }
+                                    String name = stClause.nextToken();
+                                    Action a = new Action(keyword, name);
+                                    actions.add(a);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    boolean firstIt = true;
+                    while (stClause.hasMoreTokens()) {
+                        String keyword;
+                        if (firstIt) {
+                            keyword = nextToken;
+                        } else {
+                            keyword = stClause.nextToken();
+                        }
+                        if (!actionKeywords.contains(keyword)) {
+                            throwToast("Input includes invalid action primitive!");
+                        }
+                        if (!stClause.hasMoreTokens()) {
+                            throwToast("Incomplete clause string detected!");
+                        }
+                        String name = stClause.nextToken();
+                        Action a = new Action(keyword, name);
+                        actions.add(a);
+                        firstIt = false;
+                    }
                 }
-                if (!stClause.hasMoreTokens()) {
-                    throwToast("Incomplete clause string detected!");
-                }
-                String name = stClause.nextToken();
-                Action a = new Action(keyword, name);
-                actions.add(a);
             }
         }
 

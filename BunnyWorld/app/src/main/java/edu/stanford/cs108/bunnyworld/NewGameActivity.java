@@ -640,6 +640,9 @@ public class NewGameActivity extends AppCompatActivity {
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 EditorView.selectedShape.scripts.setScripts(input.getText().toString());
+
+                Game.set(EditorView.gamePages, EditorView.currPagePos);
+                Game.save(EditorView.currGameName);
             }
         });
 
@@ -651,9 +654,6 @@ public class NewGameActivity extends AppCompatActivity {
 
         alert.show();
 
-        // Save game without using customized functions
-        Game.set(EditorView.gamePages, EditorView.currPagePos);
-        Game.save(EditorView.currGameName);
     }
 
 

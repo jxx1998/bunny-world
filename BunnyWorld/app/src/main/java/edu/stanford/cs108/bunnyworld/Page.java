@@ -48,6 +48,10 @@ public class Page implements Serializable {
         }
     }
 
+    public String getBackgroundImage() {
+        return backGroundImage;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

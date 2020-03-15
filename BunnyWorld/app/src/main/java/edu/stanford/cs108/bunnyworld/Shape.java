@@ -99,6 +99,22 @@ public class Shape implements Serializable {
     public Scripts getScripts() { return scripts; }
     public int getHighlightColor() { return highlightPaint.getColor(); }
 
+    public int getBitmapHeight() {
+        if (imageDrawable != null) {
+            return imageDrawable.getBitmap().getHeight();
+        } else {
+            return -1;
+        }
+    }
+
+    public int getBitmapWidth() {
+        if (imageDrawable != null) {
+            return imageDrawable.getBitmap().getWidth();
+        } else {
+            return -1;
+        }
+    }
+
     // Below are some Setters
 
     // Set Coordinates directly with a RectF

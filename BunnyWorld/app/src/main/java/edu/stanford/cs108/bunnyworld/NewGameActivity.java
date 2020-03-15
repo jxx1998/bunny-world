@@ -11,7 +11,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -159,6 +161,9 @@ public class NewGameActivity extends AppCompatActivity {
 
         System.out.println("I CLICKED THE RENAME PAGE BUTTON");
         pageDialog = new Dialog(this);
+        Window window = pageDialog.getWindow();
+        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        pageDialog.setTitle("Edit Page Properties");
         pageDialog.setContentView(R.layout.page_properites_dialog_layout);
 
         EditText pageNameText = (EditText) pageDialog.findViewById(R.id.pageName);
@@ -166,7 +171,7 @@ public class NewGameActivity extends AppCompatActivity {
 
         pageNameText.setText(EditorView.currPage.name);
 
-        //String back = EditorView.currPage.get;
+        String back = EditorView.currPage.getBackgroundImage();
         int currButton = 0;
         if (back .equals("background_blue")){
             currButton = 1;
@@ -189,9 +194,7 @@ public class NewGameActivity extends AppCompatActivity {
 
         }
 
-
-
-        dialog.show();
+        pageDialog.show();
 
 
 
@@ -231,6 +234,61 @@ public class NewGameActivity extends AppCompatActivity {
 //
 //        alert.show();
 //
+
+    }
+
+    public void updatePageProps(View view){
+        System.out.println("I CLICKED ON THE UPDATE PROPS BUTTON");
+
+        EditText pageNameText = (EditText) pageDialog.findViewById(R.id.pageName);
+        RadioGroup group = (RadioGroup) pageDialog.findViewById(R.id.pageBackgroundGroup);
+        String backgroundStr = "None";
+
+        int currentCheck = group.getCheckedRadioButtonId();
+        switch(currentCheck){
+            case R.id.noBack:
+                break;
+            case R.id.blueBack:
+                backgroundStr = "background_blue";
+                break;
+            case R.id.cementBack:
+                backgroundStr = "background_cement";
+                break;
+            case R.id.woodBack:
+                backgroundStr = "background_wood";
+                break;
+            case R.id.yellowBack:
+                backgroundStr = "background_yellow";
+                break;
+        }
+
+
+        String newName = pageNameText.getText().toString();
+        Page currPage = EditorView.currPage;
+
+//                String currPageName = currPage.name;
+//                Game.renamePage(currPageName, inputStr);
+
+
+        currPage.setName(newName);
+        currPage.setBackGroundImage(backgroundStr);
+
+        EditorView myView = findViewById(R.id.myCustomView);
+        myView.invalidate();
+
+        Game.set(EditorView.gamePages, EditorView.currPagePos);
+        Game.save(EditorView.currGameName);
+
+
+//
+//        String newName = pageNameText.getText().toString();
+//        EditorView.currPage.setName(newName);
+//
+//        EditorView myView = findViewById(R.id.myCustomView);
+//        myView.invalidate();
+//
+//        Game.set(EditorView.gamePages, EditorView.currPagePos);
+//        Game.save(EditorView.currGameName);
 
     }
 

@@ -247,41 +247,87 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+    <GridLayout
         android:layout_row="5"
         android:layout_column="1"
-        android:orientation="vertical">
+        android:columnCount="2"
+        android:rowCount="2">
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical">-->
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:text="Bold"
+            android:textOn="On"
+            android:textOff="Off"
+            android:showText="true"
+            android:id="@+id/bold"
+            />
 
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bold"
-                android:textOn="On"
-                android:textOff="Off"
-                android:showText="true"
-                android:id="@+id/bold"
-                />
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:text="Italics"
+            android:textOn="On"
+            android:textOff="Off"
+            android:showText="true"
+            android:id="@+id/italics"
+            />
 
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Italics"
-                android:textOn="On"
-                android:textOff="Off"
-                android:showText="true"
-                android:id="@+id/italics"
-                />
+        <Button
+            android:id="@+id/defaultSizeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:text="Set To Default Size"
+            android:textSize="10sp"
+            android:onClick="setDefaultSize"/>
 
-<!--        </LinearLayout>-->
 
-    </LinearLayout>
+
+    </GridLayout>
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_row="5"-->
+<!--        android:layout_column="1"-->
+<!--        android:orientation="vertical">-->
+
+<!--&lt;!&ndash;        <LinearLayout&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:orientation="vertical">&ndash;&gt;-->
+
+<!--            <Switch-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Bold"-->
+<!--                android:textOn="On"-->
+<!--                android:textOff="Off"-->
+<!--                android:showText="true"-->
+<!--                android:id="@+id/bold"-->
+<!--                />-->
+
+<!--            <Switch-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Italics"-->
+<!--                android:textOn="On"-->
+<!--                android:textOff="Off"-->
+<!--                android:showText="true"-->
+<!--                android:id="@+id/italics"-->
+<!--                />-->
+
+<!--&lt;!&ndash;        </LinearLayout>&ndash;&gt;-->
+
+<!--    </LinearLayout>-->
 
     <LinearLayout
         android:layout_width="wrap_content"

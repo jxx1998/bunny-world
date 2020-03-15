@@ -33,7 +33,7 @@ public class NewGameActivity extends AppCompatActivity {
 
     private String selection, shapeSelection;
     private int selectionID, shapeSelectionID;
-    private Dialog dialog;
+    private Dialog dialog, pageDialog;
     final float SQUARE_SIZE = 100.0f;
     final float START_X = 200.0f;
     final float START_Y = 200.0f;
@@ -155,44 +155,82 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
-    public void renamePage(View view){
+    public void getPageProps(View view){
 
         System.out.println("I CLICKED THE RENAME PAGE BUTTON");
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        pageDialog = new Dialog(this);
+        pageDialog.setContentView(R.layout.page_properites_dialog_layout);
 
-        //maybe change this to .setMessage
-        alert.setTitle("Rename Current Page");
+        EditText pageNameText = (EditText) pageDialog.findViewById(R.id.pageName);
+        RadioGroup group = (RadioGroup) pageDialog.findViewById(R.id.pageBackgroundGroup);
 
-        final EditText input = new EditText(this);
-        alert.setView(input);
+        pageNameText.setText(EditorView.currPage.name);
 
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String inputStr = input.getText().toString();
-                Page currPage = EditorView.currPage;
+        //String back = EditorView.currPage.get;
+        int currButton = 0;
+        if (back .equals("background_blue")){
+            currButton = 1;
+        } else if (back .equals("background_cement")){
+            currButton = 2;
+        } else if (back .equals("background_wood")){
+            currButton = 3;
+        } else if (back .equals("background_yellow")) {
+            currButton = 4;
+        }
 
-//                String currPageName = currPage.name;
-//                Game.renamePage(currPageName, inputStr);
 
 
-                currPage.setName(inputStr);
-
-                EditorView myView = findViewById(R.id.myCustomView);
-                myView.invalidate();
-
-                Game.set(EditorView.gamePages, EditorView.currPagePos);
-                Game.save(EditorView.currGameName);
+        for(int i = 0; i < group.getChildCount(); i++){
+            if (i == currButton) {
+                ((RadioButton) group.getChildAt(i)).setChecked(true);
+            } else{
+                ((RadioButton)group.getChildAt(i)).setChecked(false);
             }
-        });
 
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
-            }
-        });
+        }
 
-        alert.show();
 
+
+        dialog.show();
+
+
+
+
+//        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+//
+//        //maybe change this to .setMessage
+//        alert.setTitle("Rename Current Page");
+//
+//        final EditText input = new EditText(this);
+//        alert.setView(input);
+//
+//        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int whichButton) {
+//                String inputStr = input.getText().toString();
+//                Page currPage = EditorView.currPage;
+//
+////                String currPageName = currPage.name;
+////                Game.renamePage(currPageName, inputStr);
+//
+//
+//                currPage.setName(inputStr);
+//
+//                EditorView myView = findViewById(R.id.myCustomView);
+//                myView.invalidate();
+//
+//                Game.set(EditorView.gamePages, EditorView.currPagePos);
+//                Game.save(EditorView.currGameName);
+//            }
+//        });
+//
+//        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int whichButton) {
+//                // Canceled.
+//            }
+//        });
+//
+//        alert.show();
+//
 
     }
 

@@ -84,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (selectedGameIndex != -1) {
                     Game.load(gameNames[selectedGameIndex]);
-                    GameView.shapeSelected = null;
-                    GameView.previousPage = null;
                     Intent intent = new Intent(context, GameActivity.class);
                     startActivity(intent);
                 }

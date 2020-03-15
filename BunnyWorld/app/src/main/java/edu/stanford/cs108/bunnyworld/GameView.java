@@ -105,6 +105,7 @@ public class GameView extends View {
             shapeSelected = currentPage.shapeTouched(x, y, false, true);
         }
         if (shapeSelected!= null) {
+            currentPage.makeTopMost(shapeSelected);
             shapeSelected.setHighlightColor(Color.BLUE);
             Log.i("hello", shapeSelected.scripts.scriptStr);
             shapeOriginalLeft = shapeSelected.getLeft();
@@ -146,6 +147,10 @@ public class GameView extends View {
                 if (shapeSelected.isMovable() && currentPage.processOnDrop(shapeSelected)) {
                     shapeSelected.coordinates.offsetTo(shapeOriginalLeft, shapeOriginalTop);
                 }
+            }
+            if (shapeSelected != null && shapeSelected.isHidden()) {
+                shapeSelected.setHighlightColor(Color.TRANSPARENT);
+                shapeSelected = null;
             }
             float dividerY = (2f / 3f) * instance.getHeight();
             if (oldShapeSelected.getTop() >= dividerY) {
@@ -202,8 +207,9 @@ public class GameView extends View {
         super.onDraw(canvas);
         if (currentPage == null) { return; }
         float dividerY = (2f / 3f) * instance.getHeight();
+        canvas.drawLine(0, dividerY, getWidth(), dividerY, dividerPaint);
         canvas.save();
-        canvas.clipRect(0.0f, 0.0f, animDivideX, dividerY);
+        canvas.clipRect(0.0f, 0.0f, animDivideX, instance.getHeight());
         if (previousPage != null) {
             previousPage.draw(canvas);
         } else {
@@ -211,10 +217,9 @@ public class GameView extends View {
         }
         canvas.restore();
         canvas.save();
-        canvas.clipRect(animDivideX, 0.0f, getWidth(), dividerY);
+        canvas.clipRect(animDivideX, 0.0f, getWidth(), instance.getHeight());
         currentPage.draw(canvas);
         canvas.restore();
-        canvas.drawLine(0, dividerY, getWidth(), dividerY, dividerPaint);
         for (Shape shape: inventory) {
             shape.draw(canvas);
         }

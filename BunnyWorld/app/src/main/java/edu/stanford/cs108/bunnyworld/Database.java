@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,21 +45,14 @@ public class Database {
         InputStream ins = context.getResources().openRawResource(
                 context.getResources().getIdentifier("example_game_file",
                         "raw", context.getPackageName()));
-        List<Integer> byteList = new ArrayList<Integer>();
         try {
-            Integer byteInt = ins.read();
-            while (byteInt != -1) {
-                byteList.add(byteInt);
-                byteInt = ins.read();
-            }
-        } catch (Exception ignored) {}
-        byte[] gameBytes = new byte[byteList.size()];
-        int index = 0;
-        for (Integer byteInt : byteList) {
-            gameBytes[index++] = byteInt.byteValue();
+            byte[] byteArray = new byte[ins.available()];
+            ins.read(byteArray);
+            Game.deserialize(byteArray);
+            Game.save("default_game");
+        } catch (Exception e) {
+            Log.d("Load default game", e.toString());
         }
-        Game.saveBytes(gameBytes, "default_game");
-        Log.d("serialize", Arrays.toString(gameBytes));
     }
 
     public static SQLiteDatabase getInstance() {

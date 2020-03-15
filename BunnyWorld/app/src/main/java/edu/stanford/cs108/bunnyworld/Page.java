@@ -17,6 +17,7 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
 
 public class Page implements Serializable {
 
+    private static final long serialVersionUID = -6898163807259994343L;
     String name;
     List<Shape> shapes;
     String backGroundMusic;

@@ -49,6 +49,7 @@ public class Database {
             byte[] byteArray = new byte[ins.available()];
             ins.read(byteArray);
             Game.deserialize(byteArray);
+            Log.d("serialize", Integer.toString(Game.getPages().size()));
             Game.save("default_game");
         } catch (Exception e) {
             Log.d("Load default game", e.toString());

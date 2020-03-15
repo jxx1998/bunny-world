@@ -38,8 +38,7 @@ public class Page implements Serializable {
 
     public void draw(Canvas canvas) {
         if (imageDrawable != null) {
-            float dividerY = (2f / 3f) * canvas.getHeight();
-            canvas.drawBitmap(imageDrawable.getBitmap(), null, new RectF(0.0f, 0.0f, canvas.getWidth(), dividerY), null);
+            canvas.drawBitmap(imageDrawable.getBitmap(), null, new RectF(0.0f, 0.0f, canvas.getWidth(), canvas.getHeight()), null);
         }
         for (Shape shape: shapes) {
             shape.draw(canvas);
@@ -133,7 +132,7 @@ public class Page implements Serializable {
             if (returnUnmovable == false && shapes.get(i).isMovable() == false) {
                 continue;
             }
-            if (shapes.get(i).getRectF().contains(x, y)) {
+            if (shapes.get(i).contains(x, y)) {
                 return shapes.get(i);
             }
         }

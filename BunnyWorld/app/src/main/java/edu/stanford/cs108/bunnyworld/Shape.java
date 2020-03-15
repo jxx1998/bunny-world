@@ -20,6 +20,10 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
 
 public class Shape implements Serializable {
 
+    private static final long serialVersionUID = 1267054998338566400L;
+
+    static final float SQUARE_SIZE = 100f;
+
     static final Map<String, Typeface> nameToTypeface = new HashMap<String, Typeface>() {{
         put("DEFAULT", Typeface.DEFAULT);
         put("MONOSPACE", Typeface.MONOSPACE);
@@ -28,7 +32,7 @@ public class Shape implements Serializable {
     }};
 
     String name;
-    transient RectF coordinates;
+    transient RectF coordinates, inventoryCoordinates;
     String imageName; // Name of the image this Shape can draw
     String text = ""; // Some text that this Shape can draw
     boolean hidden = false; // Whether this shape should be drawn out/clickable in Play time
@@ -51,6 +55,7 @@ public class Shape implements Serializable {
     public Shape(String name, RectF coordinates) {
         this.name = name;
         this.coordinates = coordinates;
+        this.inventoryCoordinates = new RectF(0f, 0f, SQUARE_SIZE, SQUARE_SIZE);
         constantInit();
         paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.NORMAL));
         paint.setTextSize(50.0f);
@@ -121,12 +126,18 @@ public class Shape implements Serializable {
     public void setCoordinates(RectF coordinates) {
         coordinates.sort();
         this.coordinates.set(coordinates);
+        this.inventoryCoordinates.offsetTo(coordinates.left, coordinates.top);
     }
 
     // Set Coordinates with (left, top, right, bottom)
     public void setCoordinates(float left, float top, float right, float bottom) {
         RectF coordinates = new RectF(left, top, right, bottom);
         setCoordinates(coordinates);
+    }
+
+    public void offSetCoordinates(float dx, float dy) {
+        coordinates.offset(dx, dy);
+        inventoryCoordinates.offset(dx, dy);
     }
 
     public void setCenterCoordinates(float x, float y, float width, float height){
@@ -194,12 +205,25 @@ public class Shape implements Serializable {
             if (!text.equals("")) {
                 canvas.drawText(text, this.getLeft(), this.getTop(), paint);
             } else if (imageDrawable != null) {
-                canvas.drawBitmap(imageDrawable.getBitmap(), null, this.getRectF(), paint);
+                canvas.drawBitmap(imageDrawable.getBitmap(), null, coordinates, paint);
             } else {
                 canvas.drawRect(this.getRectF(), defaultPaint);
             }
         }
         canvas.drawRect(coordinates, highlightPaint);
+    }
+
+    public void inventoryDraw(Canvas canvas) {
+        if (!hidden) {
+            if (!text.equals("")) {
+                canvas.drawText(text, this.getLeft(), this.getTop(), paint);
+            } else if (imageDrawable != null) {
+                canvas.drawBitmap(imageDrawable.getBitmap(), null, inventoryCoordinates, paint);
+            } else {
+                canvas.drawRect(this.getRectF(), defaultPaint);
+            }
+        }
+        canvas.drawRect(inventoryCoordinates, highlightPaint);
     }
 
     public void onClick() {
@@ -214,9 +238,14 @@ public class Shape implements Serializable {
         return scripts.onDrop(shapeName);
     }
 
-    // Returns whether a given (x, y) is located within the Shape
+    // Returns whether a given (x, y) is located within the Shape's coordinates
     public boolean contains(float x, float y) {
         return coordinates.contains(x, y);
+    }
+
+    // Returns whether a given (x, y) is located within the Shape's default coordinates
+    public boolean inventoryContains(float x, float y) {
+        return inventoryCoordinates.contains(x, y);
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -229,6 +258,7 @@ public class Shape implements Serializable {
         float right = in.readFloat();
         float bottom = in.readFloat();
         this.coordinates = new RectF(left, top, right, bottom);
+        this.inventoryCoordinates = new RectF(left, top, SQUARE_SIZE, SQUARE_SIZE);
 
         float textSize = in.readFloat();
         paint.setTextSize(textSize);

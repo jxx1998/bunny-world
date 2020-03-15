@@ -115,17 +115,13 @@ public class Action implements Serializable {
             Shape shape = GameView.shapeSelected;
             // float d = 0.0;
             if (dir == 'r') {
-                shape.setCoordinates(shape.getLeft() + dis, shape.getTop(),
-                        shape.getRight() + dis, shape.getBottom());
+                shape.offSetCoordinates(dis, 0f);
             } else if (dir == 'l') {
-                shape.setCoordinates(shape.getLeft() - dis, shape.getTop(),
-                        shape.getRight() - dis, shape.getBottom());
+                shape.offSetCoordinates(-dis, 0f);
             } else if (dir == 'u') {
-                shape.setCoordinates(shape.getLeft(), shape.getTop() - dis,
-                        shape.getRight(), shape.getBottom() - dis);
+                shape.offSetCoordinates(0f, -dis);
             } else if (dir == 'd') {
-                shape.setCoordinates(shape.getLeft(), shape.getTop() + dis,
-                        shape.getRight(), shape.getBottom() + dis);
+                shape.offSetCoordinates(0f, dis);
             }
         } else if (keyword.equals("bounce")) {
             //TODO

@@ -123,7 +123,7 @@ public class GameView extends View {
 
     private Shape inventoryShapeTouched(float x, float y) {
         for (int i = inventory.size() - 1; i >= 0; i --) {
-            if (inventory.get(i).contains(x, y)) {
+            if (inventory.get(i).inventoryContains(x, y)) {
                 return inventory.get(i);
             }
         }
@@ -209,7 +209,7 @@ public class GameView extends View {
         float dividerY = (2f / 3f) * instance.getHeight();
         canvas.drawLine(0, dividerY, getWidth(), dividerY, dividerPaint);
         canvas.save();
-        canvas.clipRect(0.0f, 0.0f, animDivideX, instance.getHeight());
+        canvas.clipRect(0.0f, 0.0f, animDivideX, dividerY);
         if (previousPage != null) {
             previousPage.draw(canvas);
         } else {
@@ -217,11 +217,11 @@ public class GameView extends View {
         }
         canvas.restore();
         canvas.save();
-        canvas.clipRect(animDivideX, 0.0f, getWidth(), instance.getHeight());
+        canvas.clipRect(animDivideX, 0.0f, getWidth(), dividerY);
         currentPage.draw(canvas);
         canvas.restore();
         for (Shape shape: inventory) {
-            shape.draw(canvas);
+            shape.inventoryDraw(canvas);
         }
     }
 }

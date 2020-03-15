@@ -175,9 +175,9 @@ public class NewGameActivity extends AppCompatActivity {
         int currButton = 0;
         if (back .equals("background_blue")){
             currButton = 1;
-        } else if (back .equals("background_cement")){
+        } else if (back .equals("background_metal")){
             currButton = 2;
-        } else if (back .equals("background_wood")){
+        } else if (back .equals("background_wall")){
             currButton = 3;
         } else if (back .equals("background_yellow")) {
             currButton = 4;
@@ -197,44 +197,6 @@ public class NewGameActivity extends AppCompatActivity {
         pageDialog.show();
 
 
-
-
-//        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-//
-//        //maybe change this to .setMessage
-//        alert.setTitle("Rename Current Page");
-//
-//        final EditText input = new EditText(this);
-//        alert.setView(input);
-//
-//        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int whichButton) {
-//                String inputStr = input.getText().toString();
-//                Page currPage = EditorView.currPage;
-//
-////                String currPageName = currPage.name;
-////                Game.renamePage(currPageName, inputStr);
-//
-//
-//                currPage.setName(inputStr);
-//
-//                EditorView myView = findViewById(R.id.myCustomView);
-//                myView.invalidate();
-//
-//                Game.set(EditorView.gamePages, EditorView.currPagePos);
-//                Game.save(EditorView.currGameName);
-//            }
-//        });
-//
-//        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int whichButton) {
-//                // Canceled.
-//            }
-//        });
-//
-//        alert.show();
-//
-
     }
 
     public void updatePageProps(View view){
@@ -251,11 +213,11 @@ public class NewGameActivity extends AppCompatActivity {
             case R.id.blueBack:
                 backgroundStr = "background_blue";
                 break;
-            case R.id.cementBack:
-                backgroundStr = "background_cement";
+            case R.id.metalBack:
+                backgroundStr = "background_metal";
                 break;
-            case R.id.woodBack:
-                backgroundStr = "background_wood";
+            case R.id.wallBack:
+                backgroundStr = "background_wall";
                 break;
             case R.id.yellowBack:
                 backgroundStr = "background_yellow";
@@ -265,9 +227,6 @@ public class NewGameActivity extends AppCompatActivity {
 
         String newName = pageNameText.getText().toString();
         Page currPage = EditorView.currPage;
-
-//                String currPageName = currPage.name;
-//                Game.renamePage(currPageName, inputStr);
 
 
         currPage.setName(newName);
@@ -280,15 +239,6 @@ public class NewGameActivity extends AppCompatActivity {
         Game.save(EditorView.currGameName);
 
 
-//
-//        String newName = pageNameText.getText().toString();
-//        EditorView.currPage.setName(newName);
-//
-//        EditorView myView = findViewById(R.id.myCustomView);
-//        myView.invalidate();
-//
-//        Game.set(EditorView.gamePages, EditorView.currPagePos);
-//        Game.save(EditorView.currGameName);
 
     }
 
@@ -441,26 +391,29 @@ public class NewGameActivity extends AppCompatActivity {
         //final Dialog dialog= new Dialog(this);
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.properties_dialog_layout);
+
+        EditText shapeNameText = (EditText) dialog.findViewById(R.id.shapeName);
+        TextView imageNameText = (TextView) dialog.findViewById(R.id.imageName);
+        EditText leftText = (EditText) dialog.findViewById(R.id.left);
+        EditText rightText = (EditText) dialog.findViewById(R.id.right);
+        EditText topText = (EditText) dialog.findViewById(R.id.top);
+        EditText botText = (EditText) dialog.findViewById(R.id.bottom);
+        EditText textText = (EditText) dialog.findViewById(R.id.text);
+        EditText sizeText = (EditText) dialog.findViewById(R.id.textSize);
+        Switch isBold = (Switch) dialog.findViewById(R.id.bold);
+        Switch isItalic = (Switch) dialog.findViewById(R.id.italics);
+        RadioGroup group = (RadioGroup) dialog.findViewById(R.id.font_group);
+
+        SeekBar redView = (SeekBar) dialog.findViewById(R.id.redProgress);
+        SeekBar greenView = (SeekBar) dialog.findViewById(R.id.greenProgress);
+        SeekBar blueView = (SeekBar) dialog.findViewById(R.id.blueProgress);
+        SeekBar scaleView = (SeekBar) dialog.findViewById(R.id.imageScaling);
+        scaleView.setProgress(100);
+
+
+        Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
+        Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
         if (EditorView.selectedShape != null) {
-            EditText shapeNameText = (EditText) dialog.findViewById(R.id.shapeName);
-            TextView imageNameText = (TextView) dialog.findViewById(R.id.imageName);
-            EditText leftText = (EditText) dialog.findViewById(R.id.left);
-            EditText rightText = (EditText) dialog.findViewById(R.id.right);
-            EditText topText = (EditText) dialog.findViewById(R.id.top);
-            EditText botText = (EditText) dialog.findViewById(R.id.bottom);
-            EditText textText = (EditText) dialog.findViewById(R.id.text);
-            EditText sizeText = (EditText) dialog.findViewById(R.id.textSize);
-            Switch isBold = (Switch) dialog.findViewById(R.id.bold);
-            Switch isItalic = (Switch) dialog.findViewById(R.id.italics);
-            RadioGroup group = (RadioGroup) dialog.findViewById(R.id.font_group);
-
-            SeekBar redView = (SeekBar) dialog.findViewById(R.id.redProgress);
-            SeekBar greenView = (SeekBar) dialog.findViewById(R.id.greenProgress);
-            SeekBar blueView = (SeekBar) dialog.findViewById(R.id.blueProgress);
-
-
-            Switch isMoveable = (Switch) dialog.findViewById(R.id.moveable);
-            Switch isVisible = (Switch) dialog.findViewById(R.id.visible);
 
             shapeNameText.setText(EditorView.selectedShape.name);
             imageNameText.setText(EditorView.selectedShape.imageName);
@@ -482,6 +435,7 @@ public class NewGameActivity extends AppCompatActivity {
             } else {
                 textText.setText(EditorView.selectedShape.getText());
                 sizeText.setText(Float.toString(EditorView.selectedShape.getTextSize()));
+                scaleView.setEnabled(false);
                 int red = EditorView.selectedShape.red;
                 int green = EditorView.selectedShape.green;
                 int blue = EditorView.selectedShape.blue;
@@ -530,6 +484,40 @@ public class NewGameActivity extends AppCompatActivity {
             isVisible.setChecked(!EditorView.selectedShape.isHidden());
 
         }
+        else{
+            shapeNameText.setInputType(0);
+            shapeNameText.setClickable(false);
+            imageNameText.setInputType(0);
+            shapeNameText.setClickable(false);
+            leftText.setInputType(0);
+            leftText.setClickable(false);
+            rightText.setInputType(0);
+            rightText.setClickable(false);
+            botText.setInputType(0);
+            botText.setClickable(false);
+            topText.setInputType(0);
+            topText.setClickable(false);
+            textText.setInputType(0);
+            textText.setClickable(false);
+            sizeText.setInputType(0);
+            sizeText.setClickable(false);
+
+
+            isBold.setEnabled(false);
+            isItalic.setEnabled(false);
+            redView.setEnabled(false);
+            blueView.setEnabled(false);
+            greenView.setEnabled(false);
+            for(int i = 0; i < group.getChildCount(); i++){
+                ((RadioButton)group.getChildAt(i)).setEnabled(false);
+            }
+
+            isMoveable.setEnabled(false);
+            isVisible.setEnabled(false);
+            scaleView.setEnabled(false);
+
+
+        }
 
         dialog.show();
 
@@ -559,6 +547,7 @@ public class NewGameActivity extends AppCompatActivity {
             RadioGroup group = (RadioGroup) dialog.findViewById(R.id.font_group);
             Switch isBold = (Switch) dialog.findViewById(R.id.bold);
             Switch isItalic = (Switch) dialog.findViewById(R.id.italics);
+            SeekBar scaleView = (SeekBar) dialog.findViewById(R.id.imageScaling);
 
             String fontStr = "DEFAULT";
 
@@ -600,6 +589,17 @@ public class NewGameActivity extends AppCompatActivity {
 
 
             EditorView.selectedShape.setName(newName);
+
+            int scaleProgress = scaleView.getProgress();
+            if (scaleProgress != 100){
+                float floatProgress = (float) scaleProgress;
+                float newWidth = EditorView.selectedShape.getWidth() * (floatProgress/100);
+                newRight = newLeft + newWidth;
+
+                float newHeight = EditorView.selectedShape.getHeight() * (floatProgress/100);
+                newBot = newTop + newHeight;
+            }
+
             EditorView.selectedShape.setCoordinates(newLeft,newTop,newRight,newBot);
             //EditorView.selectedShape.setCenterCoordinates(EditorView.selectedShape.coordinates.centerX(), EditorView.selectedShape.coordinates.centerY(),newWidth,newHeight);
             if (textText.isClickable()) {
@@ -617,13 +617,6 @@ public class NewGameActivity extends AppCompatActivity {
             }
             EditorView.selectedShape.setMovable(moveable);
             EditorView.selectedShape.setHidden(hidden);
-
-
-
-
-
-
-
 
 
             //This is so that the immediate drawing of the shape can be changed without a reference to the selected x and y point

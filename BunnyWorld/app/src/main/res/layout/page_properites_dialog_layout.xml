@@ -72,16 +72,16 @@
             android:text="Blue" />
 
         <RadioButton
-            android:id="@+id/cementBack"
+            android:id="@+id/metalBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cement" />
+            android:text="Metal" />
 
         <RadioButton
-            android:id="@+id/woodBack"
+            android:id="@+id/wallBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Wood" />
+            android:text="Wall" />
 
         <RadioButton
             android:id="@+id/yellowBack"

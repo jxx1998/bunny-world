@@ -97,14 +97,16 @@ public class EditorView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //For Displaying Page Name
-        String pageName = currPage.name;
-        canvas.drawText(pageName,50f,50f, textPaint);
+
 
 
         //Draws all of the shapes on the page
         currPage.draw(canvas);
 
+
+        //For Displaying Page Name
+        String pageName = currPage.name;
+        canvas.drawText(pageName,50f,50f, textPaint);
         //Redraws the selected shape
         //selectedShape = currPage.shapeTouched(xSelect,ySelect,true, true);
 

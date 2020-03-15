@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -403,6 +404,7 @@ public class NewGameActivity extends AppCompatActivity {
         Switch isBold = (Switch) dialog.findViewById(R.id.bold);
         Switch isItalic = (Switch) dialog.findViewById(R.id.italics);
         RadioGroup group = (RadioGroup) dialog.findViewById(R.id.font_group);
+        Button defaultSize = (Button) dialog.findViewById(R.id.defaultSizeButton);
 
         SeekBar redView = (SeekBar) dialog.findViewById(R.id.redProgress);
         SeekBar greenView = (SeekBar) dialog.findViewById(R.id.greenProgress);
@@ -418,7 +420,11 @@ public class NewGameActivity extends AppCompatActivity {
             shapeNameText.setText(EditorView.selectedShape.name);
             imageNameText.setText(EditorView.selectedShape.imageName);
             String shapeText = EditorView.selectedShape.getImageName();
+            //SHOULD THIS BUT .equals?
             if (shapeText != "TextBox"){
+                if (shapeText.equals("Button")){
+                    defaultSize.setClickable(false);
+                }
                 textText.setText("No Text");
                 textText.setInputType(0);
                 textText.setClickable(false);
@@ -436,6 +442,9 @@ public class NewGameActivity extends AppCompatActivity {
                 textText.setText(EditorView.selectedShape.getText());
                 sizeText.setText(Float.toString(EditorView.selectedShape.getTextSize()));
                 scaleView.setEnabled(false);
+                defaultSize.setClickable(false);
+
+
                 int red = EditorView.selectedShape.red;
                 int green = EditorView.selectedShape.green;
                 int blue = EditorView.selectedShape.blue;
@@ -641,43 +650,38 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     public void setDefaultSize(View view){
+        //String currShapeName = EditorView.selectedShape.getImageName();
+        //&& !currShapeName.equals("TextBox") && !currShapeName.equals("Button")
 
-        if (EditorView.selectedShape != null) {
+        if (EditorView.selectedShape != null ) {
+
 
             EditText leftText = (EditText) dialog.findViewById(R.id.left);
             EditText rightText = (EditText) dialog.findViewById(R.id.right);
             EditText topText = (EditText) dialog.findViewById(R.id.top);
             EditText botText = (EditText) dialog.findViewById(R.id.bottom);
 
-            float defaultWidth = EditorView.selectedShape.getGit
+            float defaultWidth = EditorView.selectedShape.getBitmapWidth();
+            float defaultHeight = EditorView.selectedShape.getBitmapHeight();
+
+
+
+            float left = Float.parseFloat(leftText.getText().toString());
+            float right = Float.parseFloat(rightText.getText().toString());
+            float top = Float.parseFloat(topText.getText().toString());
+            float bot = Float.parseFloat(botText.getText().toString());
+
+            float newRight = left + defaultWidth;
+            float newBot = top + defaultHeight;
+
+            rightText.setText(Float.toString(newRight));
+            botText.setText(Float.toString(newBot));
 
 
 
 
-            float newLeft = Float.parseFloat(leftText.getText().toString());
-            float newRight = Float.parseFloat(rightText.getText().toString());
-            float newTop = Float.parseFloat(topText.getText().toString());
-            float newBot = Float.parseFloat(botText.getText().toString());
-
-
-
-            EditorView.selectedShape.setCoordinates(newLeft,newTop,newRight,newBot);
+            EditorView.selectedShape.setCoordinates(left,top,newRight,newBot);
             //EditorView.selectedShape.setCenterCoordinates(EditorView.selectedShape.coordinates.centerX(), EditorView.selectedShape.coordinates.centerY(),newWidth,newHeight);
-            if (textText.isClickable()) {
-                EditorView.selectedShape.setText(text, textSize);
-                EditorView.selectedShape.setBold(isBold.isChecked());
-                EditorView.selectedShape.setItalic(isItalic.isChecked());
-                EditorView.selectedShape.solidifyTextStyle();
-                EditorView.selectedShape.setColor(newTextColor);
-                EditorView.selectedShape.red = red;
-                EditorView.selectedShape.green = green;
-                EditorView.selectedShape.blue = blue;
-
-                EditorView.selectedShape.setTypeface(fontStr);
-
-            }
-            EditorView.selectedShape.setMovable(moveable);
-            EditorView.selectedShape.setHidden(hidden);
 
 
             //This is so that the immediate drawing of the shape can be changed without a reference to the selected x and y point
@@ -685,12 +689,12 @@ public class NewGameActivity extends AppCompatActivity {
             EditorView myView = findViewById(R.id.myCustomView);
             myView.invalidate();
 
-            left = Float.toString(EditorView.selectedShape.getLeft());
-            right = Float.toString(EditorView.selectedShape.getRight());
-            top = Float.toString(EditorView.selectedShape.getTop());
-            bot = Float.toString(EditorView.selectedShape.getBottom());
-
-            System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
+//            left = Float.toString(EditorView.selectedShape.getLeft());
+//            right = Float.toString(EditorView.selectedShape.getRight());
+//            top = Float.toString(EditorView.selectedShape.getTop());
+//            bot = Float.toString(EditorView.selectedShape.getBottom());
+//
+//            System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
 
             Game.set(EditorView.gamePages, EditorView.currPagePos);
             Game.save(EditorView.currGameName);

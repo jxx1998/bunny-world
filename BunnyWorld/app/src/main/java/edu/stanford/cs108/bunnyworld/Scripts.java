@@ -54,11 +54,24 @@ public class Scripts implements Serializable {
             StringTokenizer stClause = new StringTokenizer(clause.substring(0, clause.length() - 1), " ");
             if (stClause.countTokens() < 2) {
                 throwToast("Incomplete clause string!");
+                continue;
             }
-            String trigger = stClause.nextToken();
-            trigger += " " + stClause.nextToken();
+            String trigger;
+            if (!stClause.hasMoreElements()) {
+                throwToast("Incomplete trigger!");
+                continue;
+            } else {
+                trigger = stClause.nextToken();
+            }
+            if (!stClause.hasMoreElements()) {
+                throwToast("Incomplete trigger!");
+                continue;
+            } else {
+                trigger += " " + stClause.nextToken();
+            }
             if (!triggerKeywords.contains(trigger)) {
                 throwToast("Invalid clause trigger word detected!");
+                continue;
             }
 
             List<Action> actions = new ArrayList<Action>();
@@ -74,6 +87,7 @@ public class Scripts implements Serializable {
             } else if (trigger.equals("on drop")) {
                 if (!stClause.hasMoreTokens()) {
                     throwToast("Incomplete on drop clause!");
+                    continue;
                 }
                 String shapeName = stClause.nextToken();
                 onDropClauses.put(shapeName, new ArrayList<Action>());
@@ -101,9 +115,11 @@ public class Scripts implements Serializable {
                 String keyword = stClause.nextToken();
                 if (!actionKeywords.contains(keyword)) {
                     throwToast("Input includes invalid action primitive!");
+                    break;
                 }
                 if (!stClause.hasMoreTokens()) {
                     throwToast("Incomplete clause string detected!");
+                    break;
                 }
                 String name = stClause.nextToken();
                 Action a = new Action(keyword, name);

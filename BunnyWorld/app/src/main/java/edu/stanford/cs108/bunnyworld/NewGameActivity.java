@@ -681,6 +681,7 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     public void saveGame(View view){
+        Game.deleteGame(EditorView.currGameName);
         Game.set(EditorView.gamePages, EditorView.currPagePos);
         Game.save(EditorView.currGameName);
     }

@@ -24,7 +24,7 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
  */
 public class GameView extends View {
 
-    static float animDivideY;
+    static float animDivideX;
     float shapeOriginalLeft, shapeOriginalTop;
     Paint dividerPaint;
     static Shape shapeSelected;
@@ -181,7 +181,7 @@ public class GameView extends View {
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                animDivideY = (float) valueAnimator.getAnimatedValue();
+                animDivideX = (float) valueAnimator.getAnimatedValue();
                 instance.invalidate();
             }
         });
@@ -201,8 +201,9 @@ public class GameView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (currentPage == null) { return; }
+        float dividerY = (2f / 3f) * instance.getHeight();
         canvas.save();
-        canvas.clipRect(0.0f, 0.0f, animDivideY, getHeight());
+        canvas.clipRect(0.0f, 0.0f, animDivideX, dividerY);
         if (previousPage != null) {
             previousPage.draw(canvas);
         } else {
@@ -210,10 +211,9 @@ public class GameView extends View {
         }
         canvas.restore();
         canvas.save();
-        canvas.clipRect(animDivideY, 0.0f, getWidth(), getHeight());
+        canvas.clipRect(animDivideX, 0.0f, getWidth(), dividerY);
         currentPage.draw(canvas);
         canvas.restore();
-        float dividerY = (2f / 3f) * instance.getHeight();
         canvas.drawLine(0, dividerY, getWidth(), dividerY, dividerPaint);
         for (Shape shape: inventory) {
             shape.draw(canvas);

@@ -37,11 +37,7 @@ public class Page implements Serializable {
 
     public void draw(Canvas canvas) {
         if (imageDrawable != null) {
-            canvas.drawBitmap(imageDrawable.getBitmap(),
-                    null,
-                    new RectF(0.0f, 0.0f, GameView.instance.getWidth(), (2f/3f) * GameView.instance.getHeight()),
-                    null
-            );
+            canvas.drawBitmap(imageDrawable.getBitmap(), 0.0f, 0.0f, null);
         }
         for (Shape shape: shapes) {
             shape.draw(canvas);

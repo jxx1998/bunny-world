@@ -154,8 +154,6 @@ public class NewGameActivity extends AppCompatActivity {
 
         alert.show();
 
-
-
     }
 
     public void getPageProps(View view){

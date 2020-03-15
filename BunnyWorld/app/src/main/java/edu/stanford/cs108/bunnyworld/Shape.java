@@ -22,7 +22,7 @@ public class Shape implements Serializable {
 
     private static final long serialVersionUID = 1267054998338566400L;
 
-    static final float SQUARE_SIZE = 100f;
+    static final float SQUARE_SIZE = 150f;
 
     static final Map<String, Typeface> nameToTypeface = new HashMap<String, Typeface>() {{
         put("DEFAULT", Typeface.DEFAULT);
@@ -55,7 +55,7 @@ public class Shape implements Serializable {
     public Shape(String name, RectF coordinates) {
         this.name = name;
         this.coordinates = coordinates;
-        this.inventoryCoordinates = new RectF(0f, 0f, SQUARE_SIZE, SQUARE_SIZE);
+        this.inventoryCoordinates = new RectF(coordinates.left, coordinates.top, coordinates.left + SQUARE_SIZE, coordinates.top + SQUARE_SIZE);
         constantInit();
         paint.setTypeface(Typeface.create(nameToTypeface.get(typeface), Typeface.NORMAL));
         paint.setTextSize(50.0f);
@@ -258,7 +258,7 @@ public class Shape implements Serializable {
         float right = in.readFloat();
         float bottom = in.readFloat();
         this.coordinates = new RectF(left, top, right, bottom);
-        this.inventoryCoordinates = new RectF(left, top, SQUARE_SIZE, SQUARE_SIZE);
+        this.inventoryCoordinates = new RectF(left, top, left + SQUARE_SIZE, top + SQUARE_SIZE);
 
         float textSize = in.readFloat();
         paint.setTextSize(textSize);

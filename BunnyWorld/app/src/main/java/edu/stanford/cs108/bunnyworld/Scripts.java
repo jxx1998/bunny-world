@@ -16,6 +16,8 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
  */
 public class Scripts implements Serializable {
 
+    private static final long serialVersionUID = -2856451602345386105L;
+
     private final Set<String> triggerKeywords = new HashSet<String>
             (Arrays.asList("on click", "on enter", "on drop"));
     private final Set<String> actionKeywords = new HashSet<String>

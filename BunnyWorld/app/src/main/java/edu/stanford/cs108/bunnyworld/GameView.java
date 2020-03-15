@@ -206,7 +206,7 @@ public class GameView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (currentPage == null) { return; }
-        float dividerY = (2f / 3f) * instance.getHeight();
+        float dividerY = (2f / 3f) * getHeight();
         canvas.drawLine(0, dividerY, getWidth(), dividerY, dividerPaint);
         canvas.save();
         canvas.clipRect(0.0f, 0.0f, animDivideX, dividerY);
@@ -220,8 +220,12 @@ public class GameView extends View {
         canvas.clipRect(animDivideX, 0.0f, getWidth(), dividerY);
         currentPage.draw(canvas);
         canvas.restore();
+        canvas.save();
+        canvas.clipRect(0.0f, dividerY, getWidth(), getHeight());
         for (Shape shape: inventory) {
             shape.inventoryDraw(canvas);
         }
+        canvas.restore();
+        canvas.save();
     }
 }

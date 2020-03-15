@@ -12,6 +12,9 @@ import java.io.Serializable;
 import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;
 
 public class Action implements Serializable {
+
+    private static final long serialVersionUID = 8775500265792743431L;
+
     String keyword;
     String name;
     transient BitmapDrawable imageDrawable;

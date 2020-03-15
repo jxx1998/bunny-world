@@ -640,6 +640,70 @@ public class NewGameActivity extends AppCompatActivity {
 
     }
 
+    public void setDefaultSize(View view){
+
+        if (EditorView.selectedShape != null) {
+
+            EditText leftText = (EditText) dialog.findViewById(R.id.left);
+            EditText rightText = (EditText) dialog.findViewById(R.id.right);
+            EditText topText = (EditText) dialog.findViewById(R.id.top);
+            EditText botText = (EditText) dialog.findViewById(R.id.bottom);
+
+            float defaultWidth = EditorView.selectedShape.getGit
+
+
+
+
+            float newLeft = Float.parseFloat(leftText.getText().toString());
+            float newRight = Float.parseFloat(rightText.getText().toString());
+            float newTop = Float.parseFloat(topText.getText().toString());
+            float newBot = Float.parseFloat(botText.getText().toString());
+
+
+
+            EditorView.selectedShape.setCoordinates(newLeft,newTop,newRight,newBot);
+            //EditorView.selectedShape.setCenterCoordinates(EditorView.selectedShape.coordinates.centerX(), EditorView.selectedShape.coordinates.centerY(),newWidth,newHeight);
+            if (textText.isClickable()) {
+                EditorView.selectedShape.setText(text, textSize);
+                EditorView.selectedShape.setBold(isBold.isChecked());
+                EditorView.selectedShape.setItalic(isItalic.isChecked());
+                EditorView.selectedShape.solidifyTextStyle();
+                EditorView.selectedShape.setColor(newTextColor);
+                EditorView.selectedShape.red = red;
+                EditorView.selectedShape.green = green;
+                EditorView.selectedShape.blue = blue;
+
+                EditorView.selectedShape.setTypeface(fontStr);
+
+            }
+            EditorView.selectedShape.setMovable(moveable);
+            EditorView.selectedShape.setHidden(hidden);
+
+
+            //This is so that the immediate drawing of the shape can be changed without a reference to the selected x and y point
+            EditorView.changingDimensions = true;
+            EditorView myView = findViewById(R.id.myCustomView);
+            myView.invalidate();
+
+            left = Float.toString(EditorView.selectedShape.getLeft());
+            right = Float.toString(EditorView.selectedShape.getRight());
+            top = Float.toString(EditorView.selectedShape.getTop());
+            bot = Float.toString(EditorView.selectedShape.getBottom());
+
+            System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
+
+            Game.set(EditorView.gamePages, EditorView.currPagePos);
+            Game.save(EditorView.currGameName);
+
+
+
+        }
+
+
+
+    }
+
+
     public void deleteShape(View view){
         System.out.println("I CLICKED THE DELETE SHAPE BUTTON");
 

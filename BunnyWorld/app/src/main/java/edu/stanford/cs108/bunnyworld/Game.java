@@ -26,6 +26,8 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
 
 public class Game implements Serializable {
 
+    private static final long serialVersionUID = 210791961760389656L;
+
     private static Game instance = new Game();
 
     private ArrayList<Page> pages;
@@ -65,6 +67,7 @@ public class Game implements Serializable {
         if(cursor.moveToFirst()) {
             byte[] game_bytes = cursor.getBlob(1);
             Log.i("hi", "this loaded game's id is: " + Integer.toString(cursor.getInt(2)));
+            Log.d("serialize", Arrays.toString(game_bytes));
             deserialize(game_bytes);
         }
         if (cursor != null && !cursor.isClosed()) {
@@ -113,12 +116,8 @@ public class Game implements Serializable {
      */
     public static void save(String gameName) {
         // deleteGame(gameName);
-        byte[] game_bytes = serialize();
-        saveBytes(game_bytes, gameName);
-    }
-
-    public static void saveBytes(byte[] game_bytes, String gameName) {
         SQLiteDatabase db = Database.getInstance();
+        byte[] game_bytes = serialize();
         Log.d("game", Boolean.toString(game_bytes == null));
         String command = "INSERT INTO games (name, data) VALUES (?, ?)";
         SQLiteStatement insertStatement = db.compileStatement(command);
@@ -203,19 +202,22 @@ public class Game implements Serializable {
         return gameBytes;
     }
 
-    private static void deserialize(byte[] gameBytes) {
+    public static void deserialize(byte[] gameBytes) {
         ByteArrayInputStream bis = new ByteArrayInputStream(gameBytes);
         ObjectInput in = null;
         try {
             in = new ObjectInputStream(bis);
             instance = (Game) in.readObject();
         } catch (Exception ignored) {
+            Log.d("serialize", ignored.toString());
         } finally {
             try {
                 if (in != null) {
                     in.close();
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+                Log.d("serialize", ignored.toString());
+            }
         }
     }
 }

@@ -37,7 +37,6 @@ public class EditorView extends View {
     protected float minusX, minusY, plusX, plusY;
     protected static boolean changingDimensions;
     Paint textPaint = new Paint();
-    Paint myPaintDrawOutline = new Paint();
 
 
 
@@ -56,10 +55,6 @@ public class EditorView extends View {
 
         textPaint.setColor(Color.BLACK);
         textPaint.setTextSize(50f);
-
-        myPaintDrawOutline.setColor(Color.BLUE);
-        myPaintDrawOutline.setStrokeWidth(15.0f);
-        myPaintDrawOutline.setStyle(Paint.Style.STROKE);
 
         //We create a game object and add an initial page (just to test out, this initial page will have three shapes in them)
         shapeNames = new ArrayList<String>();
@@ -134,12 +129,12 @@ public class EditorView extends View {
                 break;
 
             case MotionEvent.ACTION_DOWN:
-//                xSelect = event.getX();
-//                ySelect = event.getY();
-//                x1 = event.getX();
-//                y1 = event.getY();
                 for (Shape shape: currPage.shapes) {
-                    shape.setHighlightColor(Color.TRANSPARENT);
+                    if (!shape.isHidden()) {
+                        shape.setHighlightColor(Color.TRANSPARENT);
+                    } else {
+                        shape.setHighlightColor(Color.BLACK);
+                    }
                 }
                 selectedX = event.getX();
                 selectedY = event.getY();
@@ -152,11 +147,7 @@ public class EditorView extends View {
                         selectedShape.setCenterCoordinates(selectedX, selectedY, selectedShape.getWidth(), selectedShape.getHeight());
                     }
 
-                    if (selectedShape.isHidden()){
-                        selectedShape.setHighlightColor(Color.BLACK);
-                    } else {
-                        selectedShape.setHighlightColor(Color.BLUE);
-                    }
+                    selectedShape.setHighlightColor(Color.BLUE);
                 } else {
                     isAShapeSelected = false;
                 }

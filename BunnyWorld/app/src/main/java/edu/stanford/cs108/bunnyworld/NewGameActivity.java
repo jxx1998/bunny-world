@@ -569,6 +569,35 @@ public class NewGameActivity extends AppCompatActivity {
             System.out.println("Selected Shape's attributes: (left, right, top, bot): (" + left + "," + right + "," + top + "," + bot + "," + ")");
 
             EditText shapeNameText = (EditText) dialog.findViewById(R.id.shapeName);
+            String name = shapeNameText.getText().toString();
+
+
+            // 0 = NewShape
+            // 1 = Error: Another userSpecified shape name is already in use
+            // 2 = In the clear
+            int isShapeNameOk = checkShapeName(name);
+
+
+            if (isShapeNameOk == 0){
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Warning: Unique shape name is not specified.",
+                        Toast.LENGTH_SHORT);
+                toast.show();
+            } else if (isShapeNameOk == 1){
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "ERROR: Shape name is already in use!",
+                        Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
+            //else: isShapeName is guaranteed to be 2, so we're good
+
+
+            System.out.println("We've passed the toast code");
+
+
+
+
             EditText leftText = (EditText) dialog.findViewById(R.id.left);
             EditText rightText = (EditText) dialog.findViewById(R.id.right);
             EditText topText = (EditText) dialog.findViewById(R.id.top);
@@ -669,6 +698,25 @@ public class NewGameActivity extends AppCompatActivity {
 
 
 
+        }
+
+    }
+
+    private int checkShapeName(String currentShapeName){
+        //If "NewShape" is the shape name, which is default name for newly added shapes, return 0
+        if (currentShapeName.equals("NewShape")){
+            return 0;
+        }
+        //If other shape name is found in the shape names list, then another shape is already named that way; return 1
+        else{
+            for (Page currPage : EditorView.gamePages){
+                for (Shape shape : currPage.shapes){
+                    if (currentShapeName.equals(shape.name) && shape!= EditorView.selectedShape){
+                        return 1;
+                    }
+                }
+            }
+            return 2;
         }
 
     }

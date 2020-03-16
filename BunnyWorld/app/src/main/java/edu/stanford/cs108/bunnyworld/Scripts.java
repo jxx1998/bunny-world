@@ -122,7 +122,11 @@ public class Scripts implements Serializable {
                         }
                         String conditionalName = stClause.nextToken();
                         if (conditionalKeyword.equals("inventory")) {
+<<<<<<< HEAD
                             if (inventoryContains(conditionalName)) {
+=======
+                            if (GameView.inventoryStringVersion.contains(conditionalName)) {
+>>>>>>> ebc3e7e371ec2391b1c063263cefcfda729acc04
                                 throwToast("Reached!");
                                 while (stClause.hasMoreTokens()) {
                                     String keyword = stClause.nextToken();

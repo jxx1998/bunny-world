@@ -94,6 +94,7 @@ public class Scripts implements Serializable {
                     continue;
                 }
                 String shapeName = stClause.nextToken();
+                checkShapeExists(shapeName);
                 onDropClauses.put(shapeName, new ArrayList<Action>());
                 actions = onDropClauses.get(shapeName);
             }
@@ -126,27 +127,48 @@ public class Scripts implements Serializable {
                     break;
                 }
                 String name = stClause.nextToken();
-                if (keyword.equals("goto")) {
-                    boolean pageExists = false;
-                    for (Page individualPage: EditorView.gamePages) {
-                        if (individualPage.name.equals(name)) {
-                            pageExists = true;
-                        }
-                    }
-                    if (!pageExists) {
-                        throwToast("WARNING: Script contains page that doesn't exist yet!");
-                    }
-                } else if (keyword.equals("play")) {
-                    if (!soundFiles.contains(name)) {
-                        throwToast("ERROR: Script contains nonexistent sound file!");
-                        return false;
-                    }
+                if (!checkValidity(keyword, name)) {
+                    return false;
                 }
                 Action a = new Action(keyword, name);
                 actions.add(a);
             }
         }
         return true;
+    }
+
+    private boolean checkValidity(String keyword, String name) {
+        if (keyword.equals("goto")) {
+            boolean pageExists = false;
+            for (Page individualPage: EditorView.gamePages) {
+                if (individualPage.name.equals(name)) {
+                    pageExists = true;
+                }
+            }
+            if (!pageExists) {
+                throwToast("WARNING: Script contains page that doesn't exist yet!");
+            }
+        } else if (keyword.equals("play")) {
+            if (!soundFiles.contains(name)) {
+                throwToast("ERROR: Script contains nonexistent sound file!");
+                return false;
+            }
+        } else if (keyword.equals("hide") || keyword.equals("show")) {
+            checkShapeExists(name);
+        }
+        return true;
+    }
+
+    private boolean checkShapeExists(String name) {
+        for (Page page : EditorView.gamePages) {
+            for (Shape shape : page.shapes) {
+                if (name.equals(shape.name)) {
+                    return true;
+                }
+            }
+        }
+        throwToast("WARNING: Script contains shape that doesn't exist yet!");
+        return false;
     }
 
     public void onEnter() {

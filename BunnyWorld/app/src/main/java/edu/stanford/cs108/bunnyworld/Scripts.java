@@ -18,6 +18,8 @@ public class Scripts implements Serializable {
 
     private static final long serialVersionUID = -2856451602345386105L;
 
+    private static final Set<String> soundFiles = new HashSet<String>
+            (Arrays.asList("carrotcarrotcarrot", "evillaugh", "fire", "hooray", "munch", "munching", "rain", "woof"));
     private final Set<String> triggerKeywords = new HashSet<String>
             (Arrays.asList("on click", "on enter", "on drop"));
     private final Set<String> actionKeywords = new HashSet<String>
@@ -47,7 +49,7 @@ public class Scripts implements Serializable {
         toast.show();
     }
 
-    public void setScripts(String str) {
+    public boolean setScripts(String str) {
         scriptStr = str;
         StringTokenizer st = new StringTokenizer(scriptStr, "\n");
         boolean onClickSet = false;
@@ -124,11 +126,27 @@ public class Scripts implements Serializable {
                     break;
                 }
                 String name = stClause.nextToken();
+                if (keyword.equals("goto")) {
+                    boolean pageExists = false;
+                    for (Page individualPage: EditorView.gamePages) {
+                        if (individualPage.name.equals(name)) {
+                            pageExists = true;
+                        }
+                    }
+                    if (!pageExists) {
+                        throwToast("WARNING: Script contains page that doesn't exist yet!");
+                    }
+                } else if (keyword.equals("play")) {
+                    if (!soundFiles.contains(name)) {
+                        throwToast("ERROR: Script contains nonexistent sound file!");
+                        return false;
+                    }
+                }
                 Action a = new Action(keyword, name);
                 actions.add(a);
             }
         }
-
+        return true;
     }
 
     public void onEnter() {

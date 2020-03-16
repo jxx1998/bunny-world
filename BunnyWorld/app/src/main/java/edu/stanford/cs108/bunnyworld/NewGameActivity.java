@@ -743,28 +743,35 @@ public class NewGameActivity extends AppCompatActivity {
         Game.save(EditorView.currGameName);
     }
 
+    private void throwToast(String message) {
+        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+        toast.show();
+    }
+
     public void editScript(MenuItem item) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        //maybe change this to .setMessage
-        alert.setTitle("Edit Script");
-
         final EditText input = new EditText(this);
         input.setText(EditorView.selectedShape.scripts.getScripts());
-        alert.setView(input);
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setView(input).setTitle("Edit Script").setPositiveButton("OK", null).setNegativeButton("Cancel", null);
+        final AlertDialog alert = alertBuilder.create();
 
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                EditorView.selectedShape.scripts.setScripts(input.getText().toString());
+        alert.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button button = ((AlertDialog) alert).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
 
-                Game.set(EditorView.gamePages, EditorView.currPagePos);
-                Game.save(EditorView.currGameName);
-            }
-        });
+                    @Override
+                    public void onClick(View view) {
+                        boolean success = EditorView.selectedShape.scripts.setScripts(input.getText().toString());
 
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
+                        if (success) {
+                            Game.set(EditorView.gamePages, EditorView.currPagePos);
+                            Game.save(EditorView.currGameName);
+                            alert.dismiss();
+                        }
+                    }
+                });
             }
         });
 

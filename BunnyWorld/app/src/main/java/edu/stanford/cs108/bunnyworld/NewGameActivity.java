@@ -124,35 +124,61 @@ public class NewGameActivity extends AppCompatActivity {
 
         final EditText input = new EditText(this);
         alert.setView(input);
+        alert.setPositiveButton("Ok",null);
+        alert.setNegativeButton("Cancel", null);
+        final AlertDialog dialogNewPage = alert.create();
 
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String inputStr = input.getText().toString();
-                Page newPage = new Page(inputStr);
+        dialogNewPage.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button button = ((AlertDialog) dialogNewPage).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
 
-                EditorView.gamePages.add(newPage);
-                int currentPos = EditorView.gamePages.indexOf(newPage);
-                EditorView.currPagePos = currentPos;
-                EditorView.currPage = EditorView.gamePages.get(currentPos);
-                //So that latest added shape isnt added
-                EditorView.left = -10f;
+                    @Override
+                    public void onClick(View view) {
+                        String inputStr = input.getText().toString(); //name of new page
+                        boolean isError = checkPageError(inputStr); //returns true if another page in the game has the same name
 
-                EditorView myView = findViewById(R.id.myCustomView);
-                myView.invalidate();
+                        if (isError){
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    "ERROR: Another page already has that name!",
+                                    Toast.LENGTH_LONG);
+                            toast.show();
+                            return;
+                        }
+                        Page newPage = new Page(inputStr);
 
-                Game.set(EditorView.gamePages, EditorView.currPagePos);
-                Game.save(EditorView.currGameName);
+                        EditorView.gamePages.add(newPage);
+                        int currentPos = EditorView.gamePages.indexOf(newPage);
+                        EditorView.currPagePos = currentPos;
+                        EditorView.currPage = EditorView.gamePages.get(currentPos);
+                        //So that latest added shape isnt added
+                        EditorView.left = -10f;
 
+                        EditorView myView = findViewById(R.id.myCustomView);
+                        myView.invalidate();
+
+                        Game.set(EditorView.gamePages, EditorView.currPagePos);
+                        Game.save(EditorView.currGameName);
+
+                        dialogNewPage.dismiss();
+                    }
+                });
             }
         });
 
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
-            }
-        });
+        dialogNewPage.show();
 
-        alert.show();
+    }
+
+    private boolean checkPageError(String pageName){
+        ArrayList<Page> allPagesInGame = EditorView.gamePages;
+        for (Page page : allPagesInGame){
+            if (pageName.equals(page.name)){
+                return true;
+            }
+        }
+        return false;
 
     }
 

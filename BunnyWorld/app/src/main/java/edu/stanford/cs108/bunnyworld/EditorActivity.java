@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,45 +62,102 @@ public class EditorActivity extends AppCompatActivity {
 
     public void onOpenNewGame(View view) {
 
-
-
-        System.out.println("I CLICKED THE CREATE NEW GAME BUTTON");
+        System.out.println("I CLICKED THE CREATE PAGE BUTTON");
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         //maybe change this to .setMessage
-        alert.setTitle("Name New Game");
+        alert.setTitle("Name New Page");
 
         final EditText input = new EditText(this);
         alert.setView(input);
+        alert.setPositiveButton("Ok",null);
+        alert.setNegativeButton("Cancel", null);
+        final AlertDialog dialogNewGame = alert.create();
 
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
+        dialogNewGame.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button button = ((AlertDialog) dialogNewGame).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
 
-                String inputStr = input.getText().toString();
-                EditorView.currGameName = inputStr;
-                EditorView.isNew = true;
-                okToGo = true;
-                currGameName = inputStr;
-                TextView selectedGameName = (TextView) findViewById(R.id.selectedGameName);
-                selectedGameName.setText(currGameName);
+                    @Override
+                    public void onClick(View view) {
+                        String inputStr = input.getText().toString(); //name of new page
+                        boolean isError = checkGameError(inputStr); //returns true if another page in the game has the same name
 
+                        if (isError){
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    "ERROR: Another game already has that name!",
+                                    Toast.LENGTH_LONG);
+                            toast.show();
+                            return;
+                        }
+
+                        EditorView.currGameName = inputStr;
+                        EditorView.isNew = true;
+                        okToGo = true;
+                        currGameName = inputStr;
+                        TextView selectedGameName = (TextView) findViewById(R.id.selectedGameName);
+                        selectedGameName.setText(currGameName);
+
+                        dialogNewGame.dismiss();
+                    }
+                });
             }
         });
 
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
-                okToGo = false;
-                currGameName = "No Game Selected";
-                TextView selectedGameName = (TextView) findViewById(R.id.selectedGameName);
-                selectedGameName.setText(currGameName);
+        dialogNewGame.show();
+
+
+
+//        System.out.println("I CLICKED THE CREATE NEW GAME BUTTON");
+//        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+//
+//        //maybe change this to .setMessage
+//        alert.setTitle("Name New Game");
+//
+//        final EditText input = new EditText(this);
+//        alert.setView(input);
+//
+//        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int whichButton) {
+//
+//                String inputStr = input.getText().toString();
+//                EditorView.currGameName = inputStr;
+//                EditorView.isNew = true;
+//                okToGo = true;
+//                currGameName = inputStr;
+//                TextView selectedGameName = (TextView) findViewById(R.id.selectedGameName);
+//                selectedGameName.setText(currGameName);
+//
+//            }
+//        });
+//
+//        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int whichButton) {
+//                // Canceled.
+//                okToGo = false;
+//                currGameName = "No Game Selected";
+//                TextView selectedGameName = (TextView) findViewById(R.id.selectedGameName);
+//                selectedGameName.setText(currGameName);
+//            }
+//        });
+//
+//        alert.show();
+
+
+
+    }
+
+
+    private boolean checkGameError(String gameName){
+        List<String> gameNames = Game.getGameNames();
+        for (String individName : gameNames){
+            if (individName.equals(gameName)){
+                return true;
             }
-        });
-
-        alert.show();
-
-
-
+        }
+        return false;
     }
 
     public void openExistingGames(View view){

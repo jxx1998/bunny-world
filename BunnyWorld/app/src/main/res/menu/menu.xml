@@ -3,4 +3,16 @@
     <item
         android:title="Edit Script"
         android:onClick="editScript"/>
+
+    <item
+        android:title="Cut"
+        android:onClick="onClickCut"/>
+
+    <item
+        android:title="Copy"
+        android:onClick="onClickCopy"/>
+
+    <item
+        android:title="Paste"
+        android:onClick="onClickPaste"/>
 </menu>

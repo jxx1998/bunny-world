@@ -156,6 +156,10 @@ public class NewGameActivity extends AppCompatActivity {
                         EditorView.left = -10f;
 
                         EditorView myView = findViewById(R.id.myCustomView);
+                        if (EditorView.selectedShape != null) {
+                            EditorView.selectedShape.setHighlightColor(Color.TRANSPARENT);
+                            EditorView.selectedShape = null;
+                        }
                         myView.invalidate();
 
                         Game.set(EditorView.gamePages, EditorView.currPagePos);
@@ -309,6 +313,10 @@ public class NewGameActivity extends AppCompatActivity {
                 //So that latest added shape isnt added
                 EditorView.left = -10f;
                 EditorView myView = findViewById(R.id.myCustomView);
+                if (EditorView.selectedShape != null) {
+                    EditorView.selectedShape.setHighlightColor(Color.TRANSPARENT);
+                    EditorView.selectedShape = null;
+                }
                 myView.invalidate();
 
             }
@@ -445,7 +453,7 @@ public class NewGameActivity extends AppCompatActivity {
             imageNameText.setText(EditorView.selectedShape.imageName);
             String shapeText = EditorView.selectedShape.getImageName();
             //SHOULD THIS BUT .equals?
-            if (shapeText != "TextBox"){
+            if (!shapeText.equals("TextBox")) {
                 if (shapeText.equals("Button")){
                     defaultSize.setClickable(false);
                 }
@@ -820,6 +828,53 @@ public class NewGameActivity extends AppCompatActivity {
     private void throwToast(String message) {
         Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    public void onClickCut(MenuItem item) {
+        EditorView.clipboard = EditorView.selectedShape;
+        EditorView.currPage.removeShape(EditorView.selectedShape);
+        EditorView.selectedShape = null;
+        Game.set(EditorView.gamePages, EditorView.currPagePos);
+        Game.save(EditorView.currGameName);
+        EditorView.instance.invalidate();
+    }
+
+    public void onClickCopy(MenuItem item) {
+        cloneClipboard(EditorView.selectedShape);
+    }
+
+    private void cloneClipboard(Shape shape) {
+        EditorView.clipboard = new Shape(shape.name + "_new", new RectF(shape.coordinates));
+        EditorView.clipboard.setImageName(new String(shape.getImageName()));
+        EditorView.clipboard.setHighlightColor(shape.getHighlightColor());
+        EditorView.clipboard.setHidden(shape.isHidden());
+        EditorView.clipboard.setBold(shape.bold);
+        EditorView.clipboard.setItalic(shape.italics);
+        EditorView.clipboard.solidifyTextStyle();
+        EditorView.clipboard.setColor(shape.getColor());
+        EditorView.clipboard.red = shape.red;
+        EditorView.clipboard.green = shape.green;
+        EditorView.clipboard.blue = shape.blue;
+        EditorView.clipboard.setMovable(shape.isMovable());
+        EditorView.clipboard.scripts.setScripts(shape.scripts.scriptStr);
+        EditorView.clipboard.setText(new String(shape.text), shape.getTextSize());
+        EditorView.clipboard.setTypeface(new String(shape.typeface));
+    }
+
+    public void onClickPaste(MenuItem item) {
+        if (EditorView.clipboard != null) {
+            if (EditorView.selectedShape != null) {
+                EditorView.selectedShape.setHighlightColor(Color.TRANSPARENT);
+            }
+            EditorView.selectedShape = EditorView.clipboard;
+            EditorView.currPage.addShape(EditorView.clipboard);
+            cloneClipboard(EditorView.clipboard);
+            EditorView.instance.invalidate();
+            Game.set(EditorView.gamePages, EditorView.currPagePos);
+            Game.save(EditorView.currGameName);
+        } else {
+            throwToast("No shape is in the clipboard!");
+        }
     }
 
     public void editScript(MenuItem item) {

@@ -26,6 +26,8 @@ public class EditorView extends View {
     protected static ArrayList<String> shapeNames;
     protected static Shape selectedShape, mostRecentAddedShape;
     protected static boolean isNew;
+    protected static Shape clipboard;
+    protected static EditorView instance;
 
     //FOR DRAGGABLE SHAPE
     final float SQUARE_SIZE = 100.0f;
@@ -42,6 +44,7 @@ public class EditorView extends View {
 
     public EditorView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        instance = this;
         init();
         EditorActivity.okToGo =false;
     }

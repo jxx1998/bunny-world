@@ -156,6 +156,9 @@ public class Shape implements Serializable {
 
     public void setColor(int color) {
         paint.setColor(color);
+        red = (color >> 16) & 0xff;
+        green = (color >>  8) & 0xff;
+        blue = (color      ) & 0xff;
     }
 
     public void setBold(boolean bolded) {

@@ -20,7 +20,7 @@ public class Scripts implements Serializable {
             (Arrays.asList("on click", "on enter", "on drop"));
     private final Set<String> actionKeywords = new HashSet<String>
             (Arrays.asList("goto", "play", "hide", "show", "switch", "move", "bounce", "ambient"));
-    private final Set<String> conditionalActionKeywords = new HashSet<String>
+    private static final Set<String> conditionalActionKeywords = new HashSet<String>
             (Arrays.asList("inventory"));
 
     String scriptStr;
@@ -122,7 +122,7 @@ public class Scripts implements Serializable {
                         }
                         String conditionalName = stClause.nextToken();
                         if (conditionalKeyword.equals("inventory")) {
-                            if (GameView.inventoryStringVersion.contains(conditionalName)) {
+                            if (inventoryContains(conditionalName)) {
                                 throwToast("Reached!");
                                 while (stClause.hasMoreTokens()) {
                                     String keyword = stClause.nextToken();
@@ -163,6 +163,15 @@ public class Scripts implements Serializable {
             }
         }
 
+    }
+
+    private boolean inventoryContains(String conditionalName) {
+        for (Shape shape: GameView.inventory) {
+            if (shape.getName().equals(conditionalName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void onEnter() {

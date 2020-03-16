@@ -35,7 +35,6 @@ public class GameView extends View {
     static Page previousPage;
 
     static List<Shape> inventory = new ArrayList<Shape>();
-    static List<String> inventoryStringVersion = new ArrayList<String>();
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -51,7 +50,6 @@ public class GameView extends View {
         shapeSelected = null;
         previousPage = null;
         GameView.inventory.clear();
-        GameView.inventoryStringVersion.clear();
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -152,15 +150,12 @@ public class GameView extends View {
             float dividerY = (2f / 3f) * instance.getHeight();
             if (oldShapeSelected.getTop() >= dividerY) {
                 inventory.remove(oldShapeSelected);
-                inventoryStringVersion.remove(oldShapeSelected.getName());
                 inventory.add(oldShapeSelected);
-                inventoryStringVersion.add(oldShapeSelected.getName());
                 oldCurrentPage.removeShape(oldShapeSelected);
             } else {
                 oldCurrentPage.removeShape(oldShapeSelected);
                 oldCurrentPage.addShape(oldShapeSelected);
                 inventory.remove(oldShapeSelected);
-                inventoryStringVersion.remove(oldShapeSelected.getName());
             }
         }
     }

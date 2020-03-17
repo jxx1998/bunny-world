@@ -115,8 +115,30 @@ public class Scripts implements Serializable {
             } else {
                 String ifString = stClause.nextToken();
                 if (!ifString.equals("if")) {
-                    throwToast("Fails to contain correct if statement placement");
-                    break;
+                    String keyword = "";
+                    boolean firstIt = true;
+                    while (stClause.hasMoreTokens()) {
+                        if (firstIt) {
+                            keyword = ifString;
+                            firstIt = false;
+                        } else {
+                            keyword = stClause.nextToken();
+                        }
+                        if (!actionKeywords.contains(keyword)) {
+                            throwToast("Input includes invalid action primitive!");
+                            return false;
+                        }
+                        if (!stClause.hasMoreTokens()) {
+                            throwToast("Incomplete clause string detected!");
+                            return false;
+                        }
+                        String name = stClause.nextToken();
+                        if (!checkValidity(keyword, name)) {
+                            return false;
+                        }
+                        Action a = new Action(keyword, name);
+                        actions.add(a);
+                    }
                 } else {
                     if (!stClause.hasMoreTokens()) {
                         throwToast("Fails to specify conditionals, if any, after if statement");

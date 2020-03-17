@@ -79,6 +79,7 @@ public class EditorView extends View {
         isAShapeSelected = false;
         changingDimensions = false;
 
+
         //Creating a new page
         if (isNew) {
             gamePages = new ArrayList<Page>();
@@ -90,6 +91,17 @@ public class EditorView extends View {
 
         currPagePos = 0;
         currPage = gamePages.get(currPagePos);
+
+        for (Page page : gamePages) {
+            for (Shape shape : page.shapes) {
+                if (!shape.isHidden()) {
+                    shape.setHighlightColor(Color.TRANSPARENT);
+                } else{
+                    shape.setHighlightColor(Color.BLACK);
+                }
+            }
+        }
+        selectedShape = null;
 
         Game.set(gamePages, currPagePos);
         Game.save(currGameName);

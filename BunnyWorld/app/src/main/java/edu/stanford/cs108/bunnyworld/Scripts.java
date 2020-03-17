@@ -21,7 +21,7 @@ public class Scripts implements Serializable {
     private final Set<String> triggerKeywords = new HashSet<String>
             (Arrays.asList("on click", "on enter", "on drop"));
     private final Set<String> actionKeywords = new HashSet<String>
-            (Arrays.asList("goto", "play", "hide", "show", "switch", "move", "bounce", "ambient"));
+            (Arrays.asList("goto", "play", "hide", "show", "switch", "move", "randomMove", "ambient", "text", "randomChar", "randomElement", "randomCreatorName"));
 //    private static final Set<String> conditionalActionKeywords = new HashSet<String>
 //            (Arrays.asList("inventory"));
 

@@ -8,6 +8,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;
 
@@ -126,8 +129,62 @@ public class Action implements Serializable {
             } else if (dir == 'd') {
                 shape.offSetCoordinates(0f, dis);
             }
-        } else if (keyword.equals("bounce")) {
-            //TODO
+        } else if (keyword.equals("randomMove")) {
+            float dis = Float.parseFloat(name);
+            Shape shape = GameView.shapeSelected;
+            Random random = new Random();
+            int randomNum = random.nextInt((4 - 1) + 1) + 1;
+            if (randomNum == 1) {
+                shape.offSetCoordinates(dis, 0f);
+            } else if (randomNum == 2) {
+                shape.offSetCoordinates(-dis, 0f);
+            } else if (randomNum == 3) {
+                shape.offSetCoordinates(0f, -dis);
+            } else if (randomNum == 4) {
+                shape.offSetCoordinates(0f, dis);
+            }
+        } else if (keyword.equals("text")) {
+            Shape shape = GameView.shapeSelected;
+            String newText = name;
+            shape.setText(newText, 50.0f);
+        } else if (keyword.equals("randomChar")) {
+            Shape shape = GameView.shapeSelected;
+            float textSize = Float.parseFloat(name);
+            Random random = new Random();
+            char randomChar = (char) (random.nextInt(26) + 'a');
+            String str = "";
+            str += randomChar;
+            shape.setText(str, textSize);
+        } else if (keyword.equals("randomElement")) {
+            Shape shape = GameView.shapeSelected;
+            float textSize = Float.parseFloat(name);
+            Random random = new Random();
+            int randomNum = random.nextInt((4 - 1) + 1) + 1;
+            if (randomNum == 1) {
+                shape.setText("water", textSize);
+            } else if (randomNum == 2) {
+                shape.setText("fire", textSize);
+            } else if (randomNum == 3) {
+                shape.setText("earth", textSize);
+            } else if (randomNum == 4) {
+                shape.setText("air", textSize);
+            }
+        } else if (keyword.equals("randomCreatorName")) {
+            Shape shape = GameView.shapeSelected;
+            float textSize = Float.parseFloat(name);
+            Random random = new Random();
+            int randomNum = random.nextInt((5 - 1) + 1) + 1;
+            if (randomNum == 1) {
+                shape.setText("Harry", textSize);
+            } else if (randomNum == 2) {
+                shape.setText("Constantine", textSize);
+            } else if (randomNum == 3) {
+                shape.setText("Blake", textSize);
+            } else if (randomNum == 4) {
+                shape.setText("Kevin", textSize);
+            } else if (randomNum == 5) {
+                shape.setText("Katherine", textSize);
+            }
         }
     }
 }

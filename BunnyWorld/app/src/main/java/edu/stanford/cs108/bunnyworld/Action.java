@@ -20,7 +20,6 @@ public class Action implements Serializable {
 
     String keyword;
     String name;
-    transient BitmapDrawable imageDrawable;
 
     public Action(String str1, String str2) {
         keyword = str1;

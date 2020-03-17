@@ -38,7 +38,7 @@ public class Database {
         instance.execSQL(setupStr);
         Context context = getGlobalContext();
         InputStream ins = context.getResources().openRawResource(
-                context.getResources().getIdentifier("example_game_file",
+                context.getResources().getIdentifier("default_game",
                         "raw", context.getPackageName()));
         try {
             byte[] byteArray = new byte[ins.available()];

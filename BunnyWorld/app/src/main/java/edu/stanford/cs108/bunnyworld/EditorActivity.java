@@ -62,11 +62,10 @@ public class EditorActivity extends AppCompatActivity {
 
     public void onOpenNewGame(View view) {
 
-        System.out.println("I CLICKED THE CREATE PAGE BUTTON");
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         //maybe change this to .setMessage
-        alert.setTitle("Name New Page");
+        alert.setTitle("Name New Game");
 
         final EditText input = new EditText(this);
         alert.setView(input);

@@ -28,6 +28,8 @@ public class Game implements Serializable {
 
     private static final long serialVersionUID = 210791961760389656L;
 
+    private static final boolean SAVE_EXAMPLE_GAME_TO_FILE = true;
+
     private static Game instance = new Game();
 
     private ArrayList<Page> pages;
@@ -118,6 +120,15 @@ public class Game implements Serializable {
         // deleteGame(gameName);
         SQLiteDatabase db = Database.getInstance();
         byte[] game_bytes = serialize();
+
+        if (SAVE_EXAMPLE_GAME_TO_FILE) {
+            try {
+                FileOutputStream fos = new FileOutputStream(getGlobalContext().getFilesDir() + "/default_game.bin");
+                fos.write(game_bytes);
+                fos.close();
+            } catch (Exception ignored) {}
+        }
+
         Log.d("game", Boolean.toString(game_bytes == null));
         String command = "INSERT INTO games (name, data) VALUES (?, ?)";
         SQLiteStatement insertStatement = db.compileStatement(command);

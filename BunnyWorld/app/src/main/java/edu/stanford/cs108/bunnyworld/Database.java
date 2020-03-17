@@ -6,11 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.io.InputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;

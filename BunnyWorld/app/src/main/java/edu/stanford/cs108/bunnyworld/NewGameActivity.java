@@ -37,9 +37,9 @@ public class NewGameActivity extends AppCompatActivity {
     private String selection, shapeSelection;
     private int selectionID, shapeSelectionID;
     private Dialog dialog, pageDialog;
-    final float SQUARE_SIZE = 100.0f;
-    final float START_X = 200.0f;
-    final float START_Y = 200.0f;
+    static final float SQUARE_SIZE = 100.0f;
+    static final float START_X = 200.0f;
+    static final float START_Y = 200.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

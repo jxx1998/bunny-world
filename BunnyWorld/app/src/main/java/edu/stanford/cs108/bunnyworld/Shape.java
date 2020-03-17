@@ -230,15 +230,15 @@ public class Shape implements Serializable {
     }
 
     public void onClick() {
-        scripts.onClick();
+        scripts.onClick(this);
     }
 
     public void onEnter() {
-        scripts.onEnter();
+        scripts.onEnter(this);
     }
 
     public boolean onDrop(String shapeName) {
-        return scripts.onDrop(shapeName);
+        return scripts.onDrop(shapeName, this);
     }
 
     // Returns whether a given (x, y) is located within the Shape's coordinates

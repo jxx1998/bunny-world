@@ -119,7 +119,7 @@ public class GameView extends View {
                 if (shape == shapeSelected) {
                     continue;
                 }
-                if (shape.scripts.onDropClauses.containsKey(shapeSelected.name)) {
+                if (shape.scripts.onDropClauses.containsKey(shapeSelected.name) && !shape.isHidden()) {
                     shape.setHighlightColor(Color.GREEN);
                 }
             }

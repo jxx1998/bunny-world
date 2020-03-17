@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -96,7 +97,7 @@ public class Page implements Serializable {
         }
     }
 
-    // Returns true only if dropped onto a shape that doesn't have a on-drop clause
+    // Returns true only if dropped onto a shape that does have an on-drop clause
     public boolean processOnDrop(Shape shape) {
         List<Shape> candidateShapes = shapeOverlapped(shape, false, true);
         boolean snapBack = false;
@@ -164,7 +165,7 @@ public class Page implements Serializable {
             if (returnUnmovable == false && candidate.isMovable() == false) {
                 continue;
             }
-            if (candidate.coordinates.intersect(shape.coordinates)) {
+            if (RectF.intersects(candidate.coordinates, shape.coordinates)) {
                 overlaps.add(candidate);
             }
         }

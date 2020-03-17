@@ -69,7 +69,7 @@ public class Action implements Serializable {
     }
 
 
-    public void execute() {
+    public void execute(Shape subjectShape) {
         if (keyword.equals("goto")) {
             Page page = null;
             for (Page candidatePage: Game.getPages()) {
@@ -108,7 +108,7 @@ public class Action implements Serializable {
                 }
             }
         } else if (keyword.equals("switch")) {
-            Shape shape = GameView.shapeSelected;
+            Shape shape = subjectShape;
             if (!EditorView.shapeNames.contains(name)) {
                 throwToast("Invalid shape name in scripts!");
             }
@@ -117,7 +117,9 @@ public class Action implements Serializable {
             // final float offset = 0.5f;
             char dir = name.charAt(0);
             float dis = Float.parseFloat(name.substring(1));
-            Shape shape = GameView.shapeSelected;
+            Log.d("move", Character.toString(dir));
+            Log.d("move", Float.toString(dis));
+            Shape shape = subjectShape;
             // float d = 0.0;
             if (dir == 'r') {
                 shape.offSetCoordinates(dis, 0f);
@@ -130,7 +132,7 @@ public class Action implements Serializable {
             }
         } else if (keyword.equals("randomMove")) {
             float dis = Float.parseFloat(name);
-            Shape shape = GameView.shapeSelected;
+            Shape shape = subjectShape;
             Random random = new Random();
             int randomNum = random.nextInt((4 - 1) + 1) + 1;
             if (randomNum == 1) {
@@ -143,11 +145,11 @@ public class Action implements Serializable {
                 shape.offSetCoordinates(0f, dis);
             }
         } else if (keyword.equals("text")) {
-            Shape shape = GameView.shapeSelected;
+            Shape shape = subjectShape;
             String newText = name;
             shape.setText(newText, 50.0f);
         } else if (keyword.equals("randomChar")) {
-            Shape shape = GameView.shapeSelected;
+            Shape shape = subjectShape;
             float textSize = Float.parseFloat(name);
             Random random = new Random();
             char randomChar = (char) (random.nextInt(26) + 'a');
@@ -155,7 +157,7 @@ public class Action implements Serializable {
             str += randomChar;
             shape.setText(str, textSize);
         } else if (keyword.equals("randomElement")) {
-            Shape shape = GameView.shapeSelected;
+            Shape shape = subjectShape;
             float textSize = Float.parseFloat(name);
             Random random = new Random();
             int randomNum = random.nextInt((4 - 1) + 1) + 1;
@@ -169,7 +171,7 @@ public class Action implements Serializable {
                 shape.setText("air", textSize);
             }
         } else if (keyword.equals("randomCreatorName")) {
-            Shape shape = GameView.shapeSelected;
+            Shape shape = subjectShape;
             float textSize = Float.parseFloat(name);
             Random random = new Random();
             int randomNum = random.nextInt((5 - 1) + 1) + 1;

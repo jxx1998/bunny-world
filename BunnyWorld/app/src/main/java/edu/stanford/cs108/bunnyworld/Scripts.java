@@ -43,6 +43,10 @@ public class Scripts implements Serializable {
 
     public Scripts() {
         scriptStr = "";
+        init();
+    }
+
+    private void init() {
         onClickClauses = new ArrayList<Action>();
         onEnterClauses = new ArrayList<Action>();
         onDropClauses = new HashMap<String, List<Action>>();
@@ -62,6 +66,7 @@ public class Scripts implements Serializable {
 
     public boolean setScripts(String str) {
         scriptStr = str;
+        init();
         StringTokenizer st = new StringTokenizer(scriptStr, "\n");
         boolean onClickSet = false;
         while (st.hasMoreTokens()) {
@@ -142,7 +147,7 @@ public class Scripts implements Serializable {
                 } else {
                     if (!stClause.hasMoreTokens()) {
                         throwToast("Fails to specify conditionals, if any, after if statement");
-                        break;
+                        return false;
                     } else {
                         String firstWord = stClause.nextToken();
                         if (firstWord.equals("end")) {
@@ -243,7 +248,7 @@ public class Scripts implements Serializable {
         return false;
     }
 
-    public void onEnter() {
+    public void onEnter(Shape subjectShape) {
         boolean execute = true;
         for (String shapeName: onEnterConditionals) {
             if (!inventoryContains(shapeName)) {
@@ -252,12 +257,12 @@ public class Scripts implements Serializable {
         }
         if (execute) {
             for (Action action : onEnterClauses) {
-                action.execute();
+                action.execute(subjectShape);
             }
         }
     }
 
-    public void onClick() {
+    public void onClick(Shape subjectShape) {
         boolean execute = true;
         for (String shapeName: onClickConditionals) {
             if (!inventoryContains(shapeName)) {
@@ -266,13 +271,13 @@ public class Scripts implements Serializable {
         }
         if (execute) {
             for (Action action: onClickClauses) {
-                action.execute();
+                action.execute(subjectShape);
             }
         }
     }
 
     // Returns true if on-drop clause exists for shapeName
-    public boolean onDrop(String shapeName) {
+    public boolean onDrop(String shapeName, Shape subjectShape) {
         if (onDropClauses.containsKey(shapeName)) {
             boolean execute = true;
             if (onDropConditionals.containsKey(shapeName)) {
@@ -284,7 +289,7 @@ public class Scripts implements Serializable {
             }
             if (execute) {
                 for (Action action: onDropClauses.get(shapeName)) {
-                    action.execute();
+                    action.execute(subjectShape);
                 }
                 return true;
             }

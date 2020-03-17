@@ -119,7 +119,7 @@ public class Scripts implements Serializable {
                         String firstWord = stClause.nextToken();
                         if (firstWord.equals("end")) {
                             //for testing
-                            throwToast("on click cons: " + onClickConditionals.toString());
+//                            throwToast("on click cons: " + onClickConditionals.toString());
                             //end testing
                         } else {
                             if (trigger.equals("on click")) {

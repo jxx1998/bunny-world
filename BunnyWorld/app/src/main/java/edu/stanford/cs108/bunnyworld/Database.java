@@ -12,6 +12,7 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
 
 public class Database {
 
+    private static final boolean LOAD_DEFAULT_GAME = false;
     private static SQLiteDatabase instance;
 
     /**
@@ -36,6 +37,11 @@ public class Database {
                 + ");";
 
         instance.execSQL(setupStr);
+
+        if (LOAD_DEFAULT_GAME) { loadDefaultGame(); }
+    }
+
+    private static void loadDefaultGame() {
         Context context = getGlobalContext();
         InputStream ins = context.getResources().openRawResource(
                 context.getResources().getIdentifier("default_game",

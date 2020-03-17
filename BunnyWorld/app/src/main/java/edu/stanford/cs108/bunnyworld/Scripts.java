@@ -16,21 +16,23 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
  */
 public class Scripts implements Serializable {
 
-    private static final long serialVersionUID = -2856451602345386105L;
-
     private static final Set<String> soundFiles = new HashSet<String>
             (Arrays.asList("carrotcarrotcarrot", "evillaugh", "fire", "hooray", "munch", "munching", "rain", "woof"));
     private final Set<String> triggerKeywords = new HashSet<String>
             (Arrays.asList("on click", "on enter", "on drop"));
     private final Set<String> actionKeywords = new HashSet<String>
             (Arrays.asList("goto", "play", "hide", "show", "switch", "move", "bounce", "ambient"));
-    private final Set<String> conditionalActionKeywords = new HashSet<String>
-            (Arrays.asList("inventory"));
+//    private static final Set<String> conditionalActionKeywords = new HashSet<String>
+//            (Arrays.asList("inventory"));
 
     String scriptStr;
     List<Action> onClickClauses; //these Strings actually contain two words each, e.g. goto page3
     List<Action> onEnterClauses;
     Map<String, List<Action>> onDropClauses;
+
+    List<String> onClickConditionals;
+    List<String> onEnterConditionals;
+    Map<String, List<String>> onDropConditionals;
 
 
     public Scripts() {
@@ -38,6 +40,9 @@ public class Scripts implements Serializable {
         onClickClauses = new ArrayList<Action>();
         onEnterClauses = new ArrayList<Action>();
         onDropClauses = new HashMap<String, List<Action>>();
+        onClickConditionals = new ArrayList<String>();
+        onEnterConditionals = new ArrayList<String>();
+        onDropConditionals = new HashMap<String, List<String>>();
     }
 
     public String getScripts() {
@@ -77,7 +82,7 @@ public class Scripts implements Serializable {
                 throwToast("Invalid clause trigger word detected!");
                 continue;
             }
-
+            String currOnDropShapeName = "";
             List<Action> actions = new ArrayList<Action>();
             if (trigger.equals("on click")) {
                 if (!onClickSet) {
@@ -93,11 +98,123 @@ public class Scripts implements Serializable {
                     throwToast("Incomplete on drop clause!");
                     continue;
                 }
-                String shapeName = stClause.nextToken();
-                checkShapeExists(shapeName);
-                onDropClauses.put(shapeName, new ArrayList<Action>());
-                actions = onDropClauses.get(shapeName);
+                currOnDropShapeName = stClause.nextToken();
+                checkShapeExists(currOnDropShapeName);
+                onDropClauses.put(currOnDropShapeName, new ArrayList<Action>());
+                actions = onDropClauses.get(currOnDropShapeName);
             }
+            if (!stClause.hasMoreTokens()) {
+                throwToast("Incomplete if statement!");
+                break;
+            } else {
+                String ifString = stClause.nextToken();
+                if (!ifString.equals("if")) {
+                    throwToast("Fails to contain correct if statement placement");
+                    break;
+                } else {
+                    if (!stClause.hasMoreTokens()) {
+                        throwToast("Fails to specify conditionals, if any, after if statement");
+                        break;
+                    } else {
+                        String firstWord = stClause.nextToken();
+                        if (firstWord.equals("end")) {
+                            //for testing
+                            throwToast("on click cons: " + onClickConditionals.toString());
+                            //end testing
+                        } else {
+                            if (trigger.equals("on click")) {
+                                onClickConditionals.add(firstWord);
+                            } else if (trigger.equals("on enter")) {
+                                onEnterConditionals.add(firstWord);
+                            } else if (trigger.equals("on drop")) {
+                                onDropConditionals.put(currOnDropShapeName, new ArrayList<String>());
+                                onDropConditionals.get(currOnDropShapeName).add(firstWord);
+                            }
+                            if (stClause.hasMoreTokens()) {
+                                String secondWord = stClause.nextToken();
+                                String currWord = secondWord;
+                                while (stClause.hasMoreTokens() && !currWord.equals("end")) {
+                                    if (trigger.equals("on click")) {
+                                        onClickConditionals.add(currWord);
+                                    } else if (trigger.equals("on enter")) {
+                                        onEnterConditionals.add(currWord);
+                                    } else if (trigger.equals("on drop")) {
+                                        onDropConditionals.get(currOnDropShapeName).add(currWord);
+                                    }
+                                    String nextWord = stClause.nextToken();
+                                    currWord = nextWord;
+                                }
+                            }
+                        }
+                        while (stClause.hasMoreTokens()) {
+                            String keyword = stClause.nextToken();
+                            if (!actionKeywords.contains(keyword)) {
+                                throwToast("Input includes invalid action primitive!");
+                                break;
+                            }
+                            if (!stClause.hasMoreTokens()) {
+                                throwToast("Incomplete clause string detected!");
+                                break;
+                            }
+                            String name = stClause.nextToken();
+                            if (!checkValidity(keyword, name)) {
+                                return false;
+                            }
+                            Action a = new Action(keyword, name);
+                            actions.add(a);
+                        }
+                    }
+                }
+
+            }
+        }
+        return true;
+    }
+
+//            if (stClause.hasMoreTokens()) {
+//                String nextToken = stClause.nextToken();
+//                if (nextToken.equals("if")) {
+//                    if (stClause.hasMoreTokens()) {
+//                        String conditionalKeyword = stClause.nextToken();
+//                        if (!conditionalActionKeywords.contains(conditionalKeyword)) {
+//                            throwToast("Input includes invalid conditional action primitive!");
+//                        }
+//                        if (!stClause.hasMoreTokens()) {
+//                            throwToast("Incomplete conditional clause string detected!");
+//                        }
+//                        String conditionalName = stClause.nextToken();
+//                        if (conditionalKeyword.equals("inventory")) {
+//                            if (inventoryContains(conditionalName)) {
+//                                throwToast("Reached!");
+//                                while (stClause.hasMoreTokens()) {
+//                                    String keyword = stClause.nextToken();
+//                                    if (!actionKeywords.contains(keyword)) {
+//                                        throwToast("Input includes invalid action primitive!");
+//                                    }
+//                                    if (!stClause.hasMoreTokens()) {
+//                                        throwToast("Incomplete clause string detected!");
+//                                    }
+//                                    String name = stClause.nextToken();
+//                                    Action a = new Action(keyword, name);
+//                                    actions.add(a);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            while (stClause.hasMoreTokens()) {
+//                String keyword = stClause.nextToken();
+//                if (!actionKeywords.contains(keyword)) {
+//                    throwToast("Input includes invalid action primitive!");
+//                }
+//                if (!stClause.hasMoreTokens()) {
+//                    throwToast("Incomplete clause string detected!");
+//                }
+//                String name = stClause.nextToken();
+//                Action a = new Action(keyword, name);
+//                actions.add(a);
+//            }
 
             //ADD CONDITIONALS
 //            if (stClause.hasMoreTokens() && stClause.nextToken().equals("if")) {
@@ -116,26 +233,70 @@ public class Scripts implements Serializable {
 //
 //
 //            }
-            while (stClause.hasMoreTokens()) {
-                String keyword = stClause.nextToken();
-                if (!actionKeywords.contains(keyword)) {
-                    throwToast("Input includes invalid action primitive!");
-                    break;
-                }
-                if (!stClause.hasMoreTokens()) {
-                    throwToast("Incomplete clause string detected!");
-                    break;
-                }
-                String name = stClause.nextToken();
-                if (!checkValidity(keyword, name)) {
-                    return false;
-                }
-                Action a = new Action(keyword, name);
-                actions.add(a);
-            }
-        }
-        return true;
-    }
+//            while (stClause.hasMoreTokens()) {
+//                String keyword = stClause.nextToken();
+//                if (!actionKeywords.contains(keyword)) {
+//                    throwToast("Input includes invalid action primitive!");
+//                }
+//                if (!stClause.hasMoreTokens()) {
+//                    throwToast("Incomplete clause string detected!");
+//                }
+//                String name = stClause.nextToken();
+//                Action a = new Action(keyword, name);
+//                actions.add(a);
+//            }
+//            if (stClause.hasMoreTokens()) {
+//                String nextToken = stClause.nextToken();
+//                if (nextToken.equals("if")) {
+//                    if (stClause.hasMoreTokens()) {
+//                        String conditionalKeyword = stClause.nextToken();
+//                        if (!conditionalActionKeywords.contains(conditionalKeyword)) {
+//                            throwToast("Input includes invalid conditional action primitive!");
+//                        }
+//                        if (!stClause.hasMoreTokens()) {
+//                            throwToast("Incomplete conditional clause string detected!");
+//                        }
+//                        String conditionalName = stClause.nextToken();
+//                        if (conditionalKeyword.equals("inventory")) {
+//                            if (inventoryContains(conditionalName)) {
+//                                throwToast("Reached!");
+//                                while (stClause.hasMoreTokens()) {
+//                                    String keyword = stClause.nextToken();
+//                                    if (!actionKeywords.contains(keyword)) {
+//                                        throwToast("Input includes invalid action primitive!");
+//                                    }
+//                                    if (!stClause.hasMoreTokens()) {
+//                                        throwToast("Incomplete clause string detected!");
+//                                    }
+//                                    String name = stClause.nextToken();
+//                                    Action a = new Action(keyword, name);
+//                                    actions.add(a);
+//                                }
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    boolean firstIt = true;
+//                    while (stClause.hasMoreTokens()) {
+//                        String keyword;
+//                        if (firstIt) {
+//                            keyword = nextToken;
+//                        } else {
+//                            keyword = stClause.nextToken();
+//                        }
+//                        if (!actionKeywords.contains(keyword)) {
+//                            throwToast("Input includes invalid action primitive!");
+//                        }
+//                        if (!stClause.hasMoreTokens()) {
+//                            throwToast("Incomplete clause string detected!");
+//                        }
+//                        String name = stClause.nextToken();
+//                        Action a = new Action(keyword, name);
+//                        actions.add(a);
+//                        firstIt = false;
+//                    }
+//                }
+//            }
 
     private boolean checkValidity(String keyword, String name) {
         if (keyword.equals("goto")) {
@@ -171,25 +332,59 @@ public class Scripts implements Serializable {
         return false;
     }
 
+    private boolean inventoryContains(String conditionalName) {
+        for (Shape shape: GameView.inventory) {
+            if (shape.getName().equals(conditionalName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void onEnter() {
-        for (Action action: onEnterClauses) {
-            action.execute();
+        boolean execute = true;
+        for (String shapeName: onEnterConditionals) {
+            if (!inventoryContains(shapeName)) {
+                execute = false;
+            }
+        }
+        if (execute) {
+            for (Action action : onEnterClauses) {
+                action.execute();
+            }
         }
     }
 
     public void onClick() {
-        for (Action action: onClickClauses) {
-            action.execute();
+        boolean execute = true;
+        for (String shapeName: onClickConditionals) {
+            if (!inventoryContains(shapeName)) {
+                execute = false;
+            }
+        }
+        if (execute) {
+            for (Action action: onClickClauses) {
+                action.execute();
+            }
         }
     }
 
     // Returns true if on-drop clause exists for shapeName
     public boolean onDrop(String shapeName) {
         if (onDropClauses.containsKey(shapeName)) {
-            for (Action action: onDropClauses.get(shapeName)) {
-                action.execute();
+            boolean execute = true;
+            for (String shape: onDropConditionals.get(shapeName)) {
+                if (!inventoryContains(shape)) {
+                    execute = false;
+                }
             }
-            return true;
+            if (execute) {
+                for (Action action: onDropClauses.get(shapeName)) {
+                    action.execute();
+                }
+                return true;
+            }
+            return false;
         } else {
             return false;
         }

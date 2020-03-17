@@ -184,6 +184,26 @@ public class Action implements Serializable {
             } else if (randomNum == 5) {
                 shape.setText("Katherine", textSize);
             }
+        } else if (keyword.equals("mobilize")) {
+            Shape shape = Game.getShape(name);
+            if (shape != null) {
+                shape.setMovable(true);
+            }
+            for (Shape inventory_shape: GameView.inventory) {
+                if (inventory_shape.name.equals(name)) {
+                    inventory_shape.setMovable(true);
+                }
+            }
+        } else if (keyword.equals("immobilize")) {
+            Shape shape = Game.getShape(name);
+            if (shape != null) {
+                shape.setMovable(false);
+            }
+            for (Shape inventory_shape: GameView.inventory) {
+                if (inventory_shape.name.equals(name)) {
+                    inventory_shape.setMovable(false);
+                }
+            }
         }
     }
 }

@@ -215,7 +215,8 @@ public class Scripts implements Serializable {
                 throwToast("ERROR: Script contains nonexistent sound file!");
                 return false;
             }
-        } else if (keyword.equals("hide") || keyword.equals("show")) {
+        } else if (keyword.equals("hide") || keyword.equals("show") ||
+                keyword.equals("mobilize") || keyword.equals("immobilize")) {
             checkShapeExists(name);
         }
         return true;
@@ -274,9 +275,11 @@ public class Scripts implements Serializable {
     public boolean onDrop(String shapeName) {
         if (onDropClauses.containsKey(shapeName)) {
             boolean execute = true;
-            for (String shape: onDropConditionals.get(shapeName)) {
-                if (!inventoryContains(shape)) {
-                    execute = false;
+            if (onDropConditionals.containsKey(shapeName)) {
+                for (String shape : onDropConditionals.get(shapeName)) {
+                    if (!inventoryContains(shape)) {
+                        execute = false;
+                    }
                 }
             }
             if (execute) {

@@ -28,7 +28,7 @@ public class Game implements Serializable {
 
     private static final long serialVersionUID = 210791961760389656L;
 
-    private static final boolean SAVE_EXAMPLE_GAME_TO_FILE = true;
+    private static final boolean SAVE_EXAMPLE_GAME_TO_FILE = false;
 
     private static Game instance = new Game();
 

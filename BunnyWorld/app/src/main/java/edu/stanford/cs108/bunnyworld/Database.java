@@ -12,7 +12,7 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
 
 public class Database {
 
-    private static final boolean LOAD_DEFAULT_GAME = false;
+    private static final boolean LOAD_DEFAULT_GAME = true;
     private static SQLiteDatabase instance;
 
     /**

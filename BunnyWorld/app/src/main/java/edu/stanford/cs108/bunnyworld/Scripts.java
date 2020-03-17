@@ -3,6 +3,10 @@ package edu.stanford.cs108.bunnyworld;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.*;
 
@@ -15,6 +19,8 @@ import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalConte
  * Each Clause object contains a list of actions performed when triggered
  */
 public class Scripts implements Serializable {
+
+    private static final long serialVersionUID = -2856451602345386105L;
 
     private static final Set<String> soundFiles = new HashSet<String>
             (Arrays.asList("carrotcarrotcarrot", "evillaugh", "fire", "hooray", "munch", "munching", "rain", "woof"));
@@ -171,133 +177,6 @@ public class Scripts implements Serializable {
         return true;
     }
 
-//            if (stClause.hasMoreTokens()) {
-//                String nextToken = stClause.nextToken();
-//                if (nextToken.equals("if")) {
-//                    if (stClause.hasMoreTokens()) {
-//                        String conditionalKeyword = stClause.nextToken();
-//                        if (!conditionalActionKeywords.contains(conditionalKeyword)) {
-//                            throwToast("Input includes invalid conditional action primitive!");
-//                        }
-//                        if (!stClause.hasMoreTokens()) {
-//                            throwToast("Incomplete conditional clause string detected!");
-//                        }
-//                        String conditionalName = stClause.nextToken();
-//                        if (conditionalKeyword.equals("inventory")) {
-//                            if (inventoryContains(conditionalName)) {
-//                                throwToast("Reached!");
-//                                while (stClause.hasMoreTokens()) {
-//                                    String keyword = stClause.nextToken();
-//                                    if (!actionKeywords.contains(keyword)) {
-//                                        throwToast("Input includes invalid action primitive!");
-//                                    }
-//                                    if (!stClause.hasMoreTokens()) {
-//                                        throwToast("Incomplete clause string detected!");
-//                                    }
-//                                    String name = stClause.nextToken();
-//                                    Action a = new Action(keyword, name);
-//                                    actions.add(a);
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            while (stClause.hasMoreTokens()) {
-//                String keyword = stClause.nextToken();
-//                if (!actionKeywords.contains(keyword)) {
-//                    throwToast("Input includes invalid action primitive!");
-//                }
-//                if (!stClause.hasMoreTokens()) {
-//                    throwToast("Incomplete clause string detected!");
-//                }
-//                String name = stClause.nextToken();
-//                Action a = new Action(keyword, name);
-//                actions.add(a);
-//            }
-
-            //ADD CONDITIONALS
-//            if (stClause.hasMoreTokens() && stClause.nextToken().equals("if")) {
-//                String keyword = stClause.nextToken();
-//                if (!conditionalActionKeywords.contains(keyword)) {
-//                    throwToast("Input includes invalid conditional action primitive!");
-//                }
-//                if (!stClause.hasMoreTokens()) {
-//                    throwToast("Incomplete conditional clause string detected!");
-//                }
-//                String name = stClause.nextToken();
-//
-//                //If inventory contains object with name "name", then...
-//
-//                //TO-DO: How to check conditionals
-//
-//
-//            }
-//            while (stClause.hasMoreTokens()) {
-//                String keyword = stClause.nextToken();
-//                if (!actionKeywords.contains(keyword)) {
-//                    throwToast("Input includes invalid action primitive!");
-//                }
-//                if (!stClause.hasMoreTokens()) {
-//                    throwToast("Incomplete clause string detected!");
-//                }
-//                String name = stClause.nextToken();
-//                Action a = new Action(keyword, name);
-//                actions.add(a);
-//            }
-//            if (stClause.hasMoreTokens()) {
-//                String nextToken = stClause.nextToken();
-//                if (nextToken.equals("if")) {
-//                    if (stClause.hasMoreTokens()) {
-//                        String conditionalKeyword = stClause.nextToken();
-//                        if (!conditionalActionKeywords.contains(conditionalKeyword)) {
-//                            throwToast("Input includes invalid conditional action primitive!");
-//                        }
-//                        if (!stClause.hasMoreTokens()) {
-//                            throwToast("Incomplete conditional clause string detected!");
-//                        }
-//                        String conditionalName = stClause.nextToken();
-//                        if (conditionalKeyword.equals("inventory")) {
-//                            if (inventoryContains(conditionalName)) {
-//                                throwToast("Reached!");
-//                                while (stClause.hasMoreTokens()) {
-//                                    String keyword = stClause.nextToken();
-//                                    if (!actionKeywords.contains(keyword)) {
-//                                        throwToast("Input includes invalid action primitive!");
-//                                    }
-//                                    if (!stClause.hasMoreTokens()) {
-//                                        throwToast("Incomplete clause string detected!");
-//                                    }
-//                                    String name = stClause.nextToken();
-//                                    Action a = new Action(keyword, name);
-//                                    actions.add(a);
-//                                }
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    boolean firstIt = true;
-//                    while (stClause.hasMoreTokens()) {
-//                        String keyword;
-//                        if (firstIt) {
-//                            keyword = nextToken;
-//                        } else {
-//                            keyword = stClause.nextToken();
-//                        }
-//                        if (!actionKeywords.contains(keyword)) {
-//                            throwToast("Input includes invalid action primitive!");
-//                        }
-//                        if (!stClause.hasMoreTokens()) {
-//                            throwToast("Incomplete clause string detected!");
-//                        }
-//                        String name = stClause.nextToken();
-//                        Action a = new Action(keyword, name);
-//                        actions.add(a);
-//                        firstIt = false;
-//                    }
-//                }
-//            }
-
     private boolean checkValidity(String keyword, String name) {
         if (keyword.equals("goto")) {
             boolean pageExists = false;
@@ -391,6 +270,4 @@ public class Scripts implements Serializable {
     }
 
     // getters and setters
-
-
 }

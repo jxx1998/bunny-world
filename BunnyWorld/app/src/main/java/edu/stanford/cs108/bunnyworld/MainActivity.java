@@ -40,6 +40,16 @@ public class MainActivity extends AppCompatActivity {
         //ArrayList<String> testList = getGameNames();
     }
 
+    @Override
+    protected void onResume() {
+        if (ambientSound != null){
+            ambientSound.stop();
+        }
+
+        ambientSound = null;
+        super.onResume();
+    }
+
     /**
      * This function is for testing game database serialization. Will be deleted eventually.
      */

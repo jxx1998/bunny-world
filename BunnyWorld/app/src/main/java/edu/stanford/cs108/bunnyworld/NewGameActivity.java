@@ -831,16 +831,24 @@ public class NewGameActivity extends AppCompatActivity {
     }
 
     public void onClickCut(MenuItem item) {
-        EditorView.clipboard = EditorView.selectedShape;
-        EditorView.currPage.removeShape(EditorView.selectedShape);
-        EditorView.selectedShape = null;
-        Game.set(EditorView.gamePages, EditorView.currPagePos);
-        Game.save(EditorView.currGameName);
-        EditorView.instance.invalidate();
+        if (EditorView.selectedShape != null) {
+            EditorView.clipboard = EditorView.selectedShape;
+            EditorView.currPage.removeShape(EditorView.selectedShape);
+            EditorView.selectedShape = null;
+            Game.set(EditorView.gamePages, EditorView.currPagePos);
+            Game.save(EditorView.currGameName);
+            EditorView.instance.invalidate();
+        } else {
+            throwToast("No shape is selected for clipboard!");
+        }
     }
 
     public void onClickCopy(MenuItem item) {
-        cloneClipboard(EditorView.selectedShape);
+        if (EditorView.selectedShape != null) {
+            cloneClipboard(EditorView.selectedShape);
+        } else {
+            throwToast("No shape is selected for clipboard!");
+        }
     }
 
     private void cloneClipboard(Shape shape) {

@@ -293,41 +293,6 @@
 
     </GridLayout>
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_row="5"-->
-<!--        android:layout_column="1"-->
-<!--        android:orientation="vertical">-->
-
-<!--&lt;!&ndash;        <LinearLayout&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_width="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:orientation="vertical">&ndash;&gt;-->
-
-<!--            <Switch-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Bold"-->
-<!--                android:textOn="On"-->
-<!--                android:textOff="Off"-->
-<!--                android:showText="true"-->
-<!--                android:id="@+id/bold"-->
-<!--                />-->
-
-<!--            <Switch-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Italics"-->
-<!--                android:textOn="On"-->
-<!--                android:textOff="Off"-->
-<!--                android:showText="true"-->
-<!--                android:id="@+id/italics"-->
-<!--                />-->
-
-<!--&lt;!&ndash;        </LinearLayout>&ndash;&gt;-->
-
-<!--    </LinearLayout>-->
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -416,29 +381,6 @@
 
         </LinearLayout>
 
-<!--        <Switch-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_row="0"-->
-<!--            android:layout_column="0"-->
-<!--            android:text="Moveable"-->
-<!--            android:textOn="On"-->
-<!--            android:textOff="Off"-->
-<!--            android:showText="true"-->
-<!--            android:id="@+id/moveable"-->
-<!--            />-->
-<!--        <Switch-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_row="0"-->
-<!--            android:layout_column="1"-->
-<!--            android:text="Visible"-->
-<!--            android:textOn="On"-->
-<!--            android:textOff="Off"-->
-<!--            android:showText="true"-->
-<!--            android:id="@+id/visible"-->
-<!--            />-->
-
         <LinearLayout
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -463,92 +405,8 @@
         </LinearLayout>
 
 
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_row="1"-->
-<!--            android:layout_column="0"-->
-<!--            android:text="Scaling" />-->
-
-<!--        <SeekBar-->
-<!--            android:layout_width="133dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_row="1"-->
-<!--            android:layout_column="1"-->
-<!--            android:layout_columnSpan="2"-->
-<!--            android:max="255"-->
-<!--            android:progress="0" />-->
-
-
     </GridLayout>
 
-
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_row="8"-->
-<!--        android:layout_column="0"-->
-<!--        android:orientation="horizontal">-->
-
-<!--        <Switch-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_row="8"-->
-<!--            android:layout_column="0"-->
-<!--            android:text="Moveable"-->
-<!--            android:textOn="On"-->
-<!--            android:textOff="Off"-->
-<!--            android:showText="true"-->
-<!--            android:id="@+id/moveable"-->
-<!--            />-->
-<!--        <Switch-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_row="7"-->
-<!--            android:layout_column="1"-->
-<!--            android:text="Visible"-->
-<!--            android:textOn="On"-->
-<!--            android:textOff="Off"-->
-<!--            android:showText="true"-->
-<!--            android:id="@+id/visible"-->
-<!--            />-->
-
-<!--    </LinearLayout>-->
-
-
-<!--    &lt;!&ndash;    <Button&ndash;&gt;-->
-<!--&lt;!&ndash;    android:layout_height="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;    android:layout_width="wrap_content"&ndash;&gt;-->
-<!--&lt;!&ndash;    android:layout_row="8"&ndash;&gt;-->
-<!--&lt;!&ndash;    android:layout_column="0"&ndash;&gt;-->
-<!--&lt;!&ndash;    />&ndash;&gt;-->
-
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="194dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_row="9"-->
-<!--        android:layout_column="0"-->
-<!--        android:orientation="horizontal">-->
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_row="8"-->
-<!--            android:layout_column="0"-->
-<!--            android:text="Scaling" />-->
-
-<!--        <SeekBar-->
-<!--            android:layout_width="137dp"-->
-<!--            android:layout_height="45dp"-->
-<!--            android:layout_row="7"-->
-<!--            android:layout_column="1"-->
-<!--            android:max="255"-->
-<!--            android:progress="0" />-->
-
-<!--    </LinearLayout>-->
 
     <Button
         android:layout_height="wrap_content"

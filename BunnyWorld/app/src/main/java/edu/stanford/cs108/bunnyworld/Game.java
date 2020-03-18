@@ -28,7 +28,7 @@ public class Game implements Serializable {
 
     private static final long serialVersionUID = 210791961760389656L;
 
-    private static final boolean SAVE_EXAMPLE_GAME_TO_FILE = false;
+    private static final String SAVE_EXAMPLE_GAME_TO_FILE = null;
 
     private static Game instance = new Game();
 
@@ -121,9 +121,9 @@ public class Game implements Serializable {
         SQLiteDatabase db = Database.getInstance();
         byte[] game_bytes = serialize();
 
-        if (SAVE_EXAMPLE_GAME_TO_FILE) {
+        if (SAVE_EXAMPLE_GAME_TO_FILE != null) {
             try {
-                FileOutputStream fos = new FileOutputStream(getGlobalContext().getFilesDir() + "/default_game.bin");
+                FileOutputStream fos = new FileOutputStream(getGlobalContext().getFilesDir() + "/" + SAVE_EXAMPLE_GAME_TO_FILE);
                 fos.write(game_bytes);
                 fos.close();
             } catch (Exception ignored) {}

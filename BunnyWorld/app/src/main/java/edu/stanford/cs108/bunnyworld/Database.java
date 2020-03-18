@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 import static edu.stanford.cs108.bunnyworld.BunnyWorldApplication.getGlobalContext;
@@ -38,22 +40,29 @@ public class Database {
 
         instance.execSQL(setupStr);
 
-        if (LOAD_DEFAULT_GAME) { loadDefaultGame(); }
+        if (LOAD_DEFAULT_GAME) {
+            List<String> fileNames = new ArrayList<String>();
+            fileNames.add("default_game");
+            fileNames.add("default_game_extensions");
+            loadDefaultGame(fileNames);
+        }
     }
 
-    private static void loadDefaultGame() {
-        Context context = getGlobalContext();
-        InputStream ins = context.getResources().openRawResource(
-                context.getResources().getIdentifier("default_game",
-                        "raw", context.getPackageName()));
-        try {
-            byte[] byteArray = new byte[ins.available()];
-            ins.read(byteArray);
-            Game.deserialize(byteArray);
-            Log.d("serialize", Integer.toString(Game.getPages().size()));
-            Game.save("default_game");
-        } catch (Exception e) {
-            Log.d("Load default game", e.toString());
+    private static void loadDefaultGame(List<String> fileNames) {
+        for (String fileName: fileNames) {
+            Context context = getGlobalContext();
+            InputStream ins = context.getResources().openRawResource(
+                    context.getResources().getIdentifier(fileName,
+                            "raw", context.getPackageName()));
+            try {
+                byte[] byteArray = new byte[ins.available()];
+                ins.read(byteArray);
+                Game.deserialize(byteArray);
+                Log.d("serialize", Integer.toString(Game.getPages().size()));
+                Game.save(fileName);
+            } catch (Exception e) {
+                Log.d("Load default game", e.toString());
+            }
         }
     }
 

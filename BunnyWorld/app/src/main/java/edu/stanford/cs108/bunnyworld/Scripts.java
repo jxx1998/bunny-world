@@ -213,11 +213,11 @@ public class Scripts implements Serializable {
                 }
             }
             if (!pageExists) {
-                throwToast("WARNING: Script contains page that doesn't exist yet!");
+                throwToast(String.format("WARNING: Script contains page \"%s\", which doesn't exist!", name));
             }
         } else if (keyword.equals("play")) {
             if (!soundFiles.contains(name)) {
-                throwToast("ERROR: Script contains nonexistent sound file!");
+                throwToast(String.format("ERROR: Script contains nonexistent sound file: %s!", name));
                 return false;
             }
         } else if (keyword.equals("hide") || keyword.equals("show") ||
@@ -235,7 +235,7 @@ public class Scripts implements Serializable {
                 }
             }
         }
-        throwToast("WARNING: Script contains shape that doesn't exist yet!");
+        throwToast(String.format("WARNING: Script contains shape name \"%s\", which doesn't exist!", name));
         return false;
     }
 

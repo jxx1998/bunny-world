@@ -1,5 +1,8 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -23,6 +26,10 @@ public class Shape implements Serializable {
     private static final long serialVersionUID = 1267054998338566400L;
 
     static final float SQUARE_SIZE = 150f;
+
+    static Shape animatedShape;
+    static float animOriginalLeft;
+    static float animOriginalTop;
 
     static final Map<String, Typeface> nameToTypeface = new HashMap<String, Typeface>() {{
         put("DEFAULT", Typeface.DEFAULT);
@@ -249,6 +256,40 @@ public class Shape implements Serializable {
     // Returns whether a given (x, y) is located within the Shape's default coordinates
     public boolean inventoryContains(float x, float y) {
         return inventoryCoordinates.contains(x, y);
+    }
+
+    public void animateX(float dx, long duration) {
+        animOriginalLeft = this.coordinates.left;
+        animOriginalTop = this.coordinates.top;
+        animatedShape = this;
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.0f, dx);
+        valueAnimator.setDuration(duration);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float currentDx = (float) valueAnimator.getAnimatedValue();
+                animatedShape.coordinates.offsetTo(animOriginalLeft + currentDx, animOriginalTop);
+                GameView.instance.invalidate();
+            }
+        });
+        valueAnimator.start();
+    }
+
+    public void animateY(float dy, long duration) {
+        animOriginalLeft = this.coordinates.left;
+        animOriginalTop = this.coordinates.top;
+        animatedShape = this;
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.0f, dy);
+        valueAnimator.setDuration(duration);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float currentDy = (float) valueAnimator.getAnimatedValue();
+                animatedShape.coordinates.offsetTo(animOriginalLeft, animOriginalTop + currentDy);
+                GameView.instance.invalidate();
+            }
+        });
+        valueAnimator.start();
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {

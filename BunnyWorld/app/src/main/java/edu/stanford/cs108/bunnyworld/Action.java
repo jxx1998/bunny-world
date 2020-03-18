@@ -122,13 +122,13 @@ public class Action implements Serializable {
             Shape shape = subjectShape;
             // float d = 0.0;
             if (dir == 'r') {
-                shape.offSetCoordinates(dis, 0f);
+                shape.animateX(dis, 3000);
             } else if (dir == 'l') {
-                shape.offSetCoordinates(-dis, 0f);
+                shape.animateX(-dis, 3000);
             } else if (dir == 'u') {
-                shape.offSetCoordinates(0f, -dis);
+                shape.animateY(-dis, 3000);
             } else if (dir == 'd') {
-                shape.offSetCoordinates(0f, dis);
+                shape.animateY(dis, 3000);
             }
         } else if (keyword.equals("randomMove")) {
             float dis = Float.parseFloat(name);
@@ -136,13 +136,13 @@ public class Action implements Serializable {
             Random random = new Random();
             int randomNum = random.nextInt((4 - 1) + 1) + 1;
             if (randomNum == 1) {
-                shape.offSetCoordinates(dis, 0f);
+                shape.animateX(dis, 1000);
             } else if (randomNum == 2) {
-                shape.offSetCoordinates(-dis, 0f);
+                shape.animateX(-dis, 1000);
             } else if (randomNum == 3) {
-                shape.offSetCoordinates(0f, -dis);
+                shape.animateY(-dis, 1000);
             } else if (randomNum == 4) {
-                shape.offSetCoordinates(0f, dis);
+                shape.animateY(dis, 1000);
             }
         } else if (keyword.equals("text")) {
             Shape shape = subjectShape;
